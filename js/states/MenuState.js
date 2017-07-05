@@ -37,6 +37,10 @@ MyGame.MenuState.prototype = {
 		this.addComponents();
 
 
+		
+	    this.showHint(new Phaser.Point(game.world.centerX, 40), new Phaser.Point(game.world.centerX-30, 40));
+
+
 		// text_test_style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 		// text_test = game.add.bitmapText(game.world.centerX, 20, 'testFont', "Testing", 20);
 		// text_test.anchor.setTo(0.5);
@@ -212,6 +216,10 @@ MyGame.MenuState.prototype = {
 		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
+		this.title.alpha = 0.1;
+		TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
+
+
 
 		this.button1 = SpriteButton(100, 100, 'button_start');
 		this.button1.setBehaviors(
@@ -295,11 +303,53 @@ MyGame.MenuState.prototype = {
 			// console.log("CLICK");
 		});
 		this.sceneProps.add(this.button3.getSprite());
+	}, 
+
+
+
+	showHint: function(startingPoint, endingPoint) { // HINT DISPLAY
+		this.hint = game.add.sprite(startingPoint.x, startingPoint.y, 'green_square');
+		this.hint.anchor.setTo(0.5);
+		this.hint.scale.setTo(0, 0);
+		this.hintTweens = [];
+
+		let tweenAppear = game.add.tween(this.hint.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
+		let tween0 = game.add.tween(this.hint).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween1 = game.add.tween(this.hint).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween2 = game.add.tween(this.hint).to({ x: endingPoint.x, y: endingPoint.y }, 1500, Phaser.Easing.Quadratic.Out);
+		let tween3 = game.add.tween(this.hint).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tweenDisappear = game.add.tween(this.hint.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
+
+		this.hintTweens.push(tweenAppear);
+		this.hintTweens.push(tween0);
+		this.hintTweens.push(tween1);
+		this.hintTweens.push(tween2);
+		this.hintTweens.push(tween3);
+		this.hintTweens.push(tweenDisappear);
+
+		tweenAppear.start();
+		tweenAppear.chain(tween0);
+		tween0.chain(tween1);
+		ChangeSpriteOnTweenComplete(tween0, this.hint, 'red_square');
+		tween1.chain(tween2);
+		tween2.chain(tween3);
+		ChangeSpriteOnTweenComplete(tween2, this.hint, 'green_square');
+		tween3.chain(tweenDisappear);
+
+		tweenDisappear.onComplete.addOnce(this.removeHint, this);
+	}, 
+
+	removeHint: function() {
+		this.clearHintTweens();
+		this.hint.destroy();
+	}, 
+
+	clearHintTweens: function() {
+		while(this.hintTweens.length != 0) {
+			this.hintTweens[0].stop();
+			this.hintTweens.pop(this.hintTweens[0]);
+		}
 	}
-
-
-
-
 
 
 

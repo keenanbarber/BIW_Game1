@@ -172,6 +172,14 @@ function Tweenimate_TintSprite(prop, goalColor, duration) { // ????????????????
 
 
 
+function ChangeSpriteOnTweenComplete(tween, oldSprite, newSpriteKey) {
+	tween.onComplete.addOnce(function() { // Once completed...
+		oldSprite.loadTexture(newSpriteKey);
+	}, this);
+}
+
+
+
 /*_______________________________________
 		GROUP TWEEN ON COMPLETE			|
 _________________________________________*/

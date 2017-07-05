@@ -455,13 +455,13 @@ MyGame.GameState.prototype = {
 		let y2 = t2.arrayPos.y;
 
 		let temp = this.tileArray[x1][y1];
-		this.tileArray[x1][y1] = this.tileArray[x2][y2];
+		this.tileArray[x1][y1] = this.tileArray[ x2 ][ y2 ];
 		this.tileArray[x1][y1].setArrayPosition(x1, y1);
 		this.tileArray[x2][y2] = temp;
 		this.tileArray[x2][y2].setArrayPosition(x2, y2);
 	
-		let tween1 = game.add.tween(this.tileArray[x1][y1].getSprite()).to({ x: this.tileArray[ x2 ][y2].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
-		let tween2 = game.add.tween(this.tileArray[x2][y2].getSprite()).to({ x: this.tileArray[x1][y1].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
+		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
+		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
 		tweenManager.addTween(tween1);
 		tweenManager.addTween(tween2);
 		
