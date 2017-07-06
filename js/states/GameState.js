@@ -487,19 +487,19 @@ MyGame.GameState.prototype = {
 		let repeatedTiles = [];
 
 		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
-			for(let y = 0; y < configuration.board_rows - 2; y++) { // Go down the column... 
+			for(let y = 0; y < configuration.board_rows - 2; y++) { // Go down the column... 	(Might not need to check going up the column?)
 				
 				let firstTile = this.tileArray[ x ][ y ];
 				let secondTile = this.tileArray[ x ][ y+1 ];
 				let thirdTile = this.tileArray[ x ][ y+2 ];
 
-				if(firstTile.getTag() === secondTile.getTag()) { 		// [ X X _ ] VERTICAL DOWN
-					this.checkForSimilarNearbyTile(secondTile, null, thirdTile);
+				if(firstTile.getTag() === secondTile.getTag()) { 		// [ X X _ ] VERTICAL 
+					this.checkForSimilarNearbyTile(secondTile, null, thirdTile); // Only needs to ignore one tile...
 				}
-				else if(secondTile.getTag() === thirdTile.getTag()) { 	// [ _ X X ] VERTICAL DOWN
-					this.checkForSimilarNearbyTile(secondTile, null, thirdTile);
+				else if(secondTile.getTag() === thirdTile.getTag()) { 	// [ _ X X ] VERTICAL 
+					this.checkForSimilarNearbyTile(secondTile, null, thirdTile); // Only needs to ignore one tile...
 				}
-				else if(firstTile.getTag() === thirdTile.getTag()) { 	// [ X _ X ] VERTICAL DOWN
+				else if(firstTile.getTag() === thirdTile.getTag()) { 	// [ X _ X ] VERTICAL 
 					this.checkForSimilarNearbyTile(firstTile, thirdTile, secondTile);
 				}
 			}
@@ -510,27 +510,28 @@ MyGame.GameState.prototype = {
 
 	}, 
 	/*_______________________________________
-		Check For Similar Nearby Tile		|
+		Check For Similar Nearby Tile		|		INCOMPLETE
 	_________________________________________
 			After being given a possible
 			tile to replace and some tiles to 
-			potentially ignore, this function 
-			will search the nearby tiles of 
-			the possible tile to replace to 
+			potentially ignore, this function 					[ ][ ][ ]
+			will search the nearby tiles of 					[I][P][ ]
+			the possible tile to replace to 					[ ][ ][ ]
 			see if there are any similar tiles. 
 	________________________________________*/
 	checkForSimilarNearbyTile: function(ignoreTile1, ignoreTile2, possibleTileToReplace) {
 		console.log("CHECKING --> X: " + possibleTileToReplace.getArrayPosition().x + ", Y: " + possibleTileToReplace.getArrayPosition.y);
 		let tileType = ignoreTile1.getTag();
-		let tileToCheck;
 
 		for(let x = possibleTilePoint.x-1; x < possibleTilePoint.x+1; x++) {
 			for(let y = possibleTilePoint.y-1; y < possibleTilePoint.y+1; y++) {
 
 				if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
-					if( (x != lastTilePoint.x || y != lastTilePoint.y) && (x != possibleTilePoint.x || y != possibleTilePoint.y) ) { // If not the lastTilePoint and possibleTilePoint
-						if(this.tileArray[ x ][ y ].getTag() == tileType) {
-							console.log("POTENTIAL MOVE AT: " + x + ", " + y + " WITH: " + this.tileArray[ x ][ y ].getTag() + ", COULD GO: " + possibleTilePoint.x + ", " + possibleTilePoint.y);
+					if( (x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) && (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) ) { 
+						if(ignoreTile2 != null && (x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y )) { // If there is another tile to ignore, ignore it.
+							if(this.tileArray[ x ][ y ].getTag() == tileType) { // If the found tile is what you are looking for...
+								console.log("The tile [" + x + ", " + y + "] could be placed at" + this.tileArray[ x ][ y ].getTag() + ", COULD GO: " + possibleTilePoint.x + ", " + possibleTilePoint.y);
+							}
 						}
 					}
 				}
@@ -540,6 +541,7 @@ MyGame.GameState.prototype = {
 		}
 
 	},
+
 
 	/*_______________________________________
 		Scan Board 							|
