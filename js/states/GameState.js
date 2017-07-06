@@ -25,16 +25,17 @@ MyGame.GameState = function(game) {
 
 MyGame.GameState.prototype = {
 
-	init: function(game_details_data, previousState) {
+	init: function(game_details_data, previousState, oldSceneTransition, newSceneTransition) {
 		"use strict";
 		this.game_details_data = game_details_data;
 		
-		
+		this.oldSceneTransition = oldSceneTransition;
+		this.newSceneTransition = newSceneTransition;
 
-		physics = Physics();
+		// physics = Physics();
 
-		if(previousState)
-			ExitPreviousScene(previousState.sceneProps, TranslateTween("CENTER_TO_LEFT", 1000, Phaser.Easing.Bounce.Out));
+		// Exit the previous scene/state...
+		if(previousState) { ExitPreviousScene(previousState.sceneProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
 	},
 
 	preload: function() {
@@ -97,7 +98,8 @@ MyGame.GameState.prototype = {
 		this.button.setClickBehavior(function() {
 			// console.log("CLICK");
 			score = 0;
-			obj.game.state.start("MenuState", false, false, this.game_details_data, obj);
+			scoreMultiplier = 1;
+			obj.game.state.start("MenuState", false, false, this.game_details_data, obj, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button.getSprite());
 
@@ -110,7 +112,7 @@ MyGame.GameState.prototype = {
 		// this.printBoard();
 
 
-		EnterNewScene(this.sceneProps, TranslateTween("RIGHT_TO_CENTER", 1000, Phaser.Easing.Bounce.Out));
+		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, Phaser.Easing.Bounce.Out));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			console.log("Transition completed.");
 			// this.gameTimer = game.time.create(false);
