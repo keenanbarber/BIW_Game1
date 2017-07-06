@@ -38,14 +38,13 @@ MyGame.MenuState.prototype = {
 
 
 		
-	    this.showHint(new Phaser.Point(game.world.centerX, 40), new Phaser.Point(game.world.centerX-30, 40));
+	    // this.showHint(new Phaser.Point(game.world.centerX, 40), new Phaser.Point(game.world.centerX-30, 40));
 
 
 		// text_test_style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 		// text_test = game.add.bitmapText(game.world.centerX, 20, 'testFont', "Testing", 20);
 		// text_test.anchor.setTo(0.5);
 		// this.sceneProps.add(text_test);
-
 
 		// Add events to check for swipe
 		this.game.input.onDown.add(this.start_swipe, this);
@@ -216,8 +215,8 @@ MyGame.MenuState.prototype = {
 		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
-		this.title.alpha = 0.1;
-		TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
+		// this.title.alpha = 0.1;
+		// TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
 
 
 
@@ -273,6 +272,7 @@ MyGame.MenuState.prototype = {
 		);
 		this.button2.setClickBehavior(function() {
 			// console.log("CLICK");
+			obj.game.state.start("OptionsState", false, false, this.game_details_data, obj);
 		});
 		this.sceneProps.add(this.button2.getSprite());
 

@@ -33,7 +33,8 @@ MyGame.GameState.prototype = {
 
 		physics = Physics();
 
-		ExitPreviousScene(previousState.sceneProps, TranslateTween("CENTER_TO_LEFT", 1000, Phaser.Easing.Bounce.Out));
+		if(previousState)
+			ExitPreviousScene(previousState.sceneProps, TranslateTween("CENTER_TO_LEFT", 1000, Phaser.Easing.Bounce.Out));
 	},
 
 	preload: function() {

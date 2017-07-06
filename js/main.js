@@ -28,6 +28,7 @@ var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_heig
 game.state.add("BootState", new MyGame.BootState());
 game.state.add("LoadingState", new MyGame.LoadingState());
 game.state.add("MenuState", new MyGame.MenuState());
+game.state.add("OptionsState", new MyGame.OptionsState());
 game.state.add("GameState", new MyGame.GameState());
 game.state.start("BootState", true, false, "assets/json/game_details.json", 'game_phaser');
 
