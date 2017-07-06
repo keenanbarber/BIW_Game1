@@ -3,15 +3,10 @@
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
 
-var transitionRect;
-var t;
-var physics;
-
 var mouseOverObj; 
 var mouseOffObj;
 var mouseDownObj; 
 var mouseUpObj;
-
 
 var selectedTile1;
 var selectedTile2;
@@ -31,8 +26,6 @@ MyGame.GameState.prototype = {
 		
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
-
-		// physics = Physics();
 
 		// Exit the previous scene/state...
 		if(previousState) { ExitPreviousScene(previousState.sceneProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }

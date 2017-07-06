@@ -3,8 +3,6 @@
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
 
-var physics;
-
 MyGame.OptionsState = function(game) {
 	"use strict"; 
 };
@@ -17,8 +15,6 @@ MyGame.OptionsState.prototype = {
 		this.game_details_data = game_details_data;
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
-
-		// physics = Physics();
 
 		// Exit the previous scene/state...
 		if(previousState) { ExitPreviousScene(previousState.sceneProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
