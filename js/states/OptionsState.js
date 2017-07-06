@@ -10,14 +10,14 @@ MyGame.OptionsState = function(game) {
 
 MyGame.OptionsState.prototype = {
 
-	init: function(game_details_data, previousState, oldSceneTransition, newSceneTransition) {
+	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
 		this.game_details_data = game_details_data;
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
 		// Exit the previous scene/state...
-		if(previousState) { ExitPreviousScene(previousState.sceneProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
+		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
 	},
 
 	preload: function() {
@@ -65,7 +65,7 @@ MyGame.OptionsState.prototype = {
 		this.button.setClickBehavior(function() {
 			// console.log("CLICK");
 			score = 0;
-			obj.game.state.start("MenuState", false, false, this.game_details_data, obj, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			obj.game.state.start("MenuState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button.getSprite());
 

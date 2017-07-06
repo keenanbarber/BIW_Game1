@@ -10,7 +10,7 @@ MyGame.MenuState = function() {
 };
 
 MyGame.MenuState.prototype = {
-	init: function(game_details_data, previousState, oldSceneTransition, newSceneTransition) {
+	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
 		this.game_details_data = game_details_data;
 		this.MINIMUM_SWIPE_LENGTH = 40;
@@ -19,7 +19,7 @@ MyGame.MenuState.prototype = {
 
 		UpdateScreenInfo();
 		// Exit the previous scene/state...
-		if(previousState) { ExitPreviousScene(previousState.sceneProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
+		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
 	},
 	
 	preload: function() {
@@ -241,7 +241,7 @@ MyGame.MenuState.prototype = {
 		);
 		this.button1.setClickBehavior(function() {
 			// console.log("CLICK");
-			obj.game.state.start("GameState", false, false, this.game_details_data, obj, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button1.getSprite());
 
@@ -270,7 +270,7 @@ MyGame.MenuState.prototype = {
 		);
 		this.button2.setClickBehavior(function() {
 			// console.log("CLICK");
-			obj.game.state.start("OptionsState", false, false, this.game_details_data, obj, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			obj.game.state.start("OptionsState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button2.getSprite());
 

@@ -78,6 +78,6 @@ MyGame.LoadingState.prototype = {
 
 	create: function() {
 		"use strict"; 
-		this.game.state.start("MenuState", true, false, this.game_details_data);
+		this.game.state.start("MenuState", true, false, this.game_details_data, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}
 };
