@@ -107,7 +107,7 @@ MyGame.GameState.prototype = {
 
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, Phaser.Easing.Bounce.Out));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			console.log("Transition completed.");
+			// console.log("Transition completed.");
 			// this.gameTimer = game.time.create(false);
 			// this.gameTimer.add(5000, test);
 			// this.gameTimer.start();

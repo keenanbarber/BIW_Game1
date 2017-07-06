@@ -75,7 +75,7 @@ MyGame.OptionsState.prototype = {
 
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, Phaser.Easing.Bounce.Out));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			console.log("Transition completed.");
+			// console.log("Transition completed.");
 		});
 
 		this.positionComponents(game.width, game.height);
@@ -95,7 +95,7 @@ MyGame.OptionsState.prototype = {
 			this.background.x = width/2;
 			this.background.y = height/2;
 
-			ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
+			ScaleSprite(this.button.getSprite(), width/2, height/3, 0, 1);
 			this.button.getSprite().x = width/2;
 			this.button.getSprite().y = height/2;
 			this.button.updateIntendedScale();
@@ -107,7 +107,7 @@ MyGame.OptionsState.prototype = {
 			this.background.x = width/2;
 			this.background.y = height/2;
 
-			ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
+			ScaleSprite(this.button.getSprite(), width/2, height/3, 0, 1);
 			this.button.getSprite().x = width/2;
 			this.button.getSprite().y = height/2;
 			this.button.updateIntendedScale();
