@@ -137,6 +137,10 @@ function ExitPreviousScene(previousScenesProps, _tween) {
 	tweenManager.addTween(tween);
 }
 function ClearSceneProps(group) {
+	while(group.length != 0) {
+		let removedElement = group.removeChildAt(0);
+		removedElement.destroy();
+	}
 	group.removeAll();
 }
 

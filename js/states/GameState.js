@@ -225,6 +225,7 @@ MyGame.GameState.prototype = {
 	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
 	    //Tweenimate_Breathe(this.thing1, 1.5, 1.5, 1200);
 	    // tweenManager.stopAllTweens();
+	    this.checkMoves();
 	},
 
 	end_swipe: function(pointer) {
@@ -469,6 +470,76 @@ MyGame.GameState.prototype = {
 
 	},
 
+	/*_______________________________________
+		Check Moves							|
+	_________________________________________
+			This is similar-ish to scan 
+			board. It will go through the 
+			board and look for potential 
+			moves. It will return an array of 
+			objects containing the potential 
+			moves.
+	________________________________________*/
+	checkMoves: function() {
+		let lastTileType = "";
+		let currentTileType = "";
+		let foundAnything = false;
+		let repeatedTiles = [];
+
+		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
+			for(let y = 0; y < configuration.board_rows - 2; y++) { // Go down the column... 
+				
+				let firstTile = this.tileArray[ x ][ y ];
+				let secondTile = this.tileArray[ x ][ y+1 ];
+				let thirdTile = this.tileArray[ x ][ y+2 ];
+
+				if(firstTile.getTag() === secondTile.getTag()) { 		// [ X X _ ] VERTICAL DOWN
+					this.checkForSimilarNearbyTile(secondTile, null, thirdTile);
+				}
+				else if(secondTile.getTag() === thirdTile.getTag()) { 	// [ _ X X ] VERTICAL DOWN
+					this.checkForSimilarNearbyTile(secondTile, null, thirdTile);
+				}
+				else if(firstTile.getTag() === thirdTile.getTag()) { 	// [ X _ X ] VERTICAL DOWN
+					this.checkForSimilarNearbyTile(firstTile, thirdTile, secondTile);
+				}
+			}
+		}
+
+
+
+
+	}, 
+	/*_______________________________________
+		Check For Similar Nearby Tile		|
+	_________________________________________
+			After being given a possible
+			tile to replace and some tiles to 
+			potentially ignore, this function 
+			will search the nearby tiles of 
+			the possible tile to replace to 
+			see if there are any similar tiles. 
+	________________________________________*/
+	checkForSimilarNearbyTile: function(ignoreTile1, ignoreTile2, possibleTileToReplace) {
+		console.log("CHECKING --> X: " + possibleTileToReplace.getArrayPosition().x + ", Y: " + possibleTileToReplace.getArrayPosition.y);
+		let tileType = ignoreTile1.getTag();
+		let tileToCheck;
+
+		for(let x = possibleTilePoint.x-1; x < possibleTilePoint.x+1; x++) {
+			for(let y = possibleTilePoint.y-1; y < possibleTilePoint.y+1; y++) {
+
+				if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
+					if( (x != lastTilePoint.x || y != lastTilePoint.y) && (x != possibleTilePoint.x || y != possibleTilePoint.y) ) { // If not the lastTilePoint and possibleTilePoint
+						if(this.tileArray[ x ][ y ].getTag() == tileType) {
+							console.log("POTENTIAL MOVE AT: " + x + ", " + y + " WITH: " + this.tileArray[ x ][ y ].getTag() + ", COULD GO: " + possibleTilePoint.x + ", " + possibleTilePoint.y);
+						}
+					}
+				}
+
+
+			}
+		}
+
+	},
 
 	/*_______________________________________
 		Scan Board 							|
@@ -506,7 +577,7 @@ MyGame.GameState.prototype = {
 					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
 				}
 			}
-			if(repeatedTiles.length >= 3) { // Check to see if the remaining tiles in the column are worth anything...
+			if(repeatedTiles.length >= configuration.min_required_tiles_for_points) { // Check to see if the remaining tiles in the column are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}
@@ -536,7 +607,7 @@ MyGame.GameState.prototype = {
 					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
 				}
 			}
-			if(repeatedTiles.length >= 3) { // Check to see if the remaining tiles in the row are worth anything...
+			if(repeatedTiles.length >= configuration.min_required_tiles_for_points) { // Check to see if the remaining tiles in the row are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}
