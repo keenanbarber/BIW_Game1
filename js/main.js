@@ -3,6 +3,7 @@ var device;
 var deviceOrientation;
 
 var tweenManager = GroupTweenManager();
+var gameTileKeys = [];
 
 var configuration = {
 	'canvas_width_max' : 2048,					

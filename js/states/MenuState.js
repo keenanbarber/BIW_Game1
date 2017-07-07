@@ -206,7 +206,7 @@ MyGame.MenuState.prototype = {
 		
 		let obj = this; // Reference to the scene
 
-		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
+		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
 		this.background.anchor.setTo(0.5);
 		this.sceneProps.add(this.background);
 
@@ -301,53 +301,11 @@ MyGame.MenuState.prototype = {
 			// console.log("CLICK");
 		});
 		this.sceneProps.add(this.button3.getSprite());
-	}, 
+	} 
 
 
 
-	showHint: function(startingPoint, endingPoint) { // HINT DISPLAY
-		this.hint = game.add.sprite(startingPoint.x, startingPoint.y, 'green_square');
-		this.hint.anchor.setTo(0.5);
-		this.hint.scale.setTo(0, 0);
-		this.hintTweens = [];
-
-		let tweenAppear = game.add.tween(this.hint.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
-		let tween0 = game.add.tween(this.hint).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween1 = game.add.tween(this.hint).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween2 = game.add.tween(this.hint).to({ x: endingPoint.x, y: endingPoint.y }, 1500, Phaser.Easing.Quadratic.Out);
-		let tween3 = game.add.tween(this.hint).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tweenDisappear = game.add.tween(this.hint.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
-
-		this.hintTweens.push(tweenAppear);
-		this.hintTweens.push(tween0);
-		this.hintTweens.push(tween1);
-		this.hintTweens.push(tween2);
-		this.hintTweens.push(tween3);
-		this.hintTweens.push(tweenDisappear);
-
-		tweenAppear.start();
-		tweenAppear.chain(tween0);
-		tween0.chain(tween1);
-		ChangeSpriteOnTweenComplete(tween0, this.hint, 'red_square');
-		tween1.chain(tween2);
-		tween2.chain(tween3);
-		ChangeSpriteOnTweenComplete(tween2, this.hint, 'green_square');
-		tween3.chain(tweenDisappear);
-
-		tweenDisappear.onComplete.addOnce(this.removeHint, this);
-	}, 
-
-	removeHint: function() {
-		this.clearHintTweens();
-		this.hint.destroy();
-	}, 
-
-	clearHintTweens: function() {
-		while(this.hintTweens.length != 0) {
-			this.hintTweens[0].stop();
-			this.hintTweens.pop(this.hintTweens[0]);
-		}
-	}
+	
 
 
 

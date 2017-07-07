@@ -8,10 +8,9 @@ MyGame.LoadingState = function(game) {
 };
 
 MyGame.LoadingState.prototype = { 
-	init: function(game_details_data) {
+	init: function() {
 		// Recieves game_details_data from BootState and stores it. 
 		"use strict";
-		this.game_details_data = game_details_data;
 	}, 
 
 	preload: function() {
@@ -24,7 +23,7 @@ MyGame.LoadingState.prototype = {
 
 		// USER DETAILS
 		var user_details, user_detail_key, detail;
-		user_details = this.game_details_data.user_details;
+		user_details = game_details_data.user_details;
 		for(user_detail_key in user_details) {
 			if(user_details.hasOwnProperty(user_detail_key)) { // Makes sure the key exists in the assets.
 				detail = user_details[ user_detail_key ];
@@ -43,8 +42,8 @@ MyGame.LoadingState.prototype = {
 		}
 
 		// ASSETS
-		var assets, asset_loader, asset_key, asset;
-	    assets = this.game_details_data.assets;
+		var assets, asset_key, asset;
+	    assets = game_details_data.assets;
 	    for (asset_key in assets) { // load assets according to asset key
 	        if (assets.hasOwnProperty(asset_key)) {
 	            asset = assets[asset_key];
@@ -61,7 +60,24 @@ MyGame.LoadingState.prototype = {
 	        }
 	    }
 
-
+	    // ASSETS 2
+	    var assets, asset_key, asset;
+	    assets = game_details_data.assets_2;
+	    for (asset_key in assets) {
+	    	if (assets.hasOwnProperty(asset_key)) {
+	    		switch (asset_key) {
+	    			case "game_tiles":
+	    				for (let i = 0; i < assets[asset_key].length; i++) {
+	    					this.load.image("tile_" + i, assets[asset_key][i]);
+	    					gameTileKeys.push("tile_" + i);
+	    				}
+	    				break;
+	    			case "background_image": 
+	    				this.load.image(asset_key, assets[asset_key]);
+	    				break;
+	    		}
+	    	}
+	    }
 
 
 	    // this.preloadBar = game.add.graphics(0, 50);  

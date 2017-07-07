@@ -32,7 +32,7 @@ MyGame.GameState.prototype = {
 	},
 
 	preload: function() {
-
+		
 	},
 
 	create: function() {
@@ -52,7 +52,7 @@ MyGame.GameState.prototype = {
 		// this.exit_button.anchor.setTo(0.5);	
 
 		// Background
-		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
+		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
 		this.background.anchor.setTo(0.5);
 		this.sceneProps.add(this.background);
 
@@ -225,7 +225,6 @@ MyGame.GameState.prototype = {
 	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
 	    //Tweenimate_Breathe(this.thing1, 1.5, 1.5, 1200);
 	    // tweenManager.stopAllTweens();
-	    this.checkMoves();
 	},
 
 	end_swipe: function(pointer) {
@@ -243,6 +242,7 @@ MyGame.GameState.prototype = {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
+			    this.showHint();
 		    }
 		}
 
@@ -322,29 +322,8 @@ MyGame.GameState.prototype = {
 	},
 
 	placeTile: function(x, y) {
-		
-		let tile;
-		let num = RandomBetween(0, configuration.number_of_tiles-1);
-		switch(num) {
-			case 0: 
-				tile = this.tile(this, x, y, "tile_black", "TYPE_0");
-				break;
-			case 1: 
-				tile = this.tile(this, x, y, "tile_red", "TYPE_1");
-				break;
-			case 2: 
-				tile = this.tile(this, x, y, "tile_blue", "TYPE_2");
-				break;
-			case 3: 
-				tile = this.tile(this, x, y, "tile_green", "TYPE_3");
-				break;
-			case 4: 
-				tile = this.tile(this, x, y, "purple_square", "TYPE_4");
-				break;
-			default: 
-				tile = this.tile(this, x, y, "yellow_square", "TYPE_0");
-				break;
-		}
+		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
+		let tile = this.tile(this, x, y, gameTileKeys[num], gameTileKeys[num]); // The resulting tile.
 		return tile;
 	},
 
@@ -434,6 +413,7 @@ MyGame.GameState.prototype = {
 		obj.getTag = function() { return this.tag; };
 		obj.getPositionX = function() { return this.sprite.x; };
 		obj.getPositionY = function() { return this.sprite.y; };
+		obj.getPosition = function() { return new Phaser.Point(this.sprite.x, this.sprite.y) };
 
 		return obj;
 	}, 
@@ -481,76 +461,111 @@ MyGame.GameState.prototype = {
 			moves.
 	________________________________________*/
 	checkMoves: function() {
-		let lastTileType = "";
-		let currentTileType = "";
-		let foundAnything = false;
-		let repeatedTiles = [];
+		let possibleMoves = [];
 
-		for(let x = 0; x < 1; x++) { // For each column...
+		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
 			for(let y = 0; y < configuration.board_rows - 2; y++) { // Go down the column... 	(Might not need to check going up the column?)
-				
 				let firstTile = this.tileArray[ x ][ y ];
 				let secondTile = this.tileArray[ x ][ y+1 ];
 				let thirdTile = this.tileArray[ x ][ y+2 ];
 
 				if(firstTile.getTag() === secondTile.getTag()) { 		// [ X X _ ] VERTICAL 
-					this.checkForSimilarNearbyTile(secondTile, null, thirdTile); // Only needs to ignore one tile...
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(secondTile, null, thirdTile));
 				}
 				else if(secondTile.getTag() === thirdTile.getTag()) { 	// [ _ X X ] VERTICAL 
-					this.checkForSimilarNearbyTile(secondTile, null, thirdTile); // Only needs to ignore one tile...
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(secondTile, null, firstTile));
 				}
 				else if(firstTile.getTag() === thirdTile.getTag()) { 	// [ X _ X ] VERTICAL 
-					this.checkForSimilarNearbyTile(firstTile, thirdTile, secondTile);
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(firstTile, thirdTile, secondTile));
 				}
 			}
 		}
 
+		for(let y = 0; y < configuration.board_rows; y++) { // For each row...
+			for(let x = 0; x < configuration.board_columns - 2; x++) { // Go across the row...
+				let firstTile = this.tileArray[ x ][ y ];
+				let secondTile = this.tileArray[ x+1 ][ y ];
+				let thirdTile = this.tileArray[ x+2 ][ y ];
 
+				if(firstTile.getTag() === secondTile.getTag()) { 		// [ X X _ ] VERTICAL 
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(secondTile, null, thirdTile));
+				}
+				else if(secondTile.getTag() === thirdTile.getTag()) { 	// [ _ X X ] VERTICAL 
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(secondTile, null, firstTile));
+				}
+				else if(firstTile.getTag() === thirdTile.getTag()) { 	// [ X _ X ] VERTICAL 
+					possibleMoves.push.apply(possibleMoves, this.checkForSimilarNearbyTile(firstTile, thirdTile, secondTile));
+				}
+			}
+		}
 
-
+		return possibleMoves;
 	}, 
+
 	/*_______________________________________
-		Check For Similar Nearby Tile		|		INCOMPLETE
+		Check For Similar Nearby Tile		|		
 	_________________________________________
 			After being given a possible
 			tile to replace and some tiles to 
-			potentially ignore, this function 					[ ][ ][ ]
+			potentially ignore, this function 					   [ ]
 			will search the nearby tiles of 					[I][P][ ]
-			the possible tile to replace to 					[ ][ ][ ]
+			the possible tile to replace to 					   [ ]
 			see if there are any similar tiles. 
 	________________________________________*/
 	checkForSimilarNearbyTile: function(ignoreTile1, ignoreTile2, possibleTileToReplace) {
-		console.log("Potential Tile: " + possibleTileToReplace.getArrayPosition());
-		console.log("Ignore Me: " + ignoreTile1.getArrayPosition());
-		console.log("Ignore Me 2: " + ignoreTile2);
-		if(ignoreTile2)
-			console.log("ALSO IGNORING: " + ignoreTile2.getArrayPosition());
+		let possibleMoves = [];
+
 		let tileType = ignoreTile1.getTag();
 
-		for(let x = possibleTileToReplace.getArrayPosition().x-1; x <= possibleTileToReplace.getArrayPosition().x+1; x++) {
-			for(let y = possibleTileToReplace.getArrayPosition().y-1; y <= possibleTileToReplace.getArrayPosition().y+1; y++) {
+		let x = possibleTileToReplace.getArrayPosition().x-1;
+		let y = possibleTileToReplace.getArrayPosition().y;
+		possibleMoves.push.apply(possibleMoves, this.checkTile(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace));
 
-				if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
-					console.log("found on board,,,");
-					
-					// if( (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) &&
-					// 	(x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) ) {
-					// 	if(ignoreTile2) {
-					// 		if(x != ignoreTile2.getArrayPosition().x || y != ignoreTile2.getArrayPosition().y) {
-					// 			console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
-					// 		}
-					// 	}
-					// 	else {
-					// 		console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
-					// 	}
-					// }
+		x = possibleTileToReplace.getArrayPosition().x+1;
+		y = possibleTileToReplace.getArrayPosition().y;
+		possibleMoves.push.apply(possibleMoves, this.checkTile(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace));
 
+		x = possibleTileToReplace.getArrayPosition().x;
+		y = possibleTileToReplace.getArrayPosition().y-1;
+		possibleMoves.push.apply(possibleMoves, this.checkTile(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace));
+
+		x = possibleTileToReplace.getArrayPosition().x;
+		y = possibleTileToReplace.getArrayPosition().y+1;
+		possibleMoves.push.apply(possibleMoves, this.checkTile(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace));
+
+		return possibleMoves;
+	},
+
+	checkTile: function(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace) {
+		let tileMoves = [];
+
+		if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
+			if( (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) &&
+				(x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) ) {
+				if(ignoreTile2) {
+					if(x != ignoreTile2.getArrayPosition().x || y != ignoreTile2.getArrayPosition().y) {
+						if(this.tileArray[ x ][ y ].getTag() === tileType) {
+							// console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+							let moveObj = {};
+							moveObj.tileToMove = this.tileArray[ x ][ y ];
+							moveObj.placementLocation = possibleTileToReplace;
+							tileMoves.push(moveObj);
+						}
+					}
 				}
-
-
+				else {
+					if(this.tileArray[ x ][ y ].getTag() === tileType) {
+						// console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+						let moveObj = {};
+						moveObj.tileToMove = this.tileArray[ x ][ y ];
+						moveObj.placementLocation = possibleTileToReplace;
+						tileMoves.push(moveObj);
+					}
+				}
 			}
 		}
 
+		return tileMoves;
 	},
 
 
@@ -774,6 +789,89 @@ MyGame.GameState.prototype = {
 			str += "\n";
 		}
 		console.log(str);
+	}, 
+
+
+
+
+	showHint: function() { // HINT DISPLAY
+		let moves = this.checkMoves();
+
+		if(moves.length == 0) {
+			console.log("No moves available!");
+			return;
+		}
+
+		let chosenRandomMove = moves[Math.floor(Math.random()*moves.length)];
+		let startingPoint = new Phaser.Point(chosenRandomMove.tileToMove.getPosition().x + this.tileGroup.x, chosenRandomMove.tileToMove.getPosition().y + this.tileGroup.y);
+		let endingPoint = new Phaser.Point(chosenRandomMove.placementLocation.getPosition().x + this.tileGroup.x, chosenRandomMove.placementLocation.getPosition().y + this.tileGroup.y);
+
+		
+		let graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0xFFFFFF, 0.4);
+		graphics.lineStyle(3, 0xFFFFFF, 1);
+		graphics.drawCircle(0, 0, 25); // x, y, diameter
+		graphics.endFill();
+
+		this.hintSpriteTexture = graphics.generateTexture();
+    	graphics.destroy();
+
+    	graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0xFFFFFF, 0.4);
+		graphics.lineStyle(3, 0xFFFFFF, 1);
+		graphics.drawCircle(0, 0, 25); // x, y, diameter
+		graphics.endFill();
+		graphics.beginFill(0xFFFFFF, 1);
+		graphics.drawCircle(0, 0, 12); // x, y, diameter
+		graphics.endFill();
+
+		this.hintSpritePressedTexture = graphics.generateTexture();
+    	graphics.destroy();
+
+
+		this.hintSprite = game.add.sprite(startingPoint.x, startingPoint.y, this.hintSpriteTexture);
+		this.hintSprite.anchor.setTo(0.5);
+		this.hintSprite.x = startingPoint.x;
+		this.hintSprite.y = startingPoint.y;
+		this.hintSprite.scale.setTo(0, 0);
+		this.hintTweens = [];
+
+		let tweenAppear = game.add.tween(this.hintSprite.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
+		let tween0 = game.add.tween(this.hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween1 = game.add.tween(this.hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween2 = game.add.tween(this.hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 1500, Phaser.Easing.Quadratic.Out);
+		let tween3 = game.add.tween(this.hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tweenDisappear = game.add.tween(this.hintSprite.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
+
+		this.hintTweens.push(tweenAppear);
+		this.hintTweens.push(tween0);
+		this.hintTweens.push(tween1);
+		this.hintTweens.push(tween2);
+		this.hintTweens.push(tween3);
+		this.hintTweens.push(tweenDisappear);
+
+		tweenAppear.start();
+		tweenAppear.chain(tween0);
+		tween0.chain(tween1);
+		ChangeSpriteOnTweenComplete(tween0, this.hintSprite, this.hintSpritePressedTexture);
+		tween1.chain(tween2);
+		tween2.chain(tween3);
+		ChangeSpriteOnTweenComplete(tween2, this.hintSprite, this.hintSpriteTexture);
+		tween3.chain(tweenDisappear);
+
+		tweenDisappear.onComplete.addOnce(this.removeHint, this);
+	}, 
+
+	removeHint: function() {
+		this.clearHintTweens();
+		this.hintSprite.destroy();
+	}, 
+
+	clearHintTweens: function() {
+		while(this.hintTweens.length != 0) {
+			this.hintTweens[0].stop();
+			this.hintTweens.pop(this.hintTweens[0]);
+		}
 	}
 };
 

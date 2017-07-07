@@ -4,6 +4,7 @@ var MyGame = MyGame || {}; /* <---- This is used to create a namespace, or a nam
 												under which functions and variables can be created
 												without polluting the global object. More info: (https://stackoverflow.com/questions/6439579/what-does-var-foo-foo-assign-a-variable-or-an-empty-object-to-that-va) */
 
+var game_details_data;
 
 MyGame.BootState = function(game) {
 	"use strict"; /* <-------- Defines that JavaScript code should be executed in "strict mode".
@@ -12,9 +13,8 @@ MyGame.BootState = function(game) {
 }; 
 
 MyGame.BootState.prototype = {
-	init: function(game_details) {
+	init: function() {
 		"use strict";
-		this.game_details = game_details;
 		
 		game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
@@ -41,18 +41,33 @@ MyGame.BootState.prototype = {
 
 	preload: function() {
 		"use strict"; 
-		this.load.text("game_details", this.game_details);
-		this.load.image("loading", "assets/images/snake.png")
+		this.load.text("game_details", "assets/json/game_details.json"); // Load config file text
+
 		game.load.bitmapFont('testFont', 'assets/fonts/eightbitwonder.png', 'assets/fonts/eightbitwonder.xml');
 	}, 
 
 	create: function() {
 		"use strict"; 
-		var game_details_text, game_details_data; 
+		var game_details_text; 
 		game_details_text = this.game.cache.getText("game_details");
 		game_details_data = JSON.parse(game_details_text);
 
-		this.game.state.start("LoadingState", true, false, game_details_data);
+		this.game.state.start("LoadingState", true, false);
 		// this.game.state.start(stateToStart, clearGameWorld, clearCache, passedToTargetStatesInitFunction);
 	}
 };
+
+
+
+/*
+
+		"gameTiles": [
+            "assets/images/tile_black.png", 
+            "assets/images/tile_red.png", 
+            "assets/images/tile_blue.png", 
+            "assets/images/tile_green.png"
+        ],
+
+        "assets/json/game_details.json"
+
+*/
