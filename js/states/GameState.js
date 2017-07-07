@@ -829,48 +829,53 @@ MyGame.GameState.prototype = {
     	graphics.destroy();
 
 
-		this.hintSprite = game.add.sprite(startingPoint.x, startingPoint.y, this.hintSpriteTexture);
-		this.hintSprite.anchor.setTo(0.5);
-		this.hintSprite.x = startingPoint.x;
-		this.hintSprite.y = startingPoint.y;
-		this.hintSprite.scale.setTo(0, 0);
-		this.hintTweens = [];
+		let hintSprite = game.add.sprite(startingPoint.x, startingPoint.y, this.hintSpriteTexture);
+		hintSprite.anchor.setTo(0.5);
+		hintSprite.x = startingPoint.x;
+		hintSprite.y = startingPoint.y;
+		hintSprite.scale.setTo(0, 0);
+		let hintTweens = [];
 
-		let tweenAppear = game.add.tween(this.hintSprite.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
-		let tween0 = game.add.tween(this.hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween1 = game.add.tween(this.hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween2 = game.add.tween(this.hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 1500, Phaser.Easing.Quadratic.Out);
-		let tween3 = game.add.tween(this.hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tweenDisappear = game.add.tween(this.hintSprite.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
+		let tweenAppear = game.add.tween(hintSprite.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
+		let tween0 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween1 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween2 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 800, Phaser.Easing.Linear.None);
+		let tween3 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tween4 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		let tweenDisappear = game.add.tween(hintSprite.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
 
-		this.hintTweens.push(tweenAppear);
-		this.hintTweens.push(tween0);
-		this.hintTweens.push(tween1);
-		this.hintTweens.push(tween2);
-		this.hintTweens.push(tween3);
-		this.hintTweens.push(tweenDisappear);
+		hintTweens.push(tweenAppear);
+		hintTweens.push(tween0);
+		hintTweens.push(tween1);
+		hintTweens.push(tween2);
+		hintTweens.push(tween3);
+		hintTweens.push(tweenDisappear);
 
 		tweenAppear.start();
 		tweenAppear.chain(tween0);
 		tween0.chain(tween1);
-		ChangeSpriteOnTweenComplete(tween0, this.hintSprite, this.hintSpritePressedTexture);
+		ChangeSpriteOnTweenComplete(tween0, hintSprite, this.hintSpritePressedTexture);
 		tween1.chain(tween2);
 		tween2.chain(tween3);
-		ChangeSpriteOnTweenComplete(tween2, this.hintSprite, this.hintSpriteTexture);
-		tween3.chain(tweenDisappear);
+		tween3.chain(tween4);
+		ChangeSpriteOnTweenComplete(tween3, hintSprite, this.hintSpriteTexture);
+		tween4.chain(tweenDisappear);
 
-		tweenDisappear.onComplete.addOnce(this.removeHint, this);
+		let obj = this;
+		tweenDisappear.onComplete.addOnce(function() {
+			obj.removeHint(hintSprite, hintTweens);
+		}, this);
 	}, 
 
-	removeHint: function() {
-		this.clearHintTweens();
-		this.hintSprite.destroy();
+	removeHint: function(hintSprite, hintTweens) {
+		this.clearHintTweens(hintTweens);
+		hintSprite.destroy();
 	}, 
 
-	clearHintTweens: function() {
-		while(this.hintTweens.length != 0) {
-			this.hintTweens[0].stop();
-			this.hintTweens.pop(this.hintTweens[0]);
+	clearHintTweens: function(hintTweens) {
+		while(hintTweens.length != 0) {
+			hintTweens[0].stop();
+			hintTweens.pop(hintTweens[0]);
 		}
 	}
 };

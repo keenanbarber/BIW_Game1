@@ -31,18 +31,12 @@ MyGame.MenuState.prototype = {
 
 		this.sceneProps = game.add.group();
 
-
 		this.addComponents();
 
-
-		
-	    // this.showHint(new Phaser.Point(game.world.centerX, 40), new Phaser.Point(game.world.centerX-30, 40));
-
-
-		// text_test_style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-		// text_test = game.add.bitmapText(game.world.centerX, 20, 'testFont', "Testing", 20);
-		// text_test.anchor.setTo(0.5);
-		// this.sceneProps.add(text_test);
+		text_test_style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+		text_test = game.add.bitmapText(game.world.centerX, 20, 'testFont', "Start", 20);
+		text_test.anchor.setTo(0.5);
+		this.sceneProps.add(text_test);
 
 		// Add events to check for swipe
 		this.game.input.onDown.add(this.start_swipe, this);
