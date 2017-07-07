@@ -486,7 +486,7 @@ MyGame.GameState.prototype = {
 		let foundAnything = false;
 		let repeatedTiles = [];
 
-		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
+		for(let x = 0; x < 1; x++) { // For each column...
 			for(let y = 0; y < configuration.board_rows - 2; y++) { // Go down the column... 	(Might not need to check going up the column?)
 				
 				let firstTile = this.tileArray[ x ][ y ];
@@ -520,20 +520,31 @@ MyGame.GameState.prototype = {
 			see if there are any similar tiles. 
 	________________________________________*/
 	checkForSimilarNearbyTile: function(ignoreTile1, ignoreTile2, possibleTileToReplace) {
-		console.log("CHECKING --> X: " + possibleTileToReplace.getArrayPosition().x + ", Y: " + possibleTileToReplace.getArrayPosition.y);
+		console.log("Potential Tile: " + possibleTileToReplace.getArrayPosition());
+		console.log("Ignore Me: " + ignoreTile1.getArrayPosition());
+		console.log("Ignore Me 2: " + ignoreTile2);
+		if(ignoreTile2)
+			console.log("ALSO IGNORING: " + ignoreTile2.getArrayPosition());
 		let tileType = ignoreTile1.getTag();
 
-		for(let x = possibleTilePoint.x-1; x < possibleTilePoint.x+1; x++) {
-			for(let y = possibleTilePoint.y-1; y < possibleTilePoint.y+1; y++) {
+		for(let x = possibleTileToReplace.getArrayPosition().x-1; x <= possibleTileToReplace.getArrayPosition().x+1; x++) {
+			for(let y = possibleTileToReplace.getArrayPosition().y-1; y <= possibleTileToReplace.getArrayPosition().y+1; y++) {
 
 				if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
-					if( (x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) && (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) ) { 
-						if(ignoreTile2 != null && (x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y )) { // If there is another tile to ignore, ignore it.
-							if(this.tileArray[ x ][ y ].getTag() == tileType) { // If the found tile is what you are looking for...
-								console.log("The tile [" + x + ", " + y + "] could be placed at" + this.tileArray[ x ][ y ].getTag() + ", COULD GO: " + possibleTilePoint.x + ", " + possibleTilePoint.y);
-							}
-						}
-					}
+					console.log("found on board,,,");
+					
+					// if( (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) &&
+					// 	(x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) ) {
+					// 	if(ignoreTile2) {
+					// 		if(x != ignoreTile2.getArrayPosition().x || y != ignoreTile2.getArrayPosition().y) {
+					// 			console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+					// 		}
+					// 	}
+					// 	else {
+					// 		console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+					// 	}
+					// }
+
 				}
 
 
