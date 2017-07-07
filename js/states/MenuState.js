@@ -33,10 +33,9 @@ MyGame.MenuState.prototype = {
 
 		this.addComponents();
 
-		text_test_style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-		text_test = game.add.bitmapText(game.world.centerX, 20, 'testFont', "Start", 20);
-		text_test.anchor.setTo(0.5);
-		this.sceneProps.add(text_test);
+
+		
+		
 
 		// Add events to check for swipe
 		this.game.input.onDown.add(this.start_swipe, this);
@@ -295,9 +294,11 @@ MyGame.MenuState.prototype = {
 			// console.log("CLICK");
 		});
 		this.sceneProps.add(this.button3.getSprite());
-	} 
+	}
 
 
+
+	
 
 	
 

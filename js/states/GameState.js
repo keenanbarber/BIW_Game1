@@ -663,6 +663,10 @@ MyGame.GameState.prototype = {
 		str += score;
 		console.log(str);
 
+		let lastTileArrayPosition = arr[arr.length-1];
+		let lastTilePosition = this.tileArray[lastTileArrayPosition.x][lastTileArrayPosition.y].getPosition();
+		this.showPoints(lastTilePosition.x + this.tileGroup.x, lastTilePosition.y + this.tileGroup.y, (arr.length * scoreMultiplier));
+
 		for(let i = 0; i < arr.length; i++) {
 			this.removeTile(arr[i].x, arr[i].y);
 		}
@@ -842,7 +846,7 @@ MyGame.GameState.prototype = {
 		let tween2 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 800, Phaser.Easing.Linear.None);
 		let tween3 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
 		let tween4 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tweenDisappear = game.add.tween(hintSprite.scale).to({ x: 0, y: 0 }, 800, Phaser.Easing.Quadratic.Out);
+		let tweenDisappear = game.add.tween(hintSprite.scale).to({ x: 0, y: 0 }, 400, Phaser.Easing.Quartic.In);
 
 		hintTweens.push(tweenAppear);
 		hintTweens.push(tween0);
@@ -877,7 +881,51 @@ MyGame.GameState.prototype = {
 			hintTweens[0].stop();
 			hintTweens.pop(hintTweens[0]);
 		}
+	}, 
+
+	showPoints: function(x, y, val) {
+		let strVal = val.toString();
+
+		let graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0x000000, 0.4);
+		// graphics.lineStyle(5, 0x000000, 1);
+		graphics.drawCircle(0, 0, 40); // x, y, diameter
+		graphics.endFill();
+
+		let graphicsTexture = graphics.generateTexture();
+    	graphics.destroy();
+
+    	let graphicsSprite = game.add.sprite(x, y, graphicsTexture);
+    	graphicsSprite.anchor.setTo(0.5);
+    	this.sceneProps.add(graphicsSprite);
+
+		text_test = game.add.bitmapText(0, 0, 'testFont', strVal, 20);
+		text_test.anchor.setTo(0.5);
+		text_test.align = 'center';
+		this.sceneProps.add(text_test);
+
+		graphicsSprite.addChild(text_test);
+
+		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, 1000, Phaser.Easing.Quartic.Out, true);
+		let tween1 = game.add.tween(graphicsSprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+		tween1.onComplete.add(function() {
+			graphicsSprite.destroy();
+		}, this);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 
