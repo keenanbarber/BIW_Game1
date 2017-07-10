@@ -27,7 +27,6 @@ MyGame.LoadingState.prototype = {
 		for(user_detail_key in user_details) {
 			if(user_details.hasOwnProperty(user_detail_key)) { // Makes sure the key exists in the assets.
 				detail = user_details[ user_detail_key ];
-
 				switch(user_detail_key) {
 					case "name": 
 						//this.load.image(asset_key, asset.source);

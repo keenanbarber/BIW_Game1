@@ -13,6 +13,7 @@ var configuration = {
 	'scale_ratio' : 1,			
 	'min_swipe_length' : 10,				
 	'aspect_ratio' : 1, 
+	'transition_easing' : Phaser.Easing.Linear.None,
 	'board_columns' : 8, 
 	'board_rows' : 8, 
 	'tile_padding' : 2, 

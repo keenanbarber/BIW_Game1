@@ -19,7 +19,7 @@ MyGame.MenuState.prototype = {
 
 		UpdateScreenInfo();
 		// Exit the previous scene/state...
-		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, Phaser.Easing.Bounce.Out)); }
+		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
 	},
 	
 	preload: function() {
@@ -41,7 +41,7 @@ MyGame.MenuState.prototype = {
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
 
-		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, Phaser.Easing.Bounce.Out));
+		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
 		this.positionComponents(game.width, game.height);
 	},
 
@@ -344,27 +344,71 @@ MyGame.MenuState.prototype = {
 	 //    myMask.endFill();
 		
 	 //    grandientSpr.mask = myMask; // apply the mask
-	 this.textBox();
+	 let myDialogBox1 = DialogBox("Press the button to proceed. ");
+	 myDialogBox1.addButton('NEXT', 
+	 	function() { //On click...
+			// console.log("CLICKED");
+			myDialogBox2.show();
+		}
+	 );
+	 let myDialogBox2 = DialogBox("Press the button to proceed. ");
+	 myDialogBox2.addButton('NEXT', 
+	 	function() { //On click...
+			// console.log("CLICKED");
+		}
+	 );
+	 myDialogBox2.addButton('PREVIOUS', 
+	 	function() { //On click...
+			// console.log("CLICKED");
+			myDialogBox1.show();
+		}
+	 );
+	 
+	 myDialogBox1.show();
+
+
+
+	 // this.newButton();
 	}, 
 
-	textBox: function() {
-		let boxWidth = 100;
-		let boxHeight = 100;
-		let roundedCornerRadius = 10;
+	
 
-		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0x8F2E13, 1.0);
-		// graphics.lineStyle(5, 0x000000, 1);
-		graphics.drawRoundedRect(0, 0, boxWidth, boxHeight, roundedCornerRadius); 
-		graphics.endFill();
+	newButton: function() {
+		let obj = this;
+		this.buttonStart = SpriteButton(game.world.centerX, game.world.centerY, gameTileKeys[0]);
+		this.buttonStart.setBehaviors(
+			function() { //On mouse over...
+				// console.log("Over");
+				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+			}, 
+			function() { //On mouse off...
+				// console.log("Off");
+				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+			},
+			function() { //On mouse down...
+				// console.log("Down");
+				// this.getSprite().loadTexture('button_start_dark');
+				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
+			}, 
+			function() { //On mouse up...
+				// console.log("Up");
+				// this.getSprite().loadTexture('button_start');
+				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+			}
+		);
+		this.buttonStart.setClickBehavior(function() {
+			// console.log("CLICK");
+			obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		});
+		this.sceneProps.add(this.buttonStart.getSprite());
 
-		let graphicsTexture = graphics.generateTexture();
-    	graphics.destroy();
 
-    	let graphicsSprite = game.add.sprite(game.world.centerX, game.world.centerY, graphicsTexture);
-    	graphicsSprite.anchor.setTo(0.5);
-    	this.sceneProps.add(graphicsSprite);
+		let buttonText = game.add.bitmapText(0, 0, 'testFont', "START", 20);
+		buttonText.anchor.setTo(0.5);
+		buttonText.align = 'center';
+		// this.sceneProps.add(buttonText);
 
+		this.buttonStart.getSprite().addChild(buttonText);
 	}
 
 	
