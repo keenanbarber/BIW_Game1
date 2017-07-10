@@ -294,9 +294,78 @@ MyGame.MenuState.prototype = {
 			// console.log("CLICK");
 		});
 		this.sceneProps.add(this.button3.getSprite());
+		
+		// var myBitmap = game.add.bitmapData(0, 0);
+		// var grd=myBitmap.context.createLinearGradient(0,0,0,100); // x0, y0, x1, y1
+		// grd.addColorStop(0,"#ffffff");
+		// grd.addColorStop(1,"#0a68b0");
+		// myBitmap.context.fillStyle=grd;
+		// myBitmap.context.fillRect(0,0,100,100);
+		// grd=myBitmap.context.createLinearGradient(0,580,0,600);
+		// grd.addColorStop(0,"#0a68b0");
+		// grd.addColorStop(1,"black");
+		// myBitmap.context.fillStyle=grd;
+		// myBitmap.context.fillRect(0,580,800,20);
+
+
+		// var myBitmap = game.add.bitmapData(200,200);
+		// myBitmap.ctx.fillStyle = "#4b4bff";
+		// myBitmap.ctx.beginPath();
+		// myBitmap.ctx.fillRect(0, 0, 200, 200);
+		// myBitmap.ctx.closePath(); 
+
+		// var grd=myBitmap.context.createLinearGradient(0,0,0,200); // x0, y0, x1, y1
+		// grd.addColorStop(0, "#090000");
+		// grd.addColorStop(1, "#C50000");
+		// myBitmap.context.fillStyle=grd;
+		// myBitmap.context.fillRect(0,0,200,200);
+
+		// var myMask = this.game.add.graphics(0, 0);
+	 //    myMask.beginFill(0x000000);
+	 //    myMask.drawRoundedRect(0, 0, 200, 200, 20); // draw a rounded rect mask
+	 //    myMask.endFill();
+
+		// let bitmapSprite = game.add.sprite(0, 0, myBitmap);
+		// bitmapSprite.mask = myMask;
+		// this.sceneProps.add(bitmapSprite);
+
+		// var myBmp = this.game.add.bitmapData(140, 30);
+	 //    var myGrd = myBmp.context.createLinearGradient(0, 0, 0, 30);
+	 //    myGrd.addColorStop(0, '#000000');
+	 //    myGrd.addColorStop(1, '#C50000');
+	 //    myBmp.context.fillStyle = myGrd;
+	 //    myBmp.context.fillRect(0, 0, 140, 30);
+	 //    var grandientSpr = this.game.add.sprite(330, 50, myBmp);
+
+	 //    var myMask = this.game.add.graphics(0, 0);
+	 //    myMask.beginFill(0x000000);
+
+	 //    myMask.drawRoundedRect(330, 50, 140, 30, 10); // draw a rounded rect mask
+	 //    myMask.endFill();
+		
+	 //    grandientSpr.mask = myMask; // apply the mask
+	 this.textBox();
+	}, 
+
+	textBox: function() {
+		let boxWidth = 100;
+		let boxHeight = 100;
+		let roundedCornerRadius = 10;
+
+		let graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0x8F2E13, 1.0);
+		// graphics.lineStyle(5, 0x000000, 1);
+		graphics.drawRoundedRect(0, 0, boxWidth, boxHeight, roundedCornerRadius); 
+		graphics.endFill();
+
+		let graphicsTexture = graphics.generateTexture();
+    	graphics.destroy();
+
+    	let graphicsSprite = game.add.sprite(game.world.centerX, game.world.centerY, graphicsTexture);
+    	graphicsSprite.anchor.setTo(0.5);
+    	this.sceneProps.add(graphicsSprite);
+
 	}
-
-
 
 	
 

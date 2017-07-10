@@ -57,13 +57,13 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.background);
 
 		// Progress Bar
-		// this.progress = game.add.graphics(0,0);
-		// this.progress.lineStyle(2, '0x000000');
-		// this.progress.beginFill('0x000000',1);
-		// this.progress.drawRoundedRect(0,0,300,27,10);
-		// this.progress.endFill();
-		// this.progress.beginFill('0x999999',1); //For drawing progress
-		// this.sceneProps.add(this.progress);
+		this.progress = game.add.graphics(0,0);
+		this.progress.lineStyle(2, '0x000000');
+		this.progress.beginFill('0x000000',1);
+		this.progress.drawRoundedRect(0,0,300,27,10);
+		this.progress.endFill();
+		this.progress.beginFill('0x999999',1); //For drawing progress
+		this.sceneProps.add(this.progress);
 
 		
 		this.button = SpriteButton(100, 100, 'button_exit');
@@ -663,9 +663,22 @@ MyGame.GameState.prototype = {
 		str += score;
 		console.log(str);
 
+
+
+		let sumOfX = 0;
+		let sumOfY = 0;
+		for(let i = 0; i < arr.length; i++) {
+			let theTile = this.tileArray[arr[i].x][arr[i].y];
+			sumOfX += theTile.getPosition().x;
+			sumOfY += theTile.getPosition().y;
+		}
+		let centerX = sumOfX / arr.length;
+		let centerY = sumOfY / arr.length;
+
+
 		let lastTileArrayPosition = arr[arr.length-1];
 		let lastTilePosition = this.tileArray[lastTileArrayPosition.x][lastTileArrayPosition.y].getPosition();
-		this.showPoints(lastTilePosition.x + this.tileGroup.x, lastTilePosition.y + this.tileGroup.y, (arr.length * scoreMultiplier));
+		this.showPoints(centerX + this.tileGroup.x, centerY + this.tileGroup.y, (arr.length * scoreMultiplier));
 
 		for(let i = 0; i < arr.length; i++) {
 			this.removeTile(arr[i].x, arr[i].y);
@@ -887,7 +900,7 @@ MyGame.GameState.prototype = {
 		let strVal = val.toString();
 
 		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0x000000, 0.4);
+		graphics.beginFill(0x000000, 0.75);
 		// graphics.lineStyle(5, 0x000000, 1);
 		graphics.drawCircle(0, 0, 40); // x, y, diameter
 		graphics.endFill();
@@ -906,9 +919,12 @@ MyGame.GameState.prototype = {
 
 		graphicsSprite.addChild(text_test);
 
-		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, 1000, Phaser.Easing.Quartic.Out, true);
-		let tween1 = game.add.tween(graphicsSprite).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-		tween1.onComplete.add(function() {
+		let pointLifetime = 1000;
+
+		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, pointLifetime, Phaser.Easing.Quartic.Out, true);
+		let tween1 = game.add.tween(graphicsSprite).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
+		let tween2 = game.add.tween(graphicsSprite).to({ y: graphicsSprite.y - 25 }, pointLifetime, Phaser.Easing.Linear.None, true);
+		tween.onComplete.add(function() {
 			graphicsSprite.destroy();
 		}, this);
 	}
