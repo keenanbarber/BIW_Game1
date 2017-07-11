@@ -4,7 +4,7 @@
         "button_options": {"type": "image", "source": "assets/images/button_options.png"},
         "button_exit": {"type": "image", "source": "assets/images/button_exit.png"},
 
-        "title": {"type": "image", "source": "assets/images/title.png"},
+        "title": {"type": "image", "source": "assets/images/title_MartianMatch.png"},
         "background": {"type": "image", "source": "assets/images/background.png"},
 
         "test_beep" : {"type": "audio", "source": "assets/audio/Beep1.wav"} 
@@ -16,7 +16,7 @@
             "assets/images/tile_blue.png", 
             "assets/images/tile_green.png"
         ], 
-        "background_image": "assets/images/background.png"
+        "background_image": "assets/images/background_0.png"
     },
 	"game_details": {
 		"screen_width": 600, 

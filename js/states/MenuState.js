@@ -58,15 +58,18 @@ MyGame.MenuState.prototype = {
 			// text_test.y = height/4;
 
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			// this.background.width = width;
+			// this.background.height = height;
+			// this.background.x = width/2;
+			// this.background.y = height/2;
+			ScaleSprite(this.background, width, 9999, 0, 1);
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width/2, height/3, 10, 1);
+			ScaleSprite(this.title, width, height * 3/4, 10, 1);
 			this.title.x = width * 3/4;
-			this.title.y = height/2;
+			this.title.y = height * (3/4) * (2/3);
 
 			// Buttons
 			ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
@@ -90,15 +93,18 @@ MyGame.MenuState.prototype = {
 			// text_test.y = game.world.centerY/2;
 
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			// this.background.width = width;
+			// this.background.height = height;
+			// this.background.x = width/2;
+			// this.background.y = height/2;
+			ScaleSprite(this.background, width, 9999, 0, 1);
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width/2, height/3, 10, 1);
+			ScaleSprite(this.title, width, height * 3/4, 10, 1);
 			this.title.x = width/2;
-			this.title.y = height/4;
+			this.title.y = height * (3/4) * (2/3);
 
 			// Buttons
 			ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
@@ -200,7 +206,7 @@ MyGame.MenuState.prototype = {
 		let obj = this; // Reference to the scene
 
 		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
-		this.background.anchor.setTo(0.5);
+		this.background.anchor.setTo(0.5, 1);
 		this.sceneProps.add(this.background);
 
 		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
@@ -344,27 +350,50 @@ MyGame.MenuState.prototype = {
 	 //    myMask.endFill();
 		
 	 //    grandientSpr.mask = myMask; // apply the mask
-	 let myDialogBox1 = DialogBox("Press the button to proceed. ");
-	 myDialogBox1.addButton('NEXT', 
-	 	function() { //On click...
-			// console.log("CLICKED");
-			myDialogBox2.show();
-		}
-	 );
-	 let myDialogBox2 = DialogBox("Press the button to proceed. ");
-	 myDialogBox2.addButton('NEXT', 
-	 	function() { //On click...
-			// console.log("CLICKED");
-		}
-	 );
-	 myDialogBox2.addButton('PREVIOUS', 
-	 	function() { //On click...
-			// console.log("CLICKED");
-			myDialogBox1.show();
-		}
-	 );
+
+
+	let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
+	let horizontalTextAlign = 'center';
+	let verticalTextAlign = 'center';
+	let textX = game.world.centerX;
+	let textY = 20;
+	let anchorX = 0.5;
+	let anchorY = 0.5;
+	
+
+	let myBitmapText = game.add.bitmapText(textX, textY, 'testFont', message, 10);
+	myBitmapText.anchor.setTo(anchorX, anchorY);
+	myBitmapText.align = obj.horizontalTextAlign;
+	myBitmapText.maxWidth = game.width;
+
+
+
+	 // let myDialogBox1 = DialogBox("Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!");
+	 // myDialogBox1.addButton('NEXT', null,
+	 // 	function() { //On click...
+		// 	// console.log("CLICKED");
+		// 	myDialogBox2.show();
+		// 	myDialogBox1.hide();
+		// 	// myDialogBox1.resize(game.width/1.2, 150);
+		// 	// myDialogBox1.setPosition(game.world.centerX, 150);
+		// }
+	 // );
+	 // let myDialogBox2 = DialogBox("Press the button to proceed. ");
+	 // myDialogBox2.addButton('NEXT', null, 
+	 // 	function() { //On click...
+		// 	// console.log("CLICKED");
+		// 	myDialogBox2.hide();
+		// }
+	 // );
+	 // myDialogBox2.addButton('PREVIOUS', null, 
+	 // 	function() { //On click...
+		// 	// console.log("CLICKED");
+		// 	myDialogBox1.show();
+		// 	myDialogBox2.hide();
+		// }
+	 // );
 	 
-	 myDialogBox1.show();
+	 // myDialogBox1.show();
 
 
 

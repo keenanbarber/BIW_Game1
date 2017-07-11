@@ -621,14 +621,14 @@ function DialogBox(text) {
 	obj.boxX = game.world.centerX; 
 	obj.boxY = 150;
 	obj.roundedCornerRadius = 8;
-	obj.padding = 20;
+	obj.textPadding = 20;
 	obj.horizontalTextAlign = 'left';
 	obj.verticalTextAlign = 'top';
 	obj.message = text;
 	obj.fontSize = 12;
 
 	obj.buttons = [];
-	obj.buttonsText = ['NEXT', 'PREVIOUS'];
+	obj.buttonsText = [];
 
 	// let messageWords = message.split(" ");
 
@@ -636,7 +636,7 @@ function DialogBox(text) {
 
 	let graphics = game.add.graphics(0, 0);
 	graphics.beginFill(0x000000, 1.0);
-	graphics.lineStyle(1, 0xffffff, 1);
+	// graphics.lineStyle(1, 0xffffff, 1);
 	graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 	graphics.endFill();
 
@@ -648,8 +648,8 @@ function DialogBox(text) {
 
 
 	
-	let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.padding;
-	let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.padding;
+	let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
+	let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
 	let anchorX = 0;
 	let anchorY = 0;
 	if(obj.horizontalTextAlign === 'center') {
@@ -657,25 +657,25 @@ function DialogBox(text) {
 		anchorX = 0.5;
 	}
 	else if(obj.horizontalTextAlign === 'left') {
-		textX = -obj.graphicsSprite.width/2 + obj.padding;
+		textX = -obj.graphicsSprite.width/2 + obj.textPadding;
 	}
 	if(obj.verticalTextAlign === 'center') {
 		textY = 0;
 		anchorY = 0.5;
 	}
 	else if(obj.verticalTextAlign === 'top') {
-		textY = -obj.graphicsSprite.height/2 + obj.padding;
+		textY = -obj.graphicsSprite.height/2 + obj.textPadding;
 	}
 
 	obj.myBitmapText = game.add.bitmapText(textX, textY, 'testFont', obj.message, obj.fontSize);
 	obj.myBitmapText.anchor.setTo(anchorX, anchorY);
 	obj.myBitmapText.align = obj.horizontalTextAlign;
-	obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.padding);
+	obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.textPadding);
 	obj.graphicsSprite.addChild(obj.myBitmapText);
 
 //   	let myText = game.add.text(textX, textY, "Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!", myStyle);
 //   	myText.anchor.setTo(anchorX, anchorY);
-//   	ScaleText(myText, boxWidth, boxHeight, padding, 1); // ScaleText(text, availableSpaceWidth, availableSpaceHeight, padding, scaleMultiplier);
+//   	ScaleText(myText, boxWidth, boxHeight, textPadding, 1); // ScaleText(text, availableSpaceWidth, availableSpaceHeight, textPadding, scaleMultiplier);
 	// graphicsSprite.addChild(myText);
 
 
@@ -683,66 +683,13 @@ function DialogBox(text) {
 	// while(myText.height < boxHeight) {
 	// while(messageWords.length != 0) {
 	// 	let lastTextBlock = myText.text;
-	// 	// if(myText.height > boxHeight - (2 * padding)) {
+	// 	// if(myText.height > boxHeight - (2 * textPadding)) {
 	// 		// console.log(messageWords[0] + " : " + messageWords.length);
 	// 		myText.setText(myText.text + messageWords[0] + " ");
 	// 		messageWords.splice(0, 1);
 	// 	// }
 	// }
 
-
-
-	// =============================== 
-	// Buttons
-	// =============================== 
-
-	// for(let i = 0; i < obj.buttonsText.length; i++) {
-	// 	let buttonX = 0;
-	// 	let buttonY = obj.boxHeight/2 + (i * (20 + obj.padding/2));
-
-	// 	graphics = game.add.graphics(0, 0);
-	// 	graphics.beginFill(0x000000, 1.0);
-	// 	graphics.lineStyle(1, 0xffffff, 1);
-	// 	graphics.drawRoundedRect(0, 0, obj.boxWidth * 4/5, 20, obj.roundedCornerRadius); 
-	// 	graphics.endFill();
-
-	// 	graphicsTexture = graphics.generateTexture();
-	// 	graphics.destroy();
-
-	// 	let newButton = SpriteButton(buttonX, buttonY, graphicsTexture);
-	// 	newButton.setBehaviors(
-	// 		function() { //On mouse over...
-	// 			// console.log("Over");
-	// 			Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-	// 		}, 
-	// 		function() { //On mouse off...
-	// 			// console.log("Off");
-	// 			Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-	// 		},
-	// 		function() { //On mouse down...
-	// 			// console.log("Down");
-	// 		}, 
-	// 		function() { //On mouse up...
-	// 			// console.log("Up");
-	// 		}
-	// 	);
-	// 	newButton.setClickBehavior(function() {
-	// 		// console.log("CLICK");
-	// 		// obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-	// 		obj.destroy();
-	// 	});
-
-	// 	let buttonText = game.add.bitmapText(buttonX, buttonY, 'testFont', obj.buttonsText[i], obj.fontSize);
-	// 	buttonText.anchor.setTo(0.5);
-	// 	buttonText.align = 'center';
-
-	// 	obj.buttons.push(newButton)
-
-	// 	obj.graphicsSprite.addChild(newButton.getSprite());
-	// 	obj.graphicsSprite.addChild(buttonText);
-	// }
-
-	// this.buttonStart.getSprite().addChild(buttonText);
 
 	obj.destroy = function() {
 		obj.graphicsSprite.destroy();
@@ -756,34 +703,40 @@ function DialogBox(text) {
 		obj.graphicsSprite.visible = true;
 		obj.graphicsSprite.scale.x = 0;
 		obj.graphicsSprite.scale.y = 0;
+		obj.graphicsSprite.alpha = 0;
 		Tweenimate_ElasticScale(obj.graphicsSprite, 1, 1, 1200);
+		let tweenAppear = game.add.tween(obj.graphicsSprite).to({ alpha: 1 }, 1200, Phaser.Easing.Quartic.Out, true);
 	};
 
 	obj.hide = function() {
-		console.log("Do the thing.");
-		let tweenDisappear = game.add.tween(obj.graphicsSprite.scale).to({ x: 0, y: 0 }, 300, Phaser.Easing.Quartic.In, true);
+		let tweenShrink = game.add.tween(obj.graphicsSprite.scale).to({ x: 0, y: 0 }, 300, Phaser.Easing.Quartic.In, true);
+		let tweenDisappear = game.add.tween(obj.graphicsSprite).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true);
 		let thisObj = obj;
-		tweenDisappear.onComplete.addOnce(function() {
+		tweenShrink.onComplete.addOnce(function() {
 			thisObj.graphicsSprite.visible = false;
-			console.log("hiding");
 		}, this);
 	};
 
-	obj.addButton = function(text, clickFunc) {
+	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
 		let buttonX = 0;
-		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.padding/2));
+		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.textPadding/2));
 
-		graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0x000000, 1.0);
-		graphics.lineStyle(1, 0xffffff, 1);
-		graphics.drawRoundedRect(0, 0, obj.boxWidth * 4/5, 20, obj.roundedCornerRadius); 
-		graphics.endFill();
+		let newButton; 
+		if(desiredSpriteKey === null) {
+			graphics = game.add.graphics(0, 0);
+			graphics.beginFill(0x000000, 1.0);
+			graphics.lineStyle(1, 0xffffff, 1);
+			graphics.drawRoundedRect(0, 0, obj.boxWidth * 4/5, 20, obj.roundedCornerRadius); 
+			graphics.endFill();
 
-		graphicsTexture = graphics.generateTexture();
-		graphics.destroy();
-
-
-		let newButton = SpriteButton(buttonX, buttonY, graphicsTexture);
+			graphicsTexture = graphics.generateTexture();
+			graphics.destroy();
+			newButton = SpriteButton(buttonX, buttonY, graphicsTexture);
+		}
+		else {
+			newButton = SpriteButton(buttonX, buttonY, desiredSpriteKey);
+		}
+		
 		newButton.setBehaviors(
 			function() { //On mouse over...
 				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
@@ -802,7 +755,7 @@ function DialogBox(text) {
 			// console.log("CLICK");
 			// obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			clickFunc();
-			obj.hide();
+			// obj.hide();
 		});
 
 
@@ -817,6 +770,23 @@ function DialogBox(text) {
 		obj.buttons.push(newButton);
 	};
 
+	obj.resize = function(width, height) {
+		let graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0x000000, 1.0);
+		// graphics.lineStyle(1, 0xffffff, 1);
+		graphics.drawRoundedRect(0, 0, width, height, obj.roundedCornerRadius); 
+		graphics.endFill();
+		let graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+		this.graphicsSprite.loadTexture(graphicsTexture);
+
+		obj.myBitmapText.maxWidth = width - (2 * obj.textPadding);
+	};
+
+	obj.setPosition = function(x, y) {
+		this.graphicsSprite.x = x;
+		this.graphicsSprite.y = y;
+	};
 
 	obj.graphicsSprite.visible = false;
 	return obj;

@@ -242,7 +242,8 @@ MyGame.GameState.prototype = {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
-			    this.showHint();
+			    // this.showHint();
+			    this.shuffleBoard();
 		    }
 		}
 
@@ -426,10 +427,10 @@ MyGame.GameState.prototype = {
 			and their physical positions.
 	________________________________________*/
 	swapTiles: function(t1, t2) {
-		let x1 = t1.arrayPos.x;
-		let y1 = t1.arrayPos.y;
-		let x2 = t2.arrayPos.x;
-		let y2 = t2.arrayPos.y;
+		let x1 = t1.getArrayPosition().x;
+		let y1 = t1.getArrayPosition().y;
+		let x2 = t2.getArrayPosition().x;
+		let y2 = t2.getArrayPosition().y;
 
 		let temp = this.tileArray[x1][y1];
 		this.tileArray[x1][y1] = this.tileArray[ x2 ][ y2 ];
@@ -437,8 +438,8 @@ MyGame.GameState.prototype = {
 		this.tileArray[x2][y2] = temp;
 		this.tileArray[x2][y2].setArrayPosition(x2, y2);
 	
-		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
-		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, 600, Phaser.Easing.Elastic.Out, true);
+		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, 1000, Phaser.Easing.Elastic.Out, true);
+		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, 1000, Phaser.Easing.Elastic.Out, true);
 		tweenManager.addTween(tween1);
 		tweenManager.addTween(tween2);
 		
@@ -448,6 +449,26 @@ MyGame.GameState.prototype = {
 			obj.scanBoard();
 		});
 
+	},
+
+	shuffleBoard: function() {
+		let theTiles = [];
+		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
+			for(let y = 0; y < configuration.board_rows; y++) { // Go down the column...
+				theTiles.push(this.tileArray[ x ][ y ]);
+			}
+		}
+
+		while(theTiles.length > 1) {
+			let num1 = RandomBetween(0, theTiles.length-1);
+			let tile1 = theTiles[num1];
+			theTiles.splice(num1, 1);
+			let num2 = RandomBetween(0, theTiles.length-1);
+			let tile2 = theTiles[num2];
+			theTiles.splice(num2, 1);
+			
+			this.swapTiles(tile1, tile2);
+		}
 	},
 
 	/*_______________________________________

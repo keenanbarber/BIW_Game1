@@ -52,6 +52,7 @@ MyGame.BootState.prototype = {
 		game_details_text = this.game.cache.getText("game_details");
 		game_details_data = JSON.parse(game_details_text);
 
+
 		this.game.state.start("LoadingState", true, false);
 		// this.game.state.start(stateToStart, clearGameWorld, clearCache, passedToTargetStatesInitFunction);
 	}
