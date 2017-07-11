@@ -97,6 +97,7 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.button.getSprite());
 
 
+		// this.initializeBoard();
 		this.initializeTiles();
 		
 
@@ -138,6 +139,21 @@ MyGame.GameState.prototype = {
 			this.tileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
 
 
+			// // Board
+			// for(let i = 0; i < configuration.board_columns; i++) {
+			// 	for(let j = 0; j < configuration.board_rows; j++) { 
+			// 		if(this.boardTileArray[i][j] != null) {
+			// 			let tileX = i * this.calculatedTileSize;
+			// 			let tileY = j * this.calculatedTileSize;
+
+			// 			this.boardTileArray[i][j].setPosition(tileX, tileY);
+			// 			if(this.boardTileArray[i][j].getSprite() != null)
+			// 				ScaleSprite(this.boardTileArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
+			// 		}
+			// 	}
+			// }
+
+			// Tiles
 			for(let i = 0; i < configuration.board_columns; i++) {
 				for(let j = 0; j < configuration.board_rows; j++) { 
 					if(this.tileArray[i][j] != null) {
@@ -242,8 +258,8 @@ MyGame.GameState.prototype = {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
-			    // this.showHint();
-			    this.shuffleBoard();
+			    this.showHint();
+			    // this.shuffleBoard();
 		    }
 		}
 
@@ -285,6 +301,43 @@ MyGame.GameState.prototype = {
 		console.log("Swipe: " + bestVector);
 		return bestVector;
 	}, 
+
+	initializeBoard: function() {	// INCOMPLETE
+		/* tiles = [ [], [], [], [] ];
+		  		     []  []  []  []
+		  	 	     []  []  []  []		*/
+
+		var availableGridSpace = game.width;
+		this.calculatedTileSize = (availableGridSpace * 0.8) / 6;
+
+		this.horizontalMargin = (game.width - (6 * this.calculatedTileSize)) / 2;
+		this.verticalMargin = (game.height - (6 * this.calculatedTileSize)) / 2;
+		
+		this.boardTileArray = [];
+		this.boardTileGroup = game.add.group();
+		
+
+		for(let i = 0; i < configuration.board_columns; i++) {
+			this.boardTileArray[i] = [];
+			for(let j = 0; j < configuration.board_rows; j++) { 
+				let tileX = i * this.calculatedTileSize;
+				let tileY = j * this.calculatedTileSize;
+				
+				let tile = this.placeTile(tileX, tileY);
+				
+				this.boardTileArray[i][j] = tile;
+				this.boardTileGroup.add(tile.getSprite());
+				tile.setArrayPosition(i, j);
+
+				ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+			}
+		}
+		this.boardTileGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+		this.boardTileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+
+		this.sceneProps.add(this.boardTileGroup);
+	},
+
 
 	initializeTiles: function() {
 		/* tiles = [ [], [], [], [] ];
@@ -466,7 +519,7 @@ MyGame.GameState.prototype = {
 			let num2 = RandomBetween(0, theTiles.length-1);
 			let tile2 = theTiles[num2];
 			theTiles.splice(num2, 1);
-			
+
 			this.swapTiles(tile1, tile2);
 		}
 	},
