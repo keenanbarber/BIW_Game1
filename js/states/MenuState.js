@@ -19,7 +19,7 @@ MyGame.MenuState.prototype = {
 
 		UpdateScreenInfo();
 		// Exit the previous scene/state...
-		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
 	},
 	
 	preload: function() {
@@ -41,7 +41,7 @@ MyGame.MenuState.prototype = {
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
 
-		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
 		this.positionComponents(game.width, game.height);
 	},
 
@@ -240,7 +240,7 @@ MyGame.MenuState.prototype = {
 		);
 		this.button1.setClickBehavior(function() {
 			// console.log("CLICK");
-			obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button1.getSprite());
 

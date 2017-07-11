@@ -28,7 +28,7 @@ MyGame.GameState.prototype = {
 		this.newSceneTransition = newSceneTransition;
 
 		// Exit the previous scene/state...
-		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
 	},
 
 	preload: function() {
@@ -92,7 +92,7 @@ MyGame.GameState.prototype = {
 			// console.log("CLICK");
 			score = 0;
 			scoreMultiplier = 1;
-			obj.game.state.start("MenuState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 		});
 		this.sceneProps.add(this.button.getSprite());
 
@@ -106,14 +106,14 @@ MyGame.GameState.prototype = {
 		// this.printBoard();
 
 
-		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
-		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			// console.log("Transition completed.");
-			// this.gameTimer = game.time.create(false);
-			// this.gameTimer.add(5000, test);
-			// this.gameTimer.start();
-			obj.scanBoard();
-		});
+		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+		// tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
+		// 	// console.log("Transition completed.");
+		// 	// this.gameTimer = game.time.create(false);
+		// 	// this.gameTimer.add(5000, test);
+		// 	// this.gameTimer.start();
+		// 	obj.scanBoard();
+		// });
 
 		this.positionComponents(game.width, game.height);
 		// checkCookie(); // TEST
