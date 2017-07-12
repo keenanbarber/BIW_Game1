@@ -97,9 +97,15 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.button.getSprite());
 
 
-		// this.initializeBoard();
+		this.initializeBoard();
 		this.initializeTiles();
-		
+
+		this.selectedTileSprite1 = game.add.sprite(0, 0, 'selected_tile');
+		this.selectedTileSprite1.visible = false;
+		this.sceneProps.add(this.selectedTileSprite1);
+		this.selectedTileSprite2 = game.add.sprite(0, 0, 'selected_tile');
+		this.selectedTileSprite2.visible = false;
+		this.sceneProps.add(this.selectedTileSprite2);
 
 		
 		
@@ -135,25 +141,29 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - configuration.board_rows * this.calculatedTileSize) / 2;
 
 
-			this.tileGroup.x = (width * 1/3) + this.horizontalMargin + this.calculatedTileSize/2;
-			this.tileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+			
 
 
-			// // Board
-			// for(let i = 0; i < configuration.board_columns; i++) {
-			// 	for(let j = 0; j < configuration.board_rows; j++) { 
-			// 		if(this.boardTileArray[i][j] != null) {
-			// 			let tileX = i * this.calculatedTileSize;
-			// 			let tileY = j * this.calculatedTileSize;
+			// Board
+			this.boardSpriteGroup.x = (width * 1/3) + this.horizontalMargin + this.calculatedTileSize/2;
+			this.boardSpriteGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+			for(let i = 0; i < configuration.board_columns; i++) {
+				for(let j = 0; j < configuration.board_rows; j++) { 
+					if(this.boardSpriteArray[i][j] != null) {
+						let tileX = i * this.calculatedTileSize;
+						let tileY = j * this.calculatedTileSize;
 
-			// 			this.boardTileArray[i][j].setPosition(tileX, tileY);
-			// 			if(this.boardTileArray[i][j].getSprite() != null)
-			// 				ScaleSprite(this.boardTileArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
-			// 		}
-			// 	}
-			// }
+						this.boardSpriteArray[i][j].x = tileX;
+						this.boardSpriteArray[i][j].y = tileY;
+						if(this.boardSpriteArray[i][j] != null)
+							ScaleSprite(this.boardSpriteArray[i][j], this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+					}
+				}
+			}
 
 			// Tiles
+			this.tileGroup.x = (width * 1/3) + this.horizontalMargin + this.calculatedTileSize/2;
+			this.tileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
 			for(let i = 0; i < configuration.board_columns; i++) {
 				for(let j = 0; j < configuration.board_rows; j++) { 
 					if(this.tileArray[i][j] != null) {
@@ -186,10 +196,29 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
+			
+
+
+			// Board
+			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+			this.boardSpriteGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+			for(let i = 0; i < configuration.board_columns; i++) {
+				for(let j = 0; j < configuration.board_rows; j++) { 
+					if(this.boardSpriteArray[i][j] != null) {
+						let tileX = i * this.calculatedTileSize;
+						let tileY = j * this.calculatedTileSize;
+
+						this.boardSpriteArray[i][j].x = tileX;
+						this.boardSpriteArray[i][j].y = tileY;
+						if(this.boardSpriteArray[i][j] != null)
+							ScaleSprite(this.boardSpriteArray[i][j], this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+					}
+				}
+			}
+
+			// Tiles
 			this.tileGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
 			this.tileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
-
-
 			for(let i = 0; i < configuration.board_columns; i++) {
 				for(let j = 0; j < configuration.board_rows; j++) { 
 					if(this.tileArray[i][j] != null) {
@@ -201,6 +230,9 @@ MyGame.GameState.prototype = {
 					}
 				}
 			}
+
+			console.log("Tile: " + this.tileGroup.getAt(0).x);
+			console.log("Board: " + this.boardSpriteGroup.getAt(0).x);
 
 			// Background
 			this.background.width = width;
@@ -313,29 +345,29 @@ MyGame.GameState.prototype = {
 		this.horizontalMargin = (game.width - (6 * this.calculatedTileSize)) / 2;
 		this.verticalMargin = (game.height - (6 * this.calculatedTileSize)) / 2;
 		
-		this.boardTileArray = [];
-		this.boardTileGroup = game.add.group();
+		this.boardSpriteArray = [];
+		this.boardSpriteGroup = game.add.group();
 		
 
 		for(let i = 0; i < configuration.board_columns; i++) {
-			this.boardTileArray[i] = [];
+			this.boardSpriteArray[i] = [];
 			for(let j = 0; j < configuration.board_rows; j++) { 
 				let tileX = i * this.calculatedTileSize;
 				let tileY = j * this.calculatedTileSize;
 				
-				let tile = this.placeTile(tileX, tileY);
+				let tile = game.add.sprite(tileX, tileY, 'board_tile');
+				tile.anchor.setTo(0.5);
 				
-				this.boardTileArray[i][j] = tile;
-				this.boardTileGroup.add(tile.getSprite());
-				tile.setArrayPosition(i, j);
+				this.boardSpriteArray[i][j] = tile;
+				this.boardSpriteGroup.add(tile);
 
-				ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+				ScaleSprite(tile, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
 			}
 		}
-		this.boardTileGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
-		this.boardTileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+		this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+		this.boardSpriteGroup.y = this.verticalMargin + this.calculatedTileSize/2;
 
-		this.sceneProps.add(this.boardTileGroup);
+		this.sceneProps.add(this.boardSpriteGroup);
 	},
 
 
@@ -423,6 +455,7 @@ MyGame.GameState.prototype = {
 
 					if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
 						selectedTile1 = obj;
+						theState.placeSelectedSprite(obj);
 					} 
 					else {	// If selectedTile1 is full, save in selectedTile2 and...
 						selectedTile2 = obj;
@@ -471,6 +504,19 @@ MyGame.GameState.prototype = {
 
 		return obj;
 	}, 
+
+	placeSelectedSprite: function(t) {
+		if(!this.selectedTileSprite1.visible) {
+			this.selectedTileSprite1.visible = true;
+			this.selectedTileSprite1.x = t.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+
+			Scake
+		}
+	},
+	hideSelectedSprite: function() {
+		this.selectedTileSprite1.visible = false;
+		this.selectedTileSprite2.visible = false;
+	},
 
 	/*_______________________________________
 		Swap Tiles 							|

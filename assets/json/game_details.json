@@ -11,12 +11,15 @@
     },
     "assets_2": {
         "game_tiles": [
-            "assets/images/tile_black.png", 
-            "assets/images/SVGtest1.svg", 
-            "assets/images/tile_blue.png", 
-            "assets/images/tile_green.png"
+            "assets/images/PinkGuy.svg", 
+            "assets/images/PurpleGuy.svg", 
+            "assets/images/RedGuy.svg", 
+            "assets/images/TealGuy.svg", 
+            "assets/images/BlueGuy.svg"
         ], 
-        "background_image": "assets/images/background_0.png"
+        "board_tile": "assets/images/box1.png", 
+        "selected_tile": "assets/images/HighlightBoxTemp.png",
+        "background_image": "assets/images/background.png"
     },
 	"game_details": {
 		"screen_width": 600, 

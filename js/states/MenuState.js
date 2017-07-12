@@ -62,7 +62,11 @@ MyGame.MenuState.prototype = {
 			// this.background.height = height;
 			// this.background.x = width/2;
 			// this.background.y = height/2;
+
 			ScaleSprite(this.background, width, 9999, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, 9999, height, 0, 1);
+			}
 			this.background.x = game.world.centerX;
 			this.background.y = height;
 
@@ -97,7 +101,10 @@ MyGame.MenuState.prototype = {
 			// this.background.height = height;
 			// this.background.x = width/2;
 			// this.background.y = height/2;
-			ScaleSprite(this.background, width, 9999, 0, 1);
+			ScaleSprite(this.background, width, null, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, null, height, 0, 1);
+			}
 			this.background.x = game.world.centerX;
 			this.background.y = height;
 

@@ -486,10 +486,24 @@ function ScaleSprite(sprite, availableSpaceWidth, availableSpaceHeight, padding,
 	let spriteWidth = sprite._frame.width;
 	let spriteHeight = sprite._frame.height;
 
-	let widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (spriteWidth);
-	let heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (spriteHeight);
+	let widthRatio;
+	if(availableSpaceWidth != null)
+		widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (spriteWidth);
+
+	let heightRatio;
+	if(availableSpaceHeight != null)
+		heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (spriteHeight);
 	
-	let scale = Math.min(widthRatio, heightRatio);
+	let scale;
+	if(availableSpaceWidth == null) {
+		scale = heightRatio;
+	}
+	else if(availableSpaceHeight == null) {
+		scale = widthRatio;
+	}
+	else  {
+		scale = Math.min(widthRatio, heightRatio);
+	}
 	
 	sprite.scale.setTo(scale * scaleMultiplier, scale * scaleMultiplier);
 	game.scale.refresh();

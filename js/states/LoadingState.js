@@ -71,6 +71,12 @@ MyGame.LoadingState.prototype = {
 	    					gameTileKeys.push("tile_" + i);
 	    				}
 	    				break;
+	    			case "board_tile": 
+	    				this.load.image(asset_key, assets[asset_key]);
+	    				break;
+	    			case "selected_tile":
+	    				this.load.image(asset_key, assets[asset_key]);
+	    				break;
 	    			case "background_image": 
 	    				this.load.image(asset_key, assets[asset_key]);
 	    				break;
