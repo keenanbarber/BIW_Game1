@@ -12,7 +12,7 @@
     "assets_2": {
         "game_tiles": [
             "assets/images/tile_black.png", 
-            "assets/images/tile_red.png", 
+            "assets/images/SVGtest1.svg", 
             "assets/images/tile_blue.png", 
             "assets/images/tile_green.png"
         ], 
