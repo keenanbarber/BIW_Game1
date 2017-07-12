@@ -160,9 +160,10 @@ function Tweenimate_BounceTranslate(prop, goalPosX, goalPosY, duration) {
 	let tween = game.add.tween(prop).to({ x: goalPosX, y: goalPosY }, duration, Phaser.Easing.Bounce.Out, true);
 }
 function Tweenimate_Breathe(prop, maxScaleX, maxScaleY, duration) {
+	let originalScale = prop.scale;
 	let tween = game.add.tween(prop.scale).to({ x: maxScaleX, y: maxScaleY }, duration/2, Phaser.Easing.Exponential.Out, true);
 	tween.onComplete.addOnce(function() {
-		tween = game.add.tween(prop.scale).to({ x: 1, y: 1 }, duration/2, Phaser.Easing.Exponential.Out, true);
+		tween = game.add.tween(prop.scale).to({ x: originalScale.x, y: originalScale.y }, duration/2, Phaser.Easing.Exponential.Out, true);
 	}, this);
 }
 function Tweenimate_SpinWobble(prop, goalAngle, duration) {
@@ -633,11 +634,11 @@ function DialogBox(text) {
 	obj.boxWidth = 300;
 	obj.boxHeight = 150;
 	obj.boxX = game.world.centerX; 
-	obj.boxY = 150;
+	obj.boxY = game.world.centerY + obj.boxHeight/2;
 	obj.roundedCornerRadius = 8;
 	obj.textPadding = 20;
-	obj.horizontalTextAlign = 'left';
-	obj.verticalTextAlign = 'top';
+	obj.horizontalTextAlign = 'center';
+	obj.verticalTextAlign = 'center';
 	obj.message = text;
 	obj.fontSize = 12;
 
@@ -649,7 +650,7 @@ function DialogBox(text) {
 
 
 	let graphics = game.add.graphics(0, 0);
-	graphics.beginFill(0x000000, 1.0);
+	graphics.beginFill(0x68588C, 0.75);
 	// graphics.lineStyle(1, 0xffffff, 1);
 	graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 	graphics.endFill();
@@ -681,11 +682,17 @@ function DialogBox(text) {
 		textY = -obj.graphicsSprite.height/2 + obj.textPadding;
 	}
 
-	obj.myBitmapText = game.add.bitmapText(textX, textY, 'testFont', obj.message, obj.fontSize);
-	obj.myBitmapText.anchor.setTo(anchorX, anchorY);
-	obj.myBitmapText.align = obj.horizontalTextAlign;
-	obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.textPadding);
-	obj.graphicsSprite.addChild(obj.myBitmapText);
+	// obj.myBitmapText = game.add.bitmapText(textX, textY, 'testFont', obj.message, obj.fontSize);
+	// obj.myBitmapText.anchor.setTo(anchorX, anchorY);
+	// obj.myBitmapText.align = obj.horizontalTextAlign;
+	// obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.textPadding);
+	// obj.graphicsSprite.addChild(obj.myBitmapText);
+
+	obj.myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: obj.boxWidth - (2 * obj.textPadding) };
+	obj.myText = game.add.text(textX, textY, obj.message, obj.myStyle);
+	obj.myText.anchor.setTo(anchorX, anchorY);
+	obj.myText.align = obj.horizontalTextAlign;
+	obj.graphicsSprite.addChild(obj.myText);
 
 //   	let myText = game.add.text(textX, textY, "Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!", myStyle);
 //   	myText.anchor.setTo(anchorX, anchorY);
@@ -794,7 +801,29 @@ function DialogBox(text) {
 		graphics.destroy();
 		this.graphicsSprite.loadTexture(graphicsTexture);
 
-		obj.myBitmapText.maxWidth = width - (2 * obj.textPadding);
+		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
+		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
+		let anchorX = 0;
+		let anchorY = 0;
+		if(obj.horizontalTextAlign === 'center') {
+			textX = 0;
+			anchorX = 0.5;
+		}
+		else if(obj.horizontalTextAlign === 'left') {
+			textX = -obj.graphicsSprite.width/2 + obj.textPadding;
+		}
+		if(obj.verticalTextAlign === 'center') {
+			textY = 0;
+			anchorY = 0.5;
+		}
+		else if(obj.verticalTextAlign === 'top') {
+			textY = -obj.graphicsSprite.height/2 + obj.textPadding;
+		}
+
+		obj.myText.x = textX;
+		obj.myText.y = textY;
+
+		obj.myText.maxWidth = width - (2 * obj.textPadding);
 	};
 
 	obj.setPosition = function(x, y) {

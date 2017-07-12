@@ -57,13 +57,18 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.background);
 
 		// Progress Bar
-		this.progress = game.add.graphics(0,0);
-		this.progress.lineStyle(2, '0x000000');
-		this.progress.beginFill('0x000000',1);
-		this.progress.drawRoundedRect(0,0,300,27,10);
-		this.progress.endFill();
-		this.progress.beginFill('0x999999',1); //For drawing progress
-		this.sceneProps.add(this.progress);
+		let graphics = game.add.graphics(0,0);
+		graphics.lineStyle(2, '0xFFFFFF');
+		graphics.beginFill('0x68588C',1);
+		graphics.drawRoundedRect(0,0,300,27,10);
+		graphics.endFill();
+		let graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+
+		this.progressBar = game.add.sprite(0, 0, graphicsTexture);
+		this.progressBar.anchor.setTo(0, 0.5);
+		this.sceneProps.add(this.progressBar);
+
 
 		
 		this.button = SpriteButton(100, 100, 'button_exit');
@@ -101,9 +106,11 @@ MyGame.GameState.prototype = {
 		this.initializeTiles();
 
 		this.selectedTileSprite1 = game.add.sprite(0, 0, 'selected_tile');
+		this.selectedTileSprite1.anchor.setTo(0.5);
 		this.selectedTileSprite1.visible = false;
 		this.sceneProps.add(this.selectedTileSprite1);
 		this.selectedTileSprite2 = game.add.sprite(0, 0, 'selected_tile');
+		this.selectedTileSprite2.anchor.setTo(0.5);
 		this.selectedTileSprite2.visible = false;
 		this.sceneProps.add(this.selectedTileSprite2);
 
@@ -122,6 +129,7 @@ MyGame.GameState.prototype = {
 		// });
 
 		this.positionComponents(game.width, game.height);
+		obj.scanBoard();
 		// checkCookie(); // TEST
 		// this.addText();
 	},
@@ -141,7 +149,10 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - configuration.board_rows * this.calculatedTileSize) / 2;
 
 
-			
+			// Progress Bar
+			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
+			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
+			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
 
 
 			// Board
@@ -196,8 +207,10 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
-			
-
+			// Progress Bar
+			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
+			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
+			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
 
 			// Board
 			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -231,8 +244,6 @@ MyGame.GameState.prototype = {
 				}
 			}
 
-			console.log("Tile: " + this.tileGroup.getAt(0).x);
-			console.log("Board: " + this.boardSpriteGroup.getAt(0).x);
 
 			// Background
 			this.background.width = width;
@@ -455,13 +466,15 @@ MyGame.GameState.prototype = {
 
 					if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
 						selectedTile1 = obj;
-						theState.placeSelectedSprite(obj);
+						theState.placeSelectedSprite(selectedTile1);
 					} 
 					else {	// If selectedTile1 is full, save in selectedTile2 and...
 						selectedTile2 = obj;
+						theState.placeSelectedSprite(selectedTile2);
 						if(selectedTile1 === selectedTile2) { // If the two selected tiles are the same, reset.
 							selectedTile1 = null; 
 							selectedTile2 = null;
+							theState.hideSelectedSprites();
 							return;
 						}
 
@@ -473,6 +486,9 @@ MyGame.GameState.prototype = {
 						}
 						else { // If the two tiles are not right next to eachother, don't save the second selection.
 							selectedTile2 = null;
+							theState.hideSelectedSprites();
+							selectedTile1 = obj;
+							theState.placeSelectedSprite(selectedTile1);
 						}
 					}
 				}
@@ -509,11 +525,19 @@ MyGame.GameState.prototype = {
 		if(!this.selectedTileSprite1.visible) {
 			this.selectedTileSprite1.visible = true;
 			this.selectedTileSprite1.x = t.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+			this.selectedTileSprite1.y = t.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
 
-			Scake
+			ScaleSprite(this.selectedTileSprite1, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+		}
+		else if(!this.selectedTileSprite2.visible) {
+			this.selectedTileSprite2.visible = true;
+			this.selectedTileSprite2.x = t.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+			this.selectedTileSprite2.y = t.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
+
+			ScaleSprite(this.selectedTileSprite2, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
 		}
 	},
-	hideSelectedSprite: function() {
+	hideSelectedSprites: function() {
 		this.selectedTileSprite1.visible = false;
 		this.selectedTileSprite2.visible = false;
 	},
@@ -545,6 +569,7 @@ MyGame.GameState.prototype = {
 		let obj = this;
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			// console.log("All tweens completed.");
+			obj.hideSelectedSprites();
 			obj.scanBoard();
 		});
 
@@ -940,68 +965,79 @@ MyGame.GameState.prototype = {
 		}
 
 		let chosenRandomMove = moves[Math.floor(Math.random()*moves.length)];
+
+		// Tweenimate_Breathe(chosenRandomMove.tileToMove.getSprite(), chosenRandomMove.tileToMove.getSprite().scale.x * 1.3, chosenRandomMove.tileToMove.getSprite().scale.x * 1.3, 1000);
+		// Tweenimate_Breathe(chosenRandomMove.placementLocation.getSprite(), 1.4, 1.4, 1000);
+
+		// Fall out of screen
+		// let fallTween1 = game.add.tween(chosenRandomMove.tileToMove.getSprite().scale).to({ x: 1, y: 1 }, 1000, Phaser.Easing.Cubic.Out, true);
+		// let fallTween2 = game.add.tween(chosenRandomMove.tileToMove.getSprite()).to({ y: 2 * game.height }, 1000, Phaser.Easing.Cubic.In, true);
+		
 		let startingPoint = new Phaser.Point(chosenRandomMove.tileToMove.getPosition().x + this.tileGroup.x, chosenRandomMove.tileToMove.getPosition().y + this.tileGroup.y);
 		let endingPoint = new Phaser.Point(chosenRandomMove.placementLocation.getPosition().x + this.tileGroup.x, chosenRandomMove.placementLocation.getPosition().y + this.tileGroup.y);
 
-		
-		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0xFFFFFF, 0.4);
-		graphics.lineStyle(3, 0xFFFFFF, 1);
-		graphics.drawCircle(0, 0, 25); // x, y, diameter
-		graphics.endFill();
-
-		this.hintSpriteTexture = graphics.generateTexture();
-    	graphics.destroy();
-
-    	graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0xFFFFFF, 0.4);
-		graphics.lineStyle(3, 0xFFFFFF, 1);
-		graphics.drawCircle(0, 0, 25); // x, y, diameter
-		graphics.endFill();
-		graphics.beginFill(0xFFFFFF, 1);
-		graphics.drawCircle(0, 0, 12); // x, y, diameter
-		graphics.endFill();
-
-		this.hintSpritePressedTexture = graphics.generateTexture();
-    	graphics.destroy();
+		Tweenimate_SpinWobble(chosenRandomMove.tileToMove.getSprite(), 360, 1500);
+		Tweenimate_SpinWobble(chosenRandomMove.placementLocation.getSprite(), 360, 1500);
 
 
-		let hintSprite = game.add.sprite(startingPoint.x, startingPoint.y, this.hintSpriteTexture);
-		hintSprite.anchor.setTo(0.5);
-		hintSprite.x = startingPoint.x;
-		hintSprite.y = startingPoint.y;
-		hintSprite.scale.setTo(0, 0);
-		let hintTweens = [];
+		// let graphics = game.add.graphics(0, 0);
+		// graphics.beginFill(0xFFFFFF, 0.4);
+		// graphics.lineStyle(3, 0xFFFFFF, 1);
+		// graphics.drawCircle(0, 0, 25); // x, y, diameter
+		// graphics.endFill();
 
-		let tweenAppear = game.add.tween(hintSprite.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
-		let tween0 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween1 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween2 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 800, Phaser.Easing.Linear.None);
-		let tween3 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tween4 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
-		let tweenDisappear = game.add.tween(hintSprite.scale).to({ x: 0, y: 0 }, 400, Phaser.Easing.Quartic.In);
+		// this.hintSpriteTexture = graphics.generateTexture();
+  //   	graphics.destroy();
 
-		hintTweens.push(tweenAppear);
-		hintTweens.push(tween0);
-		hintTweens.push(tween1);
-		hintTweens.push(tween2);
-		hintTweens.push(tween3);
-		hintTweens.push(tweenDisappear);
+  //   	graphics = game.add.graphics(0, 0);
+		// graphics.beginFill(0xFFFFFF, 0.4);
+		// graphics.lineStyle(3, 0xFFFFFF, 1);
+		// graphics.drawCircle(0, 0, 25); // x, y, diameter
+		// graphics.endFill();
+		// graphics.beginFill(0xFFFFFF, 1);
+		// graphics.drawCircle(0, 0, 12); // x, y, diameter
+		// graphics.endFill();
 
-		tweenAppear.start();
-		tweenAppear.chain(tween0);
-		tween0.chain(tween1);
-		ChangeSpriteOnTweenComplete(tween0, hintSprite, this.hintSpritePressedTexture);
-		tween1.chain(tween2);
-		tween2.chain(tween3);
-		tween3.chain(tween4);
-		ChangeSpriteOnTweenComplete(tween3, hintSprite, this.hintSpriteTexture);
-		tween4.chain(tweenDisappear);
+		// this.hintSpritePressedTexture = graphics.generateTexture();
+  //   	graphics.destroy();
 
-		let obj = this;
-		tweenDisappear.onComplete.addOnce(function() {
-			obj.removeHint(hintSprite, hintTweens);
-		}, this);
+
+		// let hintSprite = game.add.sprite(startingPoint.x, startingPoint.y, this.hintSpriteTexture);
+		// hintSprite.anchor.setTo(0.5);
+		// hintSprite.x = startingPoint.x;
+		// hintSprite.y = startingPoint.y;
+		// hintSprite.scale.setTo(0, 0);
+		// let hintTweens = [];
+
+		// let tweenAppear = game.add.tween(hintSprite.scale).to({ x: 1, y: 1 }, 800, Phaser.Easing.Elastic.Out);
+		// let tween0 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		// let tween1 = game.add.tween(hintSprite).to({ x: startingPoint.x, y: startingPoint.y }, 500, Phaser.Easing.Linear.None);
+		// let tween2 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 800, Phaser.Easing.Linear.None);
+		// let tween3 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		// let tween4 = game.add.tween(hintSprite).to({ x: endingPoint.x, y: endingPoint.y }, 500, Phaser.Easing.Linear.None);
+		// let tweenDisappear = game.add.tween(hintSprite.scale).to({ x: 0, y: 0 }, 400, Phaser.Easing.Quartic.In);
+
+		// hintTweens.push(tweenAppear);
+		// hintTweens.push(tween0);
+		// hintTweens.push(tween1);
+		// hintTweens.push(tween2);
+		// hintTweens.push(tween3);
+		// hintTweens.push(tweenDisappear);
+
+		// tweenAppear.start();
+		// tweenAppear.chain(tween0);
+		// tween0.chain(tween1);
+		// ChangeSpriteOnTweenComplete(tween0, hintSprite, this.hintSpritePressedTexture);
+		// tween1.chain(tween2);
+		// tween2.chain(tween3);
+		// tween3.chain(tween4);
+		// ChangeSpriteOnTweenComplete(tween3, hintSprite, this.hintSpriteTexture);
+		// tween4.chain(tweenDisappear);
+
+		// let obj = this;
+		// tweenDisappear.onComplete.addOnce(function() {
+		// 	obj.removeHint(hintSprite, hintTweens);
+		// }, this);
 	}, 
 
 	removeHint: function(hintSprite, hintTweens) {

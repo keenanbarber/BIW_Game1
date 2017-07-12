@@ -45,6 +45,8 @@ MyGame.BootState.prototype = {
 		this.load.text("game_details", "assets/json/game_details.json"); // Load config file text
 
 		game.load.bitmapFont('testFont', 'assets/fonts/eightbitwonder.png', 'assets/fonts/eightbitwonder.xml');
+
+		
 	}, 
 
 	create: function() {

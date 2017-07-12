@@ -72,24 +72,28 @@ MyGame.MenuState.prototype = {
 
 			// Title
 			ScaleSprite(this.title, width, height * 3/4, 10, 1);
-			this.title.x = width * 3/4;
+			this.title.x = width/2;
 			this.title.y = height * (3/4) * (2/3);
 
+			// Dialog Box
+			// this.myDialogBox1.resize(width/2, height/4);
+			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+
 			// Buttons
-			ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
-			this.button1.getSprite().x = width / 4;
-			this.button1.getSprite().y = height * 1/4;
-			this.button1.updateIntendedScale();
+			// ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
+			// this.button1.getSprite().x = width / 4;
+			// this.button1.getSprite().y = height * 1/4;
+			// this.button1.updateIntendedScale();
 
-			ScaleSprite(this.button2.getSprite(), width/3, height/5, 10, 1);
-			this.button2.getSprite().x = width / 4;
-			this.button2.getSprite().y = height * 2/4;
-			this.button2.updateIntendedScale();
+			// ScaleSprite(this.button2.getSprite(), width/3, height/5, 10, 1);
+			// this.button2.getSprite().x = width / 4;
+			// this.button2.getSprite().y = height * 2/4;
+			// this.button2.updateIntendedScale();
 
-			ScaleSprite(this.button3.getSprite(), width/3, height/5, 10, 1);
-			this.button3.getSprite().x = width / 4;
-			this.button3.getSprite().y = height * 3/4;
-			this.button3.updateIntendedScale();
+			// ScaleSprite(this.button3.getSprite(), width/3, height/5, 10, 1);
+			// this.button3.getSprite().x = width / 4;
+			// this.button3.getSprite().y = height * 3/4;
+			// this.button3.updateIntendedScale();
 		}
 		else {
 			// ScaleText(text_test, width, height, 20, 1);
@@ -113,21 +117,25 @@ MyGame.MenuState.prototype = {
 			this.title.x = width/2;
 			this.title.y = height * (3/4) * (2/3);
 
+			// Dialog Box
+			// this.myDialogBox1.resize(width/2, height/4);
+			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+
 			// Buttons
-			ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
-			this.button1.getSprite().x = width / 2;
-			this.button1.getSprite().y = height * 3/6;
-			this.button1.updateIntendedScale();
+			// ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
+			// this.button1.getSprite().x = width / 2;
+			// this.button1.getSprite().y = height * 3/6;
+			// this.button1.updateIntendedScale();
 
-			ScaleSprite(this.button2.getSprite(), width/2, height/5, 5, 1);
-			this.button2.getSprite().x = width / 2;
-			this.button2.getSprite().y = height * 4/6;
-			this.button2.updateIntendedScale();
+			// ScaleSprite(this.button2.getSprite(), width/2, height/5, 5, 1);
+			// this.button2.getSprite().x = width / 2;
+			// this.button2.getSprite().y = height * 4/6;
+			// this.button2.updateIntendedScale();
 
-			ScaleSprite(this.button3.getSprite(), width/2, height/5, 5, 1);
-			this.button3.getSprite().x = width / 2;
-			this.button3.getSprite().y = height * 5/6;
-			this.button3.updateIntendedScale();
+			// ScaleSprite(this.button3.getSprite(), width/2, height/5, 5, 1);
+			// this.button3.getSprite().x = width / 2;
+			// this.button3.getSprite().y = height * 5/6;
+			// this.button3.updateIntendedScale();
 		}
 	},
 
@@ -224,89 +232,89 @@ MyGame.MenuState.prototype = {
 
 
 
-		this.button1 = SpriteButton(100, 100, 'button_start');
-		this.button1.setBehaviors(
-			function() { //On mouse over...
-				// console.log("Over");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-			}, 
-			function() { //On mouse off...
-				// console.log("Off");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			},
-			function() { //On mouse down...
-				// console.log("Down");
-				// this.getSprite().loadTexture('button_start_dark');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				this.getSprite().loadTexture('button_start');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			}
-		);
-		this.button1.setClickBehavior(function() {
-			// console.log("CLICK");
-			obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-		});
-		this.sceneProps.add(this.button1.getSprite());
+		// this.button1 = SpriteButton(100, 100, 'button_start');
+		// this.button1.setBehaviors(
+		// 	function() { //On mouse over...
+		// 		// console.log("Over");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+		// 	}, 
+		// 	function() { //On mouse off...
+		// 		// console.log("Off");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	},
+		// 	function() { //On mouse down...
+		// 		// console.log("Down");
+		// 		// this.getSprite().loadTexture('button_start_dark');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
+		// 	}, 
+		// 	function() { //On mouse up...
+		// 		// console.log("Up");
+		// 		this.getSprite().loadTexture('button_start');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	}
+		// );
+		// this.button1.setClickBehavior(function() {
+		// 	// console.log("CLICK");
+		// 	obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// });
+		// this.sceneProps.add(this.button1.getSprite());
 
 
-		this.button2 = SpriteButton(100, 100, 'button_options');
-		this.button2.setBehaviors(
-			function() { //On mouse over...
-				// console.log("Over");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-			}, 
-			function() { //On mouse off...
-				// console.log("Off");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			},
-			function() { //On mouse down...
-				// console.log("Down");
-				this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-				// this.getSprite().loadTexture('button_options_dark');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				this.getSprite().loadTexture('button_options');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			}
-		);
-		this.button2.setClickBehavior(function() {
-			// console.log("CLICK");
-			obj.game.state.start("OptionsState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-		});
-		this.sceneProps.add(this.button2.getSprite());
+		// this.button2 = SpriteButton(100, 100, 'button_options');
+		// this.button2.setBehaviors(
+		// 	function() { //On mouse over...
+		// 		// console.log("Over");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+		// 	}, 
+		// 	function() { //On mouse off...
+		// 		// console.log("Off");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	},
+		// 	function() { //On mouse down...
+		// 		// console.log("Down");
+		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
+		// 		// this.getSprite().loadTexture('button_options_dark');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
+		// 	}, 
+		// 	function() { //On mouse up...
+		// 		// console.log("Up");
+		// 		this.getSprite().loadTexture('button_options');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	}
+		// );
+		// this.button2.setClickBehavior(function() {
+		// 	// console.log("CLICK");
+		// 	obj.game.state.start("OptionsState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		// });
+		// this.sceneProps.add(this.button2.getSprite());
 
 
-		this.button3 = SpriteButton(100, 100, 'button_exit');
-		this.button3.setBehaviors(
-			function() { //On mouse over...
-				// console.log("Over");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-			}, 
-			function() { //On mouse off...
-				// console.log("Off");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			},
-			function() { //On mouse down...
-				// console.log("Down");
-				this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-				// this.getSprite().loadTexture('button_exit_dark');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				this.getSprite().loadTexture('button_exit');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			}
-		);
-		this.button3.setClickBehavior(function() {
-			// console.log("CLICK");
-		});
-		this.sceneProps.add(this.button3.getSprite());
+		// this.button3 = SpriteButton(100, 100, 'button_exit');
+		// this.button3.setBehaviors(
+		// 	function() { //On mouse over...
+		// 		// console.log("Over");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+		// 	}, 
+		// 	function() { //On mouse off...
+		// 		// console.log("Off");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	},
+		// 	function() { //On mouse down...
+		// 		// console.log("Down");
+		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
+		// 		// this.getSprite().loadTexture('button_exit_dark');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
+		// 	}, 
+		// 	function() { //On mouse up...
+		// 		// console.log("Up");
+		// 		this.getSprite().loadTexture('button_exit');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	}
+		// );
+		// this.button3.setClickBehavior(function() {
+		// 	// console.log("CLICK");
+		// });
+		// this.sceneProps.add(this.button3.getSprite());
 		
 		// var myBitmap = game.add.bitmapData(0, 0);
 		// var grd=myBitmap.context.createLinearGradient(0,0,0,100); // x0, y0, x1, y1
@@ -359,32 +367,32 @@ MyGame.MenuState.prototype = {
 	 //    grandientSpr.mask = myMask; // apply the mask
 
 
+	let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
 	let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
-	let horizontalTextAlign = 'center';
+	let horizontalTextAlign = 'left';
 	let verticalTextAlign = 'center';
-	let textX = game.world.centerX;
+	let textX = 20;
 	let textY = 20;
-	let anchorX = 0.5;
-	let anchorY = 0.5;
-	
+	let anchorX = 0.0;
+	let anchorY = 0.0;
 
-	let myBitmapText = game.add.bitmapText(textX, textY, 'testFont', message, 10);
-	myBitmapText.anchor.setTo(anchorX, anchorY);
-	myBitmapText.align = obj.horizontalTextAlign;
-	myBitmapText.maxWidth = game.width;
+	let myText = game.add.text(textX, textY, message, myStyle);
+	myText.anchor.setTo(anchorX, anchorY);
+	myText.align = obj.horizontalTextAlign;
 
 
 
-	 // let myDialogBox1 = DialogBox("Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!");
-	 // myDialogBox1.addButton('NEXT', null,
-	 // 	function() { //On click...
-		// 	// console.log("CLICKED");
-		// 	myDialogBox2.show();
-		// 	myDialogBox1.hide();
-		// 	// myDialogBox1.resize(game.width/1.2, 150);
-		// 	// myDialogBox1.setPosition(game.world.centerX, 150);
-		// }
-	 // );
+	this.myDialogBox1 = DialogBox("Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!");
+	this.myDialogBox1.addButton('PLAY', null,
+	 	function() { //On click...
+			// console.log("CLICKED");
+			// myDialogBox2.show();
+			obj.myDialogBox1.hide();
+			obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			// myDialogBox1.resize(game.width/1.2, 150);
+			// myDialogBox1.setPosition(game.world.centerX, 150);
+		}
+	);
 	 // let myDialogBox2 = DialogBox("Press the button to proceed. ");
 	 // myDialogBox2.addButton('NEXT', null, 
 	 // 	function() { //On click...
@@ -400,9 +408,13 @@ MyGame.MenuState.prototype = {
 		// }
 	 // );
 	 
-	 // myDialogBox1.show();
+	this.myDialogBox1.show();
 
+	//  //HACK TO PRELOAD A CUSTOM FONT
+	// this.game.add.text(0, 20, "hack1", {font:"20px test_font_1", fill:"#FFFFFF"});
 
+	// //HACK TO PRELOAD A CUSTOM FONT
+	// this.game.add.text(0, 40, "hack2", {font:"20px fiddly", fill:"#FFFFFF"});
 
 	 // this.newButton();
 	}, 
