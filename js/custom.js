@@ -650,7 +650,7 @@ function DialogBox(text) {
 
 
 	let graphics = game.add.graphics(0, 0);
-	graphics.beginFill(0x68588C, 0.75);
+	graphics.beginFill(0x68588C, 0.8);
 	// graphics.lineStyle(1, 0xffffff, 1);
 	graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 	graphics.endFill();

@@ -128,6 +128,12 @@ MyGame.GameState.prototype = {
 		// 	obj.scanBoard();
 		// });
 
+		this.gameTimer = game.time.create(false);
+		this.gameTimer.add(30000, test);
+		this.gameTimer.start();
+
+		// console.log(this.gameTimer);
+
 		this.positionComponents(game.width, game.height);
 		obj.scanBoard();
 		// checkCookie(); // TEST
@@ -137,6 +143,8 @@ MyGame.GameState.prototype = {
 	update: function() {
 		"use strict"; 
 		//console.log("Update");
+
+		// console.log("Elapsed: " + (this.gameTimer.duration));
 	},
 
 	positionComponents: function(width, height) {

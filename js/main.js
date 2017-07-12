@@ -44,3 +44,19 @@ function UpdateScreenInfo() {
 	if (configuration.aspect_ratio < 1) configuration.scale_ratio = configuration.canvas_height / configuration.canvas_height_max;
 	else configuration.scale_ratio = configuration.canvas_width / configuration.canvas_width_max;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
