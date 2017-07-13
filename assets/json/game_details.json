@@ -17,9 +17,13 @@
             "assets/images/TealGuy.svg", 
             "assets/images/BlueGuy.svg"
         ], 
-        "board_tile": "assets/images/box1.png", 
+        "font_files": {
+            "general_font": {"name": "myFont", "source": "assets/fonts/LektonCode-Regular.ttf", "format": "truetype"}
+        },
+        "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",
-        "background_image": "assets/images/background.png"
+        "background_image": "assets/images/background.png", 
+        "stopwatch": "assets/images/Stopwatch.svg"
     },
 	"game_details": {
 		"screen_width": 600, 

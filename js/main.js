@@ -16,7 +16,7 @@ var configuration = {
 	'transition_easing' : Phaser.Easing.Linear.None,
 	'board_columns' : 6, 
 	'board_rows' : 6, 
-	'tile_padding' : 6, 
+	'tile_padding' : 8, 
 	'number_of_tiles' : 4, // Up to 5 right now
 	'min_required_tiles_for_points' : 3
 };

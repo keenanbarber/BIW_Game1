@@ -69,8 +69,12 @@ MyGame.GameState.prototype = {
 		this.progressBar.anchor.setTo(0, 0.5);
 		this.sceneProps.add(this.progressBar);
 
+		// Stopwatch
+		// this.stopwatch = game.add.sprite(0, 0, 'stopwatch');
+		// this.stopwatch.anchor.setTo(0.5, 0.5);
+		// this.sceneProps.add(this.stopwatch);
 
-		
+		// Exit Button
 		this.button = SpriteButton(100, 100, 'button_exit');
 		this.button.setBehaviors(
 			function() { //On mouse over...
@@ -219,6 +223,11 @@ MyGame.GameState.prototype = {
 			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
 			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
 			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+
+			// Stopwatch
+			// this.stopwatch.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
+			// this.stopwatch.y = this.verticalMargin - this.calculatedTileSize/2;
+			// ScaleSprite(this.stopwatch, this.calculatedTileSize, this.calculatedTileSize, 0, 1)
 
 			// Board
 			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -558,6 +567,7 @@ MyGame.GameState.prototype = {
 			and their physical positions.
 	________________________________________*/
 	swapTiles: function(t1, t2) {
+		let swapDuration = 300;
 		let x1 = t1.getArrayPosition().x;
 		let y1 = t1.getArrayPosition().y;
 		let x2 = t2.getArrayPosition().x;
@@ -569,8 +579,8 @@ MyGame.GameState.prototype = {
 		this.tileArray[x2][y2] = temp;
 		this.tileArray[x2][y2].setArrayPosition(x2, y2);
 	
-		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, 1000, Phaser.Easing.Elastic.Out, true);
-		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, 1000, Phaser.Easing.Elastic.Out, true);
+		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, swapDuration, Phaser.Easing.Circular.InOut, true);
+		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, swapDuration, Phaser.Easing.Circular.InOut, true);
 		tweenManager.addTween(tween1);
 		tweenManager.addTween(tween2);
 		
@@ -845,9 +855,10 @@ MyGame.GameState.prototype = {
 	},
 
 	removeTile: function(col, row) {
+		let removeDuration = 300;
 		let target = this.tileArray[col][row].getSprite();
 
-		let tween = game.add.tween(target.scale).to({ x: 0, y: 0 }, 600, Phaser.Easing.Linear.None, true);
+		let tween = game.add.tween(target.scale).to({ x: 0, y: 0 }, removeDuration, Phaser.Easing.Linear.None, true);
 		tweenManager.addTween(tween);
 
 		tween.onComplete.addOnce(function() { // Removes the tile after it has finished its tween.
@@ -1066,7 +1077,7 @@ MyGame.GameState.prototype = {
 		let graphics = game.add.graphics(0, 0);
 		graphics.beginFill(0x000000, 0.75);
 		// graphics.lineStyle(5, 0x000000, 1);
-		graphics.drawCircle(0, 0, 40); // x, y, diameter
+		graphics.drawCircle(0, 0, 30); // x, y, diameter
 		graphics.endFill();
 
 		let graphicsTexture = graphics.generateTexture();
@@ -1076,18 +1087,18 @@ MyGame.GameState.prototype = {
     	graphicsSprite.anchor.setTo(0.5);
     	this.sceneProps.add(graphicsSprite);
 
-		text_test = game.add.bitmapText(0, 0, 'testFont', strVal, 20);
-		text_test.anchor.setTo(0.5);
-		text_test.align = 'center';
-		this.sceneProps.add(text_test);
+		// text_test = game.add.bitmapText(0, 0, 'testFont', strVal, 20);
+		// text_test.anchor.setTo(0.5);
+		// text_test.align = 'center';
+		// this.sceneProps.add(text_test);
 
-		graphicsSprite.addChild(text_test);
+		// graphicsSprite.addChild(text_test);
 
 		let pointLifetime = 1000;
 
-		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, pointLifetime, Phaser.Easing.Quartic.Out, true);
+		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
 		let tween1 = game.add.tween(graphicsSprite).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
-		let tween2 = game.add.tween(graphicsSprite).to({ y: graphicsSprite.y - 25 }, pointLifetime, Phaser.Easing.Linear.None, true);
+		let tween2 = game.add.tween(graphicsSprite).to({ y: graphicsSprite.y + game.height }, pointLifetime, Phaser.Easing.Cubic.In, true);
 		tween.onComplete.add(function() {
 			graphicsSprite.destroy();
 		}, this);

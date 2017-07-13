@@ -688,7 +688,7 @@ function DialogBox(text) {
 	// obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.textPadding);
 	// obj.graphicsSprite.addChild(obj.myBitmapText);
 
-	obj.myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: obj.boxWidth - (2 * obj.textPadding) };
+	obj.myStyle = { font: "14px myFont", fill: '#ffffff', wordWrap: true, wordWrapWidth: obj.boxWidth - (2 * obj.textPadding) };
 	obj.myText = game.add.text(textX, textY, obj.message, obj.myStyle);
 	obj.myText.anchor.setTo(anchorX, anchorY);
 	obj.myText.align = obj.horizontalTextAlign;
@@ -780,8 +780,10 @@ function DialogBox(text) {
 		});
 
 
-		let buttonText = game.add.bitmapText(buttonX, buttonY, 'testFont', text, obj.fontSize);
-		buttonText.anchor.setTo(0.5);
+		// Text on Button
+		let buttonTextStyle = { font: obj.fontSize+"px my_font", fill: '#ffffff' };
+		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
+		buttonText.anchor.setTo(0.5, 0.5);
 		buttonText.align = 'center';
 
 

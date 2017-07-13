@@ -71,6 +71,21 @@ MyGame.LoadingState.prototype = {
 	    					gameTileKeys.push("tile_" + i);
 	    				}
 	    				break;
+	    			case "font_files":
+	    				// assets = assets_2
+	    				// asset_key = font_files
+	    				var newStyle = document.createElement('style');
+						newStyle.appendChild(document.createTextNode("\
+						@font-face {\
+						    font-family: '" + assets[asset_key].general_font.name + "';\
+						    src: url('" + assets[asset_key].general_font.source + "') format('" + assets[asset_key].general_font.format + "');\
+						}\
+						"));
+						document.head.appendChild(newStyle);
+
+						// To use custom fonts, you need to use them once before you can actually use them... For some reason. So here is where that happens. 
+						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px myFont", fill:"#FFFFFF"});
+	    				break;
 	    			case "board_tile": 
 	    				this.load.image(asset_key, assets[asset_key]);
 	    				break;
@@ -78,6 +93,9 @@ MyGame.LoadingState.prototype = {
 	    				this.load.image(asset_key, assets[asset_key]);
 	    				break;
 	    			case "background_image": 
+	    				this.load.image(asset_key, assets[asset_key]);
+	    				break;
+	    			case "stopwatch": 
 	    				this.load.image(asset_key, assets[asset_key]);
 	    				break;
 	    		}
