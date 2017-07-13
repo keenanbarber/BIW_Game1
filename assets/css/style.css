@@ -34,3 +34,8 @@ body {
   /*border: 2px solid rgb(255, 255, 255);*/
 }
 
+#test {
+  font-family: 'myFont', Arial;
+  background-color: #fff;
+  text-align: center;
+}

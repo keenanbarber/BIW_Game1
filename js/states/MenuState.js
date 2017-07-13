@@ -411,8 +411,8 @@ MyGame.MenuState.prototype = {
 	this.myDialogBox1.show();
 
 	//  //HACK TO PRELOAD A CUSTOM FONT
-	this.game.add.text(20, 40, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. ", {font:"20px my_font", fill:"#FFFFFF"});
-	this.game.add.text(20, 60, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. ", {font:"20px asdasddskadkasldn", fill:"#FFFFFF"}); // <---- !!!
+	this.game.add.text(20, 40, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. J", {font:"20px myFont", fill:"#FFFFFF"});
+	this.game.add.text(20, 60, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. J", {font:"20px asdasddskadkasldn", fill:"#FFFFFF"}); // <---- !!!
 
 	// //HACK TO PRELOAD A CUSTOM FONT
 	// this.game.add.text(0, 40, "hack2", {font:"20px fiddly", fill:"#FFFFFF"});

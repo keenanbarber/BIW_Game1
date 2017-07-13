@@ -38,6 +38,9 @@ MyGame.BootState.prototype = {
 		//this.scale.forceLandscape = true;
 		
 		game.scale.refresh();
+
+		// To use custom fonts, you need to use them once before you can actually use them... For some reason. So here is where that happens. 
+		var t1 = this.game.add.text(0, 0, "Loading font...", {font:"1px myFont", fill:"#FFFFFF"});
 	},
 
 	preload: function() {

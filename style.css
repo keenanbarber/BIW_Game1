@@ -15,17 +15,13 @@ body {
   margin-right: auto;
 }
 
+#test_me {  
+  background-color: #fff;
+  text-align: center;
+}
+
 #test_div {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  background-color: #ccc;
-  border-radius: 5px;
+  
 }
 
 #game canvas {  
@@ -34,3 +30,4 @@ body {
   /*border: 2px solid rgb(255, 255, 255);*/
 }
 
+/*font-family: 'myFont', Arial;*/
