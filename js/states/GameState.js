@@ -108,7 +108,7 @@ MyGame.GameState.prototype = {
 
 		this.initializeBoard();
 		this.initializeTiles();
-		// this.initializeBoardSelections();
+		this.initializeBoardSelections();
 
 		this.selectedTileSprite1 = game.add.sprite(0, 0, 'selected_tile');
 		this.selectedTileSprite1.anchor.setTo(0.5);
@@ -450,7 +450,7 @@ MyGame.GameState.prototype = {
 		this.boardSelectionGroup = game.add.group();
 		
 		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0xffffff, 0.5);
+		graphics.beginFill(0xffffff, 0.0);
 		graphics.drawRect(0, 0, this.calculatedTileSize, this.calculatedTileSize); 
 		graphics.endFill();
 		let graphicsTexture = graphics.generateTexture();
@@ -467,6 +467,7 @@ MyGame.GameState.prototype = {
 				newTile.getSprite().anchor.setTo(0.5);
 				newTile.getSprite().inputEnabled = true;
 
+				let state = this;
 				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
 
 				}, this);
@@ -475,6 +476,40 @@ MyGame.GameState.prototype = {
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
 					console.log("You clicked at array position " + newTile.getArrayPosition());
+
+					if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
+						// console.log("Down");
+
+						if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
+							selectedTile1 = newTile;
+							state.placeSelectedSprite(selectedTile1);
+						} 
+						else {	// If selectedTile1 is full, save in selectedTile2 and...
+							selectedTile2 = newTile;
+							state.placeSelectedSprite(selectedTile2);
+							if(selectedTile1 === selectedTile2) { // If the two selected tiles are the same, reset.
+								selectedTile1 = null; 
+								selectedTile2 = null;
+								state.hideSelectedSprites();
+								return;
+							}
+
+							let differenceInX = Math.abs(selectedTile1.getArrayPosition().x - selectedTile2.getArrayPosition().x);
+							let differenceInY = Math.abs(selectedTile1.getArrayPosition().y - selectedTile2.getArrayPosition().y);
+							let sum = differenceInX + differenceInY;
+							if(sum == 1) { // If the two tiles are right next to eachother, swap and reset. 
+								state.swapTiles(selectedTile1, selectedTile2);
+							}
+							else { // If the two tiles are not right next to eachother, don't save the second selection.
+								selectedTile2 = null;
+								state.hideSelectedSprites();
+								selectedTile1 = newTile;
+								state.placeSelectedSprite(selectedTile1);
+							}
+						}
+					}
+
+
 				}, this);
 				newTile.getSprite().events.onInputUp.add(function() { // On Input Up
 
@@ -495,7 +530,8 @@ MyGame.GameState.prototype = {
 
 	placeTile: function(x, y) {
 		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
-		let tile = this.tile(this, x, y, gameTileKeys[num], gameTileKeys[num]); // The resulting tile.
+		let tile = this.boardSprite(x, y, gameTileKeys[num]); // The resulting tile.
+		tile.getSprite().anchor.setTo(0.5);
 		return tile;
 	},
 
@@ -505,12 +541,16 @@ MyGame.GameState.prototype = {
 		obj.arrayPositionX = 0;
 		obj.arrayPositionY = 0;
 		obj.sprite = game.add.sprite(x, y, spriteKey);
+		obj.key = spriteKey;
 
 		obj.getSprite = function() {
 			return this.sprite;
 		};
 		obj.getArrayPosition = function() {
 			return new Phaser.Point(this.arrayPositionX, this.arrayPositionY);
+		};
+		obj.getPosition = function() {
+			return new Phaser.Point(this.sprite.x, this.sprite.y);
 		};
 		obj.setArrayPosition = function(x, y) {
 			this.arrayPositionX = x; 
@@ -521,109 +561,11 @@ MyGame.GameState.prototype = {
 			this.sprite.y = y;
 		};
 		obj.getTag = function() {
-			this.sprite.key;
+			return this.key;
 		};
 
 		return obj;
 	},
-
-	tile: function(theState, x, y, spriteKey, tileTag) {
-		let obj = {};
-		obj.theState = theState;
-
-		obj.tag = tileTag;
-
-		obj.tileButton = SpriteButton(50, 350, spriteKey);
-
-		obj.sprite = obj.tileButton.getSprite();
-		obj.sprite.x = x;
-		obj.sprite.y = y;
-		obj.sprite.anchor.set(0.5);
-
-		obj.arrayPos = new Phaser.Point(0, 0);
-
-		obj.mouseOver = false;
-		obj.mouseOff = false;
-		obj.mouseDown = false;
-		obj.mouseUp = false;
-
-		obj.tileButton.setBehaviors(
-			function() { //On mouse over...
-				//console.log("Over");
-				mouseOverObj = obj;
-				this.mouseOver = true;
-				this.mouseOff = false;
-			}, 
-			function() { //On mouse off...
-				//console.log("Off");
-				mouseOffObj = obj;
-				this.mouseOff = true;
-				this.mouseOver = false;
-			},
-			function() { //On mouse down...
-				if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
-					// console.log("Down");
-					mouseDownObj = obj;
-					this.mouseDown = true;
-					this.mouseUp = false;
-
-					if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
-						selectedTile1 = obj;
-						theState.placeSelectedSprite(selectedTile1);
-					} 
-					else {	// If selectedTile1 is full, save in selectedTile2 and...
-						selectedTile2 = obj;
-						theState.placeSelectedSprite(selectedTile2);
-						if(selectedTile1 === selectedTile2) { // If the two selected tiles are the same, reset.
-							selectedTile1 = null; 
-							selectedTile2 = null;
-							theState.hideSelectedSprites();
-							return;
-						}
-
-						let differenceInX = Math.abs(selectedTile1.getArrayPosition().x - selectedTile2.getArrayPosition().x);
-						let differenceInY = Math.abs(selectedTile1.getArrayPosition().y - selectedTile2.getArrayPosition().y);
-						let sum = differenceInX + differenceInY;
-						if(sum == 1) { // If the two tiles are right next to eachother, swap and reset. 
-							theState.swapTiles(selectedTile1, selectedTile2);
-
-						}
-						else { // If the two tiles are not right next to eachother, don't save the second selection.
-							selectedTile2 = null;
-							theState.hideSelectedSprites();
-							selectedTile1 = obj;
-							theState.placeSelectedSprite(selectedTile1);
-						}
-					}
-				}
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				mouseUpObj = obj;
-				this.mouseUp = true;
-				this.mouseDown = false;
-			}
-		);
-
-		obj.setPosition = function(x, y) {
-			this.sprite.x = x;
-			this.sprite.y = y;
-		};
-		obj.setArrayPosition = function(x, y) {
-			this.arrayPos = new Phaser.Point(x, y);
-		};
-		obj.getArrayPosition = function(x, y) {
-			return this.arrayPos;
-		};
-		obj.setScale = function(x, y) { this.sprite.scale.setTo(x, y); };
-		obj.getSprite = function() { return this.sprite; };
-		obj.getTag = function() { return this.tag; };
-		obj.getPositionX = function() { return this.sprite.x; };
-		obj.getPositionY = function() { return this.sprite.y; };
-		obj.getPosition = function() { return new Phaser.Point(this.sprite.x, this.sprite.y) };
-
-		return obj;
-	}, 
 
 	placeSelectedSprite: function(t) {
 		if(!this.selectedTileSprite1.visible) {
@@ -666,8 +608,8 @@ MyGame.GameState.prototype = {
 		this.tileArray[x2][y2] = temp;
 		this.tileArray[x2][y2].setArrayPosition(x2, y2);
 	
-		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPositionX(), y: this.tileArray[x2][y2].getPositionY() }, swapDuration, Phaser.Easing.Circular.InOut, true);
-		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPositionX(), y: this.tileArray[x1][y1].getPositionY() }, swapDuration, Phaser.Easing.Circular.InOut, true);
+		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPosition().x, y: this.tileArray[x2][y2].getPosition().y }, swapDuration, Phaser.Easing.Circular.InOut, true);
+		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPosition().x, y: this.tileArray[x1][y1].getPosition().y }, swapDuration, Phaser.Easing.Circular.InOut, true);
 		tweenManager.addTween(tween1);
 		tweenManager.addTween(tween2);
 		
