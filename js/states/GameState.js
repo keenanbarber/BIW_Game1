@@ -108,6 +108,7 @@ MyGame.GameState.prototype = {
 
 		this.initializeBoard();
 		this.initializeTiles();
+		// this.initializeBoardSelections();
 
 		this.selectedTileSprite1 = game.add.sprite(0, 0, 'selected_tile');
 		this.selectedTileSprite1.anchor.setTo(0.5);
@@ -362,7 +363,7 @@ MyGame.GameState.prototype = {
 		return bestVector;
 	}, 
 
-	initializeBoard: function() {	// INCOMPLETE
+	initializeBoard: function() { 
 		/* tiles = [ [], [], [], [] ];
 		  		     []  []  []  []
 		  	 	     []  []  []  []		*/
@@ -397,7 +398,6 @@ MyGame.GameState.prototype = {
 
 		this.sceneProps.add(this.boardSpriteGroup);
 	},
-
 
 	initializeTiles: function() {
 		/* tiles = [ [], [], [], [] ];
@@ -435,10 +435,96 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.tileGroup);
 	},
 
+	initializeBoardSelections: function() { 
+		/* tiles = [ [], [], [], [] ];
+		  		     []  []  []  []
+		  	 	     []  []  []  []		*/
+
+		var availableGridSpace = game.width;
+		this.calculatedTileSize = (availableGridSpace * 0.8) / 6;
+
+		this.horizontalMargin = (game.width - (6 * this.calculatedTileSize)) / 2;
+		this.verticalMargin = (game.height - (6 * this.calculatedTileSize)) / 2;
+		
+		this.boardSelectionArray = [];
+		this.boardSelectionGroup = game.add.group();
+		
+		let graphics = game.add.graphics(0, 0);
+		graphics.beginFill(0xffffff, 0.5);
+		graphics.drawRect(0, 0, this.calculatedTileSize, this.calculatedTileSize); 
+		graphics.endFill();
+		let graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+
+		for(let i = 0; i < configuration.board_columns; i++) {
+			this.boardSelectionArray[i] = [];
+			for(let j = 0; j < configuration.board_rows; j++) { 
+				let tileX = i * this.calculatedTileSize;
+				let tileY = j * this.calculatedTileSize;
+
+				let newTile = this.boardSprite(tileX, tileY, graphicsTexture);
+				newTile.setArrayPosition(i, j);
+				newTile.getSprite().anchor.setTo(0.5);
+				newTile.getSprite().inputEnabled = true;
+
+				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
+
+				}, this);
+				newTile.getSprite().events.onInputOut.add(function() { // On Input Out
+
+				}, this);
+				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
+					console.log("You clicked at array position " + newTile.getArrayPosition());
+				}, this);
+				newTile.getSprite().events.onInputUp.add(function() { // On Input Up
+
+				}, this);
+
+				
+				this.boardSelectionArray[i][j] = newTile;
+				this.boardSelectionGroup.add(newTile.getSprite());
+
+				// ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+			}
+		}
+		this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+		this.boardSelectionGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+
+		this.sceneProps.add(this.boardSelectionGroup);
+	},
+
 	placeTile: function(x, y) {
 		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
 		let tile = this.tile(this, x, y, gameTileKeys[num], gameTileKeys[num]); // The resulting tile.
 		return tile;
+	},
+
+	boardSprite: function(x, y, spriteKey) {
+		let obj = {};
+
+		obj.arrayPositionX = 0;
+		obj.arrayPositionY = 0;
+		obj.sprite = game.add.sprite(x, y, spriteKey);
+
+		obj.getSprite = function() {
+			return this.sprite;
+		};
+		obj.getArrayPosition = function() {
+			return new Phaser.Point(this.arrayPositionX, this.arrayPositionY);
+		};
+		obj.setArrayPosition = function(x, y) {
+			this.arrayPositionX = x; 
+			this.arrayPositionY = y;
+		};
+		obj.setPosition = function(x, y) {
+			this.sprite.x = x; 
+			this.sprite.y = y;
+		};
+		obj.getTag = function() {
+			this.sprite.key;
+		};
+
+		return obj;
 	},
 
 	tile: function(theState, x, y, spriteKey, tileTag) {
@@ -500,6 +586,7 @@ MyGame.GameState.prototype = {
 						let sum = differenceInX + differenceInY;
 						if(sum == 1) { // If the two tiles are right next to eachother, swap and reset. 
 							theState.swapTiles(selectedTile1, selectedTile2);
+
 						}
 						else { // If the two tiles are not right next to eachother, don't save the second selection.
 							selectedTile2 = null;
