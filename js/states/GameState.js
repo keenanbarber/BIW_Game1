@@ -318,8 +318,22 @@ MyGame.GameState.prototype = {
 		    if (swipe_length >= configuration.min_swipe_length) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
-			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
-			    this.showHint();
+			    let swipeVec = this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
+
+			    if(selectedTile1 != null & selectedTile2 == null) {
+			    	let otherTileArrayPosition = new Phaser.Point(selectedTile1.getArrayPosition().x + swipeVec.x, selectedTile1.getArrayPosition().y + swipeVec.y);
+			    	// console.log("Swipe swap! " + this.onBoard(otherTileArrayPosition));
+			    	if(this.onBoard(otherTileArrayPosition.x, otherTileArrayPosition.y)) {
+			    		
+			    		selectedTile2 = this.tileArray[ otherTileArrayPosition.x ][ otherTileArrayPosition.y ];
+
+			    		this.placeSelectedSprite(selectedTile2);
+			    		this.swapTiles(selectedTile1, selectedTile2);
+			    	}
+			    }
+
+
+			    // this.showHint();
 			    // this.shuffleBoard();
 		    }
 		}
@@ -336,30 +350,30 @@ MyGame.GameState.prototype = {
 
 		currentVector = new Phaser.Point(-1, 0);
 		bestDist = d.distance(currentVector);
-		bestVector = "LEFT";
+		bestVector = currentVector;
 
 		currentVector = new Phaser.Point(1, 0);
 		dist = d.distance(currentVector);
 		if(dist < bestDist) {
 			bestDist = dist;
-			bestVector = "RIGHT";
+			bestVector = currentVector;
 		}
 
 		currentVector = new Phaser.Point(0, -1);
 		dist = d.distance(currentVector);
 		if(dist < bestDist) {
 			bestDist = dist;
-			bestVector = "UP";
+			bestVector = currentVector;
 		}
 
 		currentVector = new Phaser.Point(0, 1);
 		dist = d.distance(currentVector);
 		if(dist < bestDist) {
 			bestDist = dist;
-			bestVector = "DOWN";
+			bestVector = currentVector;
 		}
 
-		console.log("Swipe: " + bestVector);
+		// console.log("Swipe: " + bestVector);
 		return bestVector;
 	}, 
 
@@ -435,7 +449,7 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.tileGroup);
 	},
 
-	initializeBoardSelections: function() { 
+	initializeBoardSelections: function() { // The things that you click on. They are invisible...
 		/* tiles = [ [], [], [], [] ];
 		  		     []  []  []  []
 		  	 	     []  []  []  []		*/
@@ -475,7 +489,7 @@ MyGame.GameState.prototype = {
 
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
-					console.log("You clicked at array position " + newTile.getArrayPosition());
+					// console.log("You clicked at array position " + newTile.getArrayPosition());
 
 					if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
 						// console.log("Down");
@@ -731,7 +745,7 @@ MyGame.GameState.prototype = {
 	checkTile: function(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace) {
 		let tileMoves = [];
 
-		if(x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows) { // If on the board...
+		if(this.onBoard(x, y)) { // If on the board...
 			if( (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) &&
 				(x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) ) {
 				if(ignoreTile2) {
@@ -760,6 +774,9 @@ MyGame.GameState.prototype = {
 		return tileMoves;
 	},
 
+	onBoard: function(x, y) {
+		return (x >= 0 && x < configuration.board_columns && y >= 0 && y < configuration.board_rows);
+	},
 
 	/*_______________________________________
 		Scan Board 							|
