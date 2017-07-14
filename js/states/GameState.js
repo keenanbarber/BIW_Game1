@@ -852,16 +852,16 @@ MyGame.GameState.prototype = {
 		}
 
 		if(!foundAnything) {
-			if(scoreMultiplier == 1 && selectedTile1 != null && selectedTile2 != null) {
-				this.swapTiles(selectedTile1, selectedTile2);
-			}
+			// if(scoreMultiplier == 1 && selectedTile1 != null && selectedTile2 != null) {
+			// 	this.swapTiles(selectedTile1, selectedTile2);
+			// }
 			selectedTile1 = null; 
 			selectedTile2 = null;
-			scoreMultiplier = 1;
-			console.log("--- Multiplier Reset ---");
+			// scoreMultiplier = 1;
+			// console.log("--- Multiplier Reset ---");
 		}
 		else {
-			scoreMultiplier += 1;
+			// scoreMultiplier += 1;
 		}
 		return foundAnything;
 	}, 
