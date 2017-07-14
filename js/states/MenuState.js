@@ -72,7 +72,7 @@ MyGame.MenuState.prototype = {
 
 			// Dialog Box
 			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY);
 
 			// Buttons
 			// ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
@@ -110,7 +110,7 @@ MyGame.MenuState.prototype = {
 
 			// Dialog Box
 			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY);
 
 			// Buttons
 			// ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
@@ -222,183 +222,67 @@ MyGame.MenuState.prototype = {
 		// TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
 
 
+		// let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
+		// let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
+		// let horizontalTextAlign = 'left';
+		// let verticalTextAlign = 'center';
+		// let textX = 20;
+		// let textY = 20;
+		// let anchorX = 0.0;
+		// let anchorY = 0.0;
 
-		// this.button1 = SpriteButton(100, 100, 'button_start');
-		// this.button1.setBehaviors(
-		// 	function() { //On mouse over...
-		// 		// console.log("Over");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-		// 	}, 
-		// 	function() { //On mouse off...
-		// 		// console.log("Off");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	},
-		// 	function() { //On mouse down...
-		// 		// console.log("Down");
-		// 		// this.getSprite().loadTexture('button_start_dark');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-		// 	}, 
-		// 	function() { //On mouse up...
-		// 		// console.log("Up");
-		// 		this.getSprite().loadTexture('button_start');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// let myText = game.add.text(textX, textY, message, myStyle);
+		// myText.anchor.setTo(anchorX, anchorY);
+		// myText.align = obj.horizontalTextAlign;
+
+
+
+		this.myDialogBox1 = DialogBox();	 
+		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY, MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
+			{ font: "12px font_1", fill: '#ffffff' }, 'left', 'top');
+		this.myDialogBox1.addTextSegment("PLEASE JUST WORK.",
+			{ font: "30px font_2", fill: '#ffffff' }, 'center', 'top');
+		this.myDialogBox1.addButton('PLAY', null,
+		 	function() { //On click...
+				// console.log("CLICKED");
+				obj.myDialogBox1.hide();
+				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			}
+		);
+		this.myDialogBox1.addButton('OPTIONS', null,
+		 	function() { //On click...
+				// console.log("CLICKED");
+				obj.myDialogBox1.hide();
+			}
+		);
+		this.myDialogBox1.addButton('BACK TO ARCADE', null,
+		 	function() { //On click...
+				// console.log("CLICKED");
+				obj.myDialogBox1.hide();
+			}
+		);
+		this.myDialogBox1.addButton('UNICORNS & PONIES', null,
+		 	function() { //On click...
+				// console.log("CLICKED");
+				obj.myDialogBox1.setWidth(game.width/2);
+			}
+		);
+		this.myDialogBox1.show();
+
+
+		// FOR END SCREEN!
+		// =============================================
+		// this.myDialogBox1 = DialogBox();
+		// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
+		// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
+		// this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center', 'top');
+		// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
+		// this.myDialogBox1.addButton('CLAIM NOW', null,
+		//  	function() { //On click...
+		// 		obj.myDialogBox1.hide();
 		// 	}
 		// );
-		// this.button1.setClickBehavior(function() {
-		// 	// console.log("CLICK");
-		// 	obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-		// });
-		// this.sceneProps.add(this.button1.getSprite());
-
-
-		// this.button2 = SpriteButton(100, 100, 'button_options');
-		// this.button2.setBehaviors(
-		// 	function() { //On mouse over...
-		// 		// console.log("Over");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-		// 	}, 
-		// 	function() { //On mouse off...
-		// 		// console.log("Off");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	},
-		// 	function() { //On mouse down...
-		// 		// console.log("Down");
-		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-		// 		// this.getSprite().loadTexture('button_options_dark');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-		// 	}, 
-		// 	function() { //On mouse up...
-		// 		// console.log("Up");
-		// 		this.getSprite().loadTexture('button_options');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	}
-		// );
-		// this.button2.setClickBehavior(function() {
-		// 	// console.log("CLICK");
-		// 	obj.game.state.start("OptionsState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-		// });
-		// this.sceneProps.add(this.button2.getSprite());
-
-
-		// this.button3 = SpriteButton(100, 100, 'button_exit');
-		// this.button3.setBehaviors(
-		// 	function() { //On mouse over...
-		// 		// console.log("Over");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-		// 	}, 
-		// 	function() { //On mouse off...
-		// 		// console.log("Off");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	},
-		// 	function() { //On mouse down...
-		// 		// console.log("Down");
-		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-		// 		// this.getSprite().loadTexture('button_exit_dark');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-		// 	}, 
-		// 	function() { //On mouse up...
-		// 		// console.log("Up");
-		// 		this.getSprite().loadTexture('button_exit');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	}
-		// );
-		// this.button3.setClickBehavior(function() {
-		// 	// console.log("CLICK");
-		// });
-		// this.sceneProps.add(this.button3.getSprite());
-		
-		// var myBitmap = game.add.bitmapData(0, 0);
-		// var grd=myBitmap.context.createLinearGradient(0,0,0,100); // x0, y0, x1, y1
-		// grd.addColorStop(0,"#ffffff");
-		// grd.addColorStop(1,"#0a68b0");
-		// myBitmap.context.fillStyle=grd;
-		// myBitmap.context.fillRect(0,0,100,100);
-		// grd=myBitmap.context.createLinearGradient(0,580,0,600);
-		// grd.addColorStop(0,"#0a68b0");
-		// grd.addColorStop(1,"black");
-		// myBitmap.context.fillStyle=grd;
-		// myBitmap.context.fillRect(0,580,800,20);
-
-
-		// var myBitmap = game.add.bitmapData(200,200);
-		// myBitmap.ctx.fillStyle = "#4b4bff";
-		// myBitmap.ctx.beginPath();
-		// myBitmap.ctx.fillRect(0, 0, 200, 200);
-		// myBitmap.ctx.closePath(); 
-
-		// var grd=myBitmap.context.createLinearGradient(0,0,0,200); // x0, y0, x1, y1
-		// grd.addColorStop(0, "#090000");
-		// grd.addColorStop(1, "#C50000");
-		// myBitmap.context.fillStyle=grd;
-		// myBitmap.context.fillRect(0,0,200,200);
-
-		// var myMask = this.game.add.graphics(0, 0);
-	 //    myMask.beginFill(0x000000);
-	 //    myMask.drawRoundedRect(0, 0, 200, 200, 20); // draw a rounded rect mask
-	 //    myMask.endFill();
-
-		// let bitmapSprite = game.add.sprite(0, 0, myBitmap);
-		// bitmapSprite.mask = myMask;
-		// this.sceneProps.add(bitmapSprite);
-
-		// var myBmp = this.game.add.bitmapData(140, 30);
-	 //    var myGrd = myBmp.context.createLinearGradient(0, 0, 0, 30);
-	 //    myGrd.addColorStop(0, '#000000');
-	 //    myGrd.addColorStop(1, '#C50000');
-	 //    myBmp.context.fillStyle = myGrd;
-	 //    myBmp.context.fillRect(0, 0, 140, 30);
-	 //    var grandientSpr = this.game.add.sprite(330, 50, myBmp);
-
-	 //    var myMask = this.game.add.graphics(0, 0);
-	 //    myMask.beginFill(0x000000);
-
-	 //    myMask.drawRoundedRect(330, 50, 140, 30, 10); // draw a rounded rect mask
-	 //    myMask.endFill();
-		
-	 //    grandientSpr.mask = myMask; // apply the mask
-
-
-	// let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
-	// let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
-	// let horizontalTextAlign = 'left';
-	// let verticalTextAlign = 'center';
-	// let textX = 20;
-	// let textY = 20;
-	// let anchorX = 0.0;
-	// let anchorY = 0.0;
-
-	// let myText = game.add.text(textX, textY, message, myStyle);
-	// myText.anchor.setTo(anchorX, anchorY);
-	// myText.align = obj.horizontalTextAlign;
-
-
-
-	this.myDialogBox1 = DialogBox();
-	this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY, MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO! ",
-		{ font: "12px font_1", fill: '#ffffff' }, 'center', 'center');
-	this.myDialogBox1.addButton('PLAY', null,
-	 	function() { //On click...
-			// console.log("CLICKED");
-			obj.myDialogBox1.hide();
-			obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-		}
-	);
-	this.myDialogBox1.show();
-
-
-	// FOR END SCREEN!
-	// =============================================
-	// this.myDialogBox1 = DialogBox();
-	// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-	// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
-	// this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center', 'top');
-	// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
-	// this.myDialogBox1.addButton('CLAIM NOW', null,
-	//  	function() { //On click...
-	// 		obj.myDialogBox1.hide();
-	// 	}
-	// );
-	// this.myDialogBox1.show();
+		// this.myDialogBox1.show();
 
 
 	}, 

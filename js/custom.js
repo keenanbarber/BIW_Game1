@@ -719,6 +719,8 @@ function DialogBox() {
 
 		myText.y += obj.textHeight; // Adjust the text to be below previous text.
 		obj.textHeight += myText.height;
+
+		obj.resize();
 	};
 
 	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
@@ -766,49 +768,74 @@ function DialogBox() {
 		// Text on Button
 		let buttonTextStyle = { font: obj.fontSize+"px font_2", fill: '#68588C' };
 		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
-		buttonText.anchor.setTo(0.5, 0.3);
+		buttonText.anchor.setTo(0.5, 0.4);
 		buttonText.align = 'center';
 
 
 		obj.graphicsSprite.addChild(newButton.getSprite());
 		obj.graphicsSprite.addChild(buttonText);
-		obj.buttonsText.push(text);
+		obj.buttonsText.push(buttonText);
 		obj.buttons.push(newButton);
+
+		obj.resize();
 	};
 
-	obj.resize = function(width, height) {
+	obj.resize = function() { 
+		if(obj.buttons.length > 0) {
+			obj.boxHeight = (2*obj.textPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + 10));
+		}
+		else {
+			obj.boxHeight = 2*obj.textPadding + obj.textGroup.height;
+		}
+
+		// Update the alignment of left aligned text.
+		for (let i = 0; i < obj.textGroup.children.length; i++) { 
+			if(obj.textGroup.getAt(i).align !== 'center') {
+				obj.textGroup.getAt(i).x = -obj.boxWidth/2 + obj.textPadding;
+			}
+		}
+
+		// Update the text group's position.
+		let tempTextHeight = 0;
+		for (let i = 0; i < obj.textGroup.children.length; i++) {
+			// console.log(obj.textGroup[i]);
+			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.textPadding + tempTextHeight;
+			tempTextHeight += obj.textGroup.getAt(i).height;
+		}
+
+		// Update the position of the buttons.
+		if(obj.buttons.length > 0) {
+			let tempButtonHeight = 0;
+			for (let i = 0; i < obj.buttons.length; i++) {
+				// console.log(obj.textGroup[i]);
+				let yVal = -obj.boxHeight/2 + (2 * obj.textPadding) + tempTextHeight + tempButtonHeight + (i * 10);
+				obj.buttons[i].getSprite().y = yVal;
+				obj.buttonsText[i].y = yVal;
+				tempButtonHeight += obj.buttons[i].getSprite().height;
+			}
+		}
+
+		// Update the background dialog box sprite size
 		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0x000000, 1.0);
+		graphics.beginFill(0x68588C, 0.8);
 		// graphics.lineStyle(1, 0xffffff, 1);
-		graphics.drawRoundedRect(0, 0, width, height, obj.roundedCornerRadius); 
+		graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 		graphics.endFill();
 		let graphicsTexture = graphics.generateTexture();
 		graphics.destroy();
 		this.graphicsSprite.loadTexture(graphicsTexture);
 
-		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
-		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
-		let anchorX = 0;
-		let anchorY = 0;
-		if(obj.horizontalTextAlign === 'center') {
-			textX = 0;
-			anchorX = 0.5;
-		}
-		else if(obj.horizontalTextAlign === 'left') {
-			textX = -obj.graphicsSprite.width/2 + obj.textPadding;
-		}
-		if(obj.verticalTextAlign === 'center') {
-			textY = 0;
-			anchorY = 0.5;
-		}
-		else if(obj.verticalTextAlign === 'top') {
-			textY = -obj.graphicsSprite.height/2 + obj.textPadding;
-		}
+		console.log("BoxHeight: " + obj.boxHeight + ", SpriteHeight: " + graphicsTexture.height);
+	};
 
-		obj.myText.x = textX;
-		obj.myText.y = textY;
-
-		obj.myText.maxWidth = width - (2 * obj.textPadding);
+	obj.setWidth = function(width) {
+		obj.boxWidth = width;
+		for(let i = 0; i < obj.textGroup.children.length; i++) {
+			obj.textGroup.getAt(i).wordWrap = true;
+			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.textPadding));
+		}
+		obj.resize();
+		obj.resize(); // So... I don't want to do this, but without this, there is a small update bug where the graphicsSprite isn't what it should be sometimes.
 	};
 
 	obj.setPosition = function(x, y) {
