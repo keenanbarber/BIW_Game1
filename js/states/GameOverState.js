@@ -32,7 +32,7 @@ MyGame.GameOverState.prototype = {
 		this.sceneProps = game.add.group();
 
 		this.addComponents();
-		
+
 		// Add events to check for swipe
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
@@ -189,6 +189,12 @@ MyGame.GameOverState.prototype = {
 		this.myDialogBox1.addButton('CLAIM NOW', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
+			}
+		);
+		this.myDialogBox1.addButton('REPLAY', null,
+		 	function() { //On click...
+				obj.myDialogBox1.hide();
+				obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.myDialogBox1.show();
