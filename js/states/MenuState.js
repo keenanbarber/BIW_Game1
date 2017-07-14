@@ -237,34 +237,35 @@ MyGame.MenuState.prototype = {
 
 
 
-		this.myDialogBox1 = DialogBox();	 
+		this.myDialogBox1 = DialogBox(300);	 
 		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY, MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
-			{ font: "12px font_1", fill: '#ffffff' }, 'left', 'top');
-		this.myDialogBox1.addTextSegment("PLEASE JUST WORK.",
-			{ font: "30px font_2", fill: '#ffffff' }, 'center', 'top');
+			{ font: "12px font_1", fill: '#ffffff' }, 'left');
+		this.myDialogBox1.addTextSegment("IT WORKS!",
+			{ font: "40px font_2", fill: '#ffff00' }, 'center');
 		this.myDialogBox1.addButton('PLAY', null,
 		 	function() { //On click...
-				// console.log("CLICKED");
 				obj.myDialogBox1.hide();
 				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.myDialogBox1.addButton('OPTIONS', null,
 		 	function() { //On click...
-				// console.log("CLICKED");
 				obj.myDialogBox1.hide();
 			}
 		);
 		this.myDialogBox1.addButton('BACK TO ARCADE', null,
 		 	function() { //On click...
-				// console.log("CLICKED");
 				obj.myDialogBox1.hide();
 			}
 		);
 		this.myDialogBox1.addButton('UNICORNS & PONIES', null,
 		 	function() { //On click...
-				// console.log("CLICKED");
 				obj.myDialogBox1.setWidth(game.width/2);
+			}
+		);
+		this.myDialogBox1.addButton('PONIES & UNICORNS', null,
+		 	function() { //On click...
+				obj.myDialogBox1.setWidth(game.width/3);
 			}
 		);
 		this.myDialogBox1.show();

@@ -628,10 +628,10 @@ var deleteCookie = function(cname) {
 
 
 
-function DialogBox() {
+function DialogBox(availableSpaceWidth) {
 	let obj = {};
 
-	obj.boxWidth = 300;
+	obj.boxWidth = availableSpaceWidth;
 	obj.boxHeight = 150;
 	obj.boxX = game.world.centerX; 
 	obj.boxY = game.world.centerY + obj.boxHeight/2;
@@ -658,6 +658,7 @@ function DialogBox() {
 	obj.graphicsSprite.addChild(obj.textGroup);
 
 	obj.textHeight = 0;
+	obj.largestButtonTexture = null;
 
 
 	obj.destroy = function() {
@@ -686,9 +687,9 @@ function DialogBox() {
 		}, this);
 	};
 
-	obj.addTextSegment = function(text, style, horizontalAlign, verticalAlign) {
+	obj.addTextSegment = function(text, style, horizontalAlign) {
 		let horizontalTextAlign = horizontalAlign;
-		let verticalTextAlign = verticalAlign;
+		let verticalTextAlign = 'top';
 		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
 		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
 		let anchorX = 0;
@@ -727,17 +728,31 @@ function DialogBox() {
 		let buttonX = 0;
 		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.textPadding/2));
 
+		// Text on button
+		let buttonTextStyle = { font: obj.fontSize+"px font_2", fill: '#68588C' };
+		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
+		buttonText.anchor.setTo(0.5, 0.3);
+		buttonText.align = 'center';
+
+		// The button
 		let newButton; 
 		if(desiredSpriteKey === null) {
 			graphics = game.add.graphics(0, 0);
 			graphics.beginFill(0xffffff, 1.0);
 			graphics.lineStyle(1, 0x68588C, 1);
-			graphics.drawRoundedRect(0, 0, obj.boxWidth * 4/5, 20, obj.roundedCornerRadius); 
+			graphics.drawRoundedRect(0, 0, buttonText.width + (2 * obj.textPadding), buttonText.height, obj.roundedCornerRadius); 
 			graphics.endFill();
 
-			graphicsTexture = graphics.generateTexture();
+			let buttonTexture = graphics.generateTexture();
 			graphics.destroy();
-			newButton = SpriteButton(buttonX, buttonY, graphicsTexture);
+			newButton = SpriteButton(buttonX, buttonY, buttonTexture);
+
+			if(obj.largestButtonTexture == null) {
+				obj.largestButtonTexture = buttonTexture;
+			}
+			else if(buttonTexture.width > obj.largestButtonTexture.width) {
+				obj.largestButtonTexture = buttonTexture;
+			}
 		}
 		else {
 			newButton = SpriteButton(buttonX, buttonY, desiredSpriteKey);
@@ -764,20 +779,18 @@ function DialogBox() {
 			// obj.hide();
 		});
 
-
-		// Text on Button
-		let buttonTextStyle = { font: obj.fontSize+"px font_2", fill: '#68588C' };
-		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
-		buttonText.anchor.setTo(0.5, 0.4);
-		buttonText.align = 'center';
-
-
 		obj.graphicsSprite.addChild(newButton.getSprite());
 		obj.graphicsSprite.addChild(buttonText);
 		obj.buttonsText.push(buttonText);
 		obj.buttons.push(newButton);
 
 		obj.resize();
+	};
+
+	obj.updateButtonSizes = function() {
+		for (let i = 0; i < obj.buttons.length; i++) {
+			obj.buttons[i].getSprite().loadTexture(obj.largestButtonTexture);
+		}
 	};
 
 	obj.resize = function() { 
@@ -814,6 +827,7 @@ function DialogBox() {
 				tempButtonHeight += obj.buttons[i].getSprite().height;
 			}
 		}
+		obj.updateButtonSizes();
 
 		// Update the background dialog box sprite size
 		let graphics = game.add.graphics(0, 0);
@@ -824,8 +838,6 @@ function DialogBox() {
 		let graphicsTexture = graphics.generateTexture();
 		graphics.destroy();
 		this.graphicsSprite.loadTexture(graphicsTexture);
-
-		console.log("BoxHeight: " + obj.boxHeight + ", SpriteHeight: " + graphicsTexture.height);
 	};
 
 	obj.setWidth = function(width) {

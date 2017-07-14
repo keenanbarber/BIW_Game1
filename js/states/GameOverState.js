@@ -181,11 +181,11 @@ MyGame.GameOverState.prototype = {
 
 		// End screen dialog
 		// =============================================
-		this.myDialogBox1 = DialogBox();
+		this.myDialogBox1 = DialogBox(300);
 		this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
-		this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center', 'top');
-		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
+		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
+		this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center');
+		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addButton('CLAIM NOW', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
