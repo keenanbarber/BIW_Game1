@@ -24,7 +24,7 @@ var configuration = {
 
 UpdateScreenInfo();
 
-var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_height, Phaser.AUTO);
+var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_height, Phaser.AUTO, "", null, false, true);
 
 
 game.state.add("BootState", new MyGame.BootState());
@@ -32,6 +32,7 @@ game.state.add("LoadingState", new MyGame.LoadingState());
 game.state.add("MenuState", new MyGame.MenuState());
 game.state.add("OptionsState", new MyGame.OptionsState());
 game.state.add("GameState", new MyGame.GameState());
+game.state.add("GameOverState", new MyGame.GameOverState());
 game.state.start("BootState", true, false, "assets/json/game_details.json", 'game_phaser');
 
 

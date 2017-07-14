@@ -18,7 +18,8 @@
             "assets/images/BlueGuy.svg"
         ], 
         "font_files": {
-            "general_font": {"name": "myFont", "source": "assets/fonts/LektonCode-Regular.ttf", "format": "truetype"}
+            "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
+            "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
         },
         "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",

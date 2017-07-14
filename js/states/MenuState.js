@@ -58,11 +58,6 @@ MyGame.MenuState.prototype = {
 			// text_test.y = height/4;
 
 			// Background
-			// this.background.width = width;
-			// this.background.height = height;
-			// this.background.x = width/2;
-			// this.background.y = height/2;
-
 			ScaleSprite(this.background, width, 9999, 0, 1);
 			if(this.background.height < height) {
 				ScaleSprite(this.background, 9999, height, 0, 1);
@@ -101,10 +96,6 @@ MyGame.MenuState.prototype = {
 			// text_test.y = game.world.centerY/2;
 
 			// Background
-			// this.background.width = width;
-			// this.background.height = height;
-			// this.background.x = width/2;
-			// this.background.y = height/2;
 			ScaleSprite(this.background, width, null, 0, 1);
 			if(this.background.height < height) {
 				ScaleSprite(this.background, null, height, 0, 1);
@@ -367,57 +358,49 @@ MyGame.MenuState.prototype = {
 	 //    grandientSpr.mask = myMask; // apply the mask
 
 
-	let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
-	let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
-	let horizontalTextAlign = 'left';
-	let verticalTextAlign = 'center';
-	let textX = 20;
-	let textY = 20;
-	let anchorX = 0.0;
-	let anchorY = 0.0;
+	// let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
+	// let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
+	// let horizontalTextAlign = 'left';
+	// let verticalTextAlign = 'center';
+	// let textX = 20;
+	// let textY = 20;
+	// let anchorX = 0.0;
+	// let anchorY = 0.0;
 
-	let myText = game.add.text(textX, textY, message, myStyle);
-	myText.anchor.setTo(anchorX, anchorY);
-	myText.align = obj.horizontalTextAlign;
+	// let myText = game.add.text(textX, textY, message, myStyle);
+	// myText.anchor.setTo(anchorX, anchorY);
+	// myText.align = obj.horizontalTextAlign;
 
 
 
-	this.myDialogBox1 = DialogBox("Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!");
+	this.myDialogBox1 = DialogBox();
+	this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY, MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO! ",
+		{ font: "12px font_1", fill: '#ffffff' }, 'center', 'center');
 	this.myDialogBox1.addButton('PLAY', null,
 	 	function() { //On click...
 			// console.log("CLICKED");
-			// myDialogBox2.show();
 			obj.myDialogBox1.hide();
-			obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			// myDialogBox1.resize(game.width/1.2, 150);
-			// myDialogBox1.setPosition(game.world.centerX, 150);
+			obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 		}
 	);
-	 // let myDialogBox2 = DialogBox("Press the button to proceed. ");
-	 // myDialogBox2.addButton('NEXT', null, 
-	 // 	function() { //On click...
-		// 	// console.log("CLICKED");
-		// 	myDialogBox2.hide();
-		// }
-	 // );
-	 // myDialogBox2.addButton('PREVIOUS', null, 
-	 // 	function() { //On click...
-		// 	// console.log("CLICKED");
-		// 	myDialogBox1.show();
-		// 	myDialogBox2.hide();
-		// }
-	 // );
-	 
 	this.myDialogBox1.show();
 
-	//  //HACK TO PRELOAD A CUSTOM FONT
-	// this.game.add.text(20, 40, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. J", {font:"20px myFont", fill:"#FFFFFF"});
-	// this.game.add.text(20, 60, "CREATE SEQUENCES OF 3 OR MORE ANIMALS. J", {font:"20px asdasddskadkasldn", fill:"#FFFFFF"}); // <---- !!!
 
-	// //HACK TO PRELOAD A CUSTOM FONT
-	// this.game.add.text(0, 40, "hack2", {font:"20px fiddly", fill:"#FFFFFF"});
+	// FOR END SCREEN!
+	// =============================================
+	// this.myDialogBox1 = DialogBox();
+	// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
+	// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
+	// this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center', 'top');
+	// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
+	// this.myDialogBox1.addButton('CLAIM NOW', null,
+	//  	function() { //On click...
+	// 		obj.myDialogBox1.hide();
+	// 	}
+	// );
+	// this.myDialogBox1.show();
 
-	 // this.newButton();
+
 	}, 
 
 	

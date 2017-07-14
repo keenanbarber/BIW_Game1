@@ -17,6 +17,7 @@ MyGame.BootState.prototype = {
 		"use strict";
 		
 		game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		game.renderer.renderSession.roundPixels = true;
 		// game.scale.maxWidth = 600;
 
 		// Determines if mobile or desktop.

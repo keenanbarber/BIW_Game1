@@ -628,7 +628,7 @@ var deleteCookie = function(cname) {
 
 
 
-function DialogBox(text) {
+function DialogBox() {
 	let obj = {};
 
 	obj.boxWidth = 300;
@@ -637,17 +637,10 @@ function DialogBox(text) {
 	obj.boxY = game.world.centerY + obj.boxHeight/2;
 	obj.roundedCornerRadius = 8;
 	obj.textPadding = 20;
-	obj.horizontalTextAlign = 'center';
-	obj.verticalTextAlign = 'center';
-	obj.message = text;
 	obj.fontSize = 12;
 
 	obj.buttons = [];
 	obj.buttonsText = [];
-
-	// let messageWords = message.split(" ");
-
-
 
 	let graphics = game.add.graphics(0, 0);
 	graphics.beginFill(0x68588C, 0.8);
@@ -659,57 +652,12 @@ function DialogBox(text) {
 	graphics.destroy();
 
 	obj.graphicsSprite = game.add.sprite(obj.boxX, obj.boxY, graphicsTexture);
-	obj.graphicsSprite.anchor.setTo(0.5);
+	obj.graphicsSprite.anchor.setTo(0.5);	
 
+	obj.textGroup = game.add.group();
+	obj.graphicsSprite.addChild(obj.textGroup);
 
-	
-	let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
-	let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
-	let anchorX = 0;
-	let anchorY = 0;
-	if(obj.horizontalTextAlign === 'center') {
-		textX = 0;
-		anchorX = 0.5;
-	}
-	else if(obj.horizontalTextAlign === 'left') {
-		textX = -obj.graphicsSprite.width/2 + obj.textPadding;
-	}
-	if(obj.verticalTextAlign === 'center') {
-		textY = 0;
-		anchorY = 0.5;
-	}
-	else if(obj.verticalTextAlign === 'top') {
-		textY = -obj.graphicsSprite.height/2 + obj.textPadding;
-	}
-
-	// obj.myBitmapText = game.add.bitmapText(textX, textY, 'testFont', obj.message, obj.fontSize);
-	// obj.myBitmapText.anchor.setTo(anchorX, anchorY);
-	// obj.myBitmapText.align = obj.horizontalTextAlign;
-	// obj.myBitmapText.maxWidth = obj.boxWidth - (2 * obj.textPadding);
-	// obj.graphicsSprite.addChild(obj.myBitmapText);
-
-	obj.myStyle = { font: "14px myFont", fill: '#ffffff', wordWrap: true, wordWrapWidth: obj.boxWidth - (2 * obj.textPadding) };
-	obj.myText = game.add.text(textX, textY, obj.message, obj.myStyle);
-	obj.myText.anchor.setTo(anchorX, anchorY);
-	obj.myText.align = obj.horizontalTextAlign;
-	obj.graphicsSprite.addChild(obj.myText);
-
-//   	let myText = game.add.text(textX, textY, "Create a sequence of 3 or more animals, vertically or horizontally. Match as many as you can in 30 seconds. \nReady, set, go!", myStyle);
-//   	myText.anchor.setTo(anchorX, anchorY);
-//   	ScaleText(myText, boxWidth, boxHeight, textPadding, 1); // ScaleText(text, availableSpaceWidth, availableSpaceHeight, textPadding, scaleMultiplier);
-	// graphicsSprite.addChild(myText);
-
-
-	// console.log(messageWords);
-	// while(myText.height < boxHeight) {
-	// while(messageWords.length != 0) {
-	// 	let lastTextBlock = myText.text;
-	// 	// if(myText.height > boxHeight - (2 * textPadding)) {
-	// 		// console.log(messageWords[0] + " : " + messageWords.length);
-	// 		myText.setText(myText.text + messageWords[0] + " ");
-	// 		messageWords.splice(0, 1);
-	// 	// }
-	// }
+	obj.textHeight = 0;
 
 
 	obj.destroy = function() {
@@ -738,6 +686,41 @@ function DialogBox(text) {
 		}, this);
 	};
 
+	obj.addTextSegment = function(text, style, horizontalAlign, verticalAlign) {
+		let horizontalTextAlign = horizontalAlign;
+		let verticalTextAlign = verticalAlign;
+		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
+		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
+		let anchorX = 0;
+		let anchorY = 0;
+		if(horizontalTextAlign === 'center') {
+			textX = 0;
+			anchorX = 0.5;
+		}
+		else if(horizontalTextAlign === 'left') {
+			textX = -obj.graphicsSprite.width/2 + obj.textPadding;
+		}
+		if(verticalTextAlign === 'center') {
+			textY = 0;
+			anchorY = 0.5;
+		}
+		else if(verticalTextAlign === 'top') {
+			textY = -obj.graphicsSprite.height/2 + obj.textPadding;
+		}
+		let myStyle = style;
+		myStyle.wordWrap = true;
+		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.textPadding);
+
+		let myText = game.add.text(textX, textY, text, myStyle);
+		myText.anchor.setTo(anchorX, anchorY);
+		myText.align = horizontalTextAlign;
+		this.graphicsSprite.addChild(myText);
+		obj.textGroup.add(myText)
+
+		myText.y += obj.textHeight; // Adjust the text to be below previous text.
+		obj.textHeight += myText.height;
+	};
+
 	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
 		let buttonX = 0;
 		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.textPadding/2));
@@ -745,8 +728,8 @@ function DialogBox(text) {
 		let newButton; 
 		if(desiredSpriteKey === null) {
 			graphics = game.add.graphics(0, 0);
-			graphics.beginFill(0x000000, 1.0);
-			graphics.lineStyle(1, 0xffffff, 1);
+			graphics.beginFill(0xffffff, 1.0);
+			graphics.lineStyle(1, 0x68588C, 1);
 			graphics.drawRoundedRect(0, 0, obj.boxWidth * 4/5, 20, obj.roundedCornerRadius); 
 			graphics.endFill();
 
@@ -781,9 +764,9 @@ function DialogBox(text) {
 
 
 		// Text on Button
-		let buttonTextStyle = { font: obj.fontSize+"px my_font", fill: '#ffffff' };
+		let buttonTextStyle = { font: obj.fontSize+"px font_2", fill: '#68588C' };
 		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
-		buttonText.anchor.setTo(0.5, 0.5);
+		buttonText.anchor.setTo(0.5, 0.3);
 		buttonText.align = 'center';
 
 

@@ -74,17 +74,28 @@ MyGame.LoadingState.prototype = {
 	    			case "font_files":
 	    				// assets = assets_2
 	    				// asset_key = font_files
+
+	    				// Font_1
 	    				var newStyle = document.createElement('style');
 						newStyle.appendChild(document.createTextNode("\
 						@font-face {\
-						    font-family: '" + assets[asset_key].general_font.name + "';\
-						    src: url('" + assets[asset_key].general_font.source + "') format('" + assets[asset_key].general_font.format + "');\
+						    font-family: 'font_1';\
+						    src: url('" + assets[asset_key].font_1.source + "') format('" + assets[asset_key].font_1.format + "');\
 						}\
-						"));
-						document.head.appendChild(newStyle);
+						")); document.head.appendChild(newStyle);
+
+						// Font_2
+						var newStyle = document.createElement('style');
+						newStyle.appendChild(document.createTextNode("\
+						@font-face {\
+						    font-family: 'font_2';\
+						    src: url('" + assets[asset_key].font_2.source + "') format('" + assets[asset_key].font_2.format + "');\
+						}\
+						")); document.head.appendChild(newStyle);
 
 						// To use custom fonts, you need to use them once before you can actually use them... For some reason. So here is where that happens. 
-						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px myFont", fill:"#FFFFFF"});
+						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px font_1", fill:"#FFFFFF"});
+						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px font_2", fill:"#FFFFFF"});
 	    				break;
 	    			case "board_tile": 
 	    				this.load.image(asset_key, assets[asset_key]);

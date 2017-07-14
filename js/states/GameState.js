@@ -53,7 +53,7 @@ MyGame.GameState.prototype = {
 
 		// Background
 		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
-		this.background.anchor.setTo(0.5);
+		this.background.anchor.setTo(0.5, 1);
 		this.sceneProps.add(this.background);
 
 		// Progress Bar
@@ -68,6 +68,12 @@ MyGame.GameState.prototype = {
 		this.progressBar = game.add.sprite(0, 0, graphicsTexture);
 		this.progressBar.anchor.setTo(0, 0.5);
 		this.sceneProps.add(this.progressBar);
+
+		// Score Display
+		let message = "Score: " + 0;
+		let myStyle = { font: "16px myFont", fill: '#ffffff' };
+		this.scoreDisplay = game.add.text(0, 0, message, myStyle);
+		this.scoreDisplay.anchor.setTo(0, 0.5);
 
 		// Stopwatch
 		// this.stopwatch = game.add.sprite(0, 0, 'stopwatch');
@@ -202,11 +208,14 @@ MyGame.GameState.prototype = {
 			}
 
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			ScaleSprite(this.background, width, 9999, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, 9999, height, 0, 1);
+			}
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
+			// Exit button
 			ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
 			this.button.getSprite().x = width/6;
 			this.button.getSprite().y = this.verticalMargin + this.button.getSprite().height/2;
@@ -224,6 +233,10 @@ MyGame.GameState.prototype = {
 			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
 			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
 			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+
+			// Score Display
+			this.scoreDisplay.x = this.horizontalMargin;
+			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
 
 			// Stopwatch
 			// this.stopwatch.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
@@ -264,10 +277,12 @@ MyGame.GameState.prototype = {
 
 
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			ScaleSprite(this.background, width, null, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, null, height, 0, 1);
+			}
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
 			// Exit Button
 			ScaleSprite(this.button.getSprite(), width / 2 - this.horizontalMargin, this.verticalMargin, 10, 1);
@@ -328,12 +343,12 @@ MyGame.GameState.prototype = {
 			    		selectedTile2 = this.tileArray[ otherTileArrayPosition.x ][ otherTileArrayPosition.y ];
 
 			    		this.placeSelectedSprite(selectedTile2);
-			    		this.swapTiles(selectedTile1, selectedTile2);
+			    		this.swapTiles(selectedTile1, selectedTile2, true);
 			    	}
 			    }
 
 
-			    // this.showHint();
+			    this.showHint();
 			    // this.shuffleBoard();
 		    }
 		}
@@ -511,8 +526,8 @@ MyGame.GameState.prototype = {
 							let differenceInX = Math.abs(selectedTile1.getArrayPosition().x - selectedTile2.getArrayPosition().x);
 							let differenceInY = Math.abs(selectedTile1.getArrayPosition().y - selectedTile2.getArrayPosition().y);
 							let sum = differenceInX + differenceInY;
-							if(sum == 1) { // If the two tiles are right next to eachother, swap and reset. 
-								state.swapTiles(selectedTile1, selectedTile2);
+							if(sum == 1) { // If the two tiles are right next to eachother, swap and reset.
+								state.swapTiles(selectedTile1, selectedTile2, true);
 							}
 							else { // If the two tiles are not right next to eachother, don't save the second selection.
 								selectedTile2 = null;
@@ -609,7 +624,7 @@ MyGame.GameState.prototype = {
 			by switching their array positions 
 			and their physical positions.
 	________________________________________*/
-	swapTiles: function(t1, t2) {
+	swapTiles: function(t1, t2, scanOnComplete) {
 		let swapDuration = 300;
 		let x1 = t1.getArrayPosition().x;
 		let y1 = t1.getArrayPosition().y;
@@ -621,17 +636,21 @@ MyGame.GameState.prototype = {
 		this.tileArray[x1][y1].setArrayPosition(x1, y1);
 		this.tileArray[x2][y2] = temp;
 		this.tileArray[x2][y2].setArrayPosition(x2, y2);
+
+		selectedTile1 = this.tileArray[x1][y1];
+		selectedTile2 = this.tileArray[x2][y2];
 	
 		let tween1 = game.add.tween(this.tileArray[ x1 ][ y1 ].getSprite()).to({ x: this.tileArray[ x2 ][ y2 ].getPosition().x, y: this.tileArray[x2][y2].getPosition().y }, swapDuration, Phaser.Easing.Circular.InOut, true);
 		let tween2 = game.add.tween(this.tileArray[ x2 ][ y2 ].getSprite()).to({ x: this.tileArray[ x1 ][ y1 ].getPosition().x, y: this.tileArray[x1][y1].getPosition().y }, swapDuration, Phaser.Easing.Circular.InOut, true);
 		tweenManager.addTween(tween1);
-		tweenManager.addTween(tween2);
+		tweenManager.addTween(tween2);		
 		
 		let obj = this;
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			// console.log("All tweens completed.");
 			obj.hideSelectedSprites();
-			obj.scanBoard();
+			if(scanOnComplete)
+				obj.scanBoard();
 		});
 
 	},
@@ -652,7 +671,7 @@ MyGame.GameState.prototype = {
 			let tile2 = theTiles[num2];
 			theTiles.splice(num2, 1);
 
-			this.swapTiles(tile1, tile2);
+			this.swapTiles(tile1, tile2, false);
 		}
 	},
 
@@ -852,16 +871,17 @@ MyGame.GameState.prototype = {
 		}
 
 		if(!foundAnything) {
-			// if(scoreMultiplier == 1 && selectedTile1 != null && selectedTile2 != null) {
-			// 	this.swapTiles(selectedTile1, selectedTile2);
-			// }
+			
+			if(scoreMultiplier == 1 && selectedTile1 != null && selectedTile2 != null) {
+				this.swapTiles(selectedTile1, selectedTile2, false);
+			}
 			selectedTile1 = null; 
 			selectedTile2 = null;
-			// scoreMultiplier = 1;
-			// console.log("--- Multiplier Reset ---");
+			scoreMultiplier = 1;
+			console.log("--- Multiplier Reset ---");
 		}
 		else {
-			// scoreMultiplier += 1;
+			scoreMultiplier += 1;
 		}
 		return foundAnything;
 	}, 
@@ -1120,33 +1140,24 @@ MyGame.GameState.prototype = {
 	showPoints: function(x, y, val) {
 		let strVal = val.toString();
 
-		let graphics = game.add.graphics(0, 0);
-		graphics.beginFill(0x000000, 0.75);
-		// graphics.lineStyle(5, 0x000000, 1);
-		graphics.drawCircle(0, 0, 30); // x, y, diameter
-		graphics.endFill();
-
-		let graphicsTexture = graphics.generateTexture();
-    	graphics.destroy();
-
-    	let graphicsSprite = game.add.sprite(x, y, graphicsTexture);
-    	graphicsSprite.anchor.setTo(0.5);
-    	this.sceneProps.add(graphicsSprite);
-
-		// text_test = game.add.bitmapText(0, 0, 'testFont', strVal, 20);
-		// text_test.anchor.setTo(0.5);
-		// text_test.align = 'center';
+    	let message = "+" + val;
+		let myStyle = { font: "40px font_1", fill: '#ffffff' };
+		let myText = game.add.text(x, y, message, myStyle);
+		myText.stroke = '#68588C';
+    	myText.strokeThickness = 20;
+		myText.anchor.setTo(0.5, 0.4);
+		myText.align = 'center';
 		// this.sceneProps.add(text_test);
 
 		// graphicsSprite.addChild(text_test);
 
 		let pointLifetime = 1000;
 
-		let tween = game.add.tween(graphicsSprite.scale).to({ x: 2, y: 2 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
-		let tween1 = game.add.tween(graphicsSprite).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
-		let tween2 = game.add.tween(graphicsSprite).to({ y: graphicsSprite.y + game.height }, pointLifetime, Phaser.Easing.Cubic.In, true);
+		let tween = game.add.tween(myText.scale).to({ x: 0.5, y: 0.5 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
+		let tween1 = game.add.tween(myText).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
+		let tween2 = game.add.tween(myText).to({ y: myText.y - game.height }, pointLifetime, Phaser.Easing.Cubic.In, true);
 		tween.onComplete.add(function() {
-			graphicsSprite.destroy();
+			myText.destroy();
 		}, this);
 	}
 
