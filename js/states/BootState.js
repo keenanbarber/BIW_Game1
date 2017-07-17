@@ -22,7 +22,7 @@ MyGame.BootState.prototype = {
 		// Determines if mobile or desktop.
 		if (game.device.desktop) {  
 			console.log("This is not running on a mobile device.");
-			game.scale.minWidth = 400;  
+			game.scale.minWidth = 200;  
 			game.scale.minHeight = 300;  
 			game.scale.maxWidth = 800;
 			game.scale.maxHeight = 600;

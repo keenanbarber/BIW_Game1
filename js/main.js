@@ -6,10 +6,10 @@ var tweenManager = GroupTweenManager();
 var gameTileKeys = [];
 
 var configuration = {
-	'canvas_width_max' : 2048,					
-	'canvas_width' : 1000,						
+	'canvas_width_max' : 800,					
+	'canvas_width' : 300,						
 	'canvas_height_max' : 2048,				
-	'canvas_height' : 650,						
+	'canvas_height' : 500,						
 	'scale_ratio' : 1,			
 	'min_swipe_length' : 10,				
 	'aspect_ratio' : 1, 
@@ -24,7 +24,7 @@ var configuration = {
 
 UpdateScreenInfo();
 
-var game = new Phaser.Game(400, 800, Phaser.AUTO, "game_phaser", null, false, true);
+var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_height, Phaser.AUTO, "game_phaser", null, false, true);
 
 
 game.state.add("BootState", new MyGame.BootState());
@@ -39,8 +39,8 @@ game.state.start("BootState", true, false, "assets/json/game_details.json", 'gam
 
 
 function UpdateScreenInfo() {
-	configuration.canvas_width = window.screen.availWidth * window.devicePixelRatio;
-	configuration.canvas_height = window.screen.availHeight * window.devicePixelRatio;
+	// configuration.canvas_width = window.screen.availWidth * window.devicePixelRatio;
+	// configuration.canvas_height = window.screen.availHeight * window.devicePixelRatio;
 	configuration.aspect_ratio = configuration.canvas_width / configuration.canvas_height;
 	if (configuration.aspect_ratio < 1) configuration.scale_ratio = configuration.canvas_height / configuration.canvas_height_max;
 	else configuration.scale_ratio = configuration.canvas_width / configuration.canvas_width_max;
