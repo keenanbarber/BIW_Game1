@@ -24,7 +24,7 @@ var configuration = {
 
 UpdateScreenInfo();
 
-var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_height, Phaser.AUTO, "", null, false, true);
+var game = new Phaser.Game(400, 800, Phaser.AUTO, "game_phaser", null, false, true);
 
 
 game.state.add("BootState", new MyGame.BootState());

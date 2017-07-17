@@ -79,36 +79,36 @@ MyGame.GameState.prototype = {
 		// Progress Bar
 		this.progressBar = ProgressBar(300, 20);
 
-		// Exit Button
-		this.button = SpriteButton(100, 100, 'button_exit');
-		this.button.setBehaviors(
-			function() { //On mouse over...
-				// console.log("Over");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-			}, 
-			function() { //On mouse off...
-				// console.log("Off");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			},
-			function() { //On mouse down...
-				// console.log("Down");
-				this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-				// this.getSprite().loadTexture('button_exit_dark');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				this.getSprite().loadTexture('button_exit');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			}
-		);
-		this.button.setClickBehavior(function() {
-			// console.log("CLICK");
-			score = 0;
-			scoreMultiplier = 1;
-			obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-		});
-		this.sceneProps.add(this.button.getSprite());
+		// // Exit Button
+		// this.button = SpriteButton(100, 100, 'button_exit');
+		// this.button.setBehaviors(
+		// 	function() { //On mouse over...
+		// 		// console.log("Over");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+		// 	}, 
+		// 	function() { //On mouse off...
+		// 		// console.log("Off");
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	},
+		// 	function() { //On mouse down...
+		// 		// console.log("Down");
+		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
+		// 		// this.getSprite().loadTexture('button_exit_dark');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
+		// 	}, 
+		// 	function() { //On mouse up...
+		// 		// console.log("Up");
+		// 		this.getSprite().loadTexture('button_exit');
+		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+		// 	}
+		// );
+		// this.button.setClickBehavior(function() {
+		// 	// console.log("CLICK");
+		// 	score = 0;
+		// 	scoreMultiplier = 1;
+		// 	obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		// });
+		// this.sceneProps.add(this.button.getSprite());
 
 
 		this.initializeBoard();
@@ -225,10 +225,10 @@ MyGame.GameState.prototype = {
 			this.background.y = height;
 
 			// Exit button
-			ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
-			this.button.getSprite().x = width/6;
-			this.button.getSprite().y = this.verticalMargin + this.button.getSprite().height/2;
-			this.button.updateIntendedScale();
+			// ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
+			// this.button.getSprite().x = width/6;
+			// this.button.getSprite().y = this.verticalMargin + this.button.getSprite().height/2;
+			// this.button.updateIntendedScale();
 		}
 		else {
 			var availableGridSpace = width;
@@ -311,10 +311,10 @@ MyGame.GameState.prototype = {
 			this.background.y = height;
 
 			// Exit Button
-			ScaleSprite(this.button.getSprite(), width / 2 - this.horizontalMargin, this.verticalMargin, 10, 1);
-			this.button.getSprite().x = this.horizontalMargin + this.button.getSprite().width/2;
-			this.button.getSprite().y = height - this.verticalMargin + this.button.getSprite().height;
-			this.button.updateIntendedScale();
+			// ScaleSprite(this.button.getSprite(), width / 2 - this.horizontalMargin, this.verticalMargin, 10, 1);
+			// this.button.getSprite().x = this.horizontalMargin + this.button.getSprite().width/2;
+			// this.button.getSprite().y = height - this.verticalMargin + this.button.getSprite().height;
+			// this.button.updateIntendedScale();
 
 			// Progress Bar
 			// this.progress.position.set(this.horizontalMargin, this.verticalMargin - this.progress.height - this.calculatedTileSize/2);
