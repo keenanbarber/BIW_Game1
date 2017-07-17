@@ -972,9 +972,6 @@ function ProgressBar(width, height) {
 	obj.progressBar.anchor.setTo(0, 0.5);
 
 
-	
-	
-
 	obj.updateProgress = function(perc) { // 0 - 1
 		obj.progressPercentage = perc;
 
@@ -1065,7 +1062,36 @@ _________________________________________*/
 
 
 
+/*
 
+
+{
+
+    "tile1": {
+        "main_sprite_source": "assets/images/PinkGuy.svg", 
+        "sprite_animation_frames": [
+            "assets/images/PinkGuy_0.svg", 
+            "assets/images/PinkGuy_1.svg", 
+            "assets/images/PinkGuy_2.svg", 
+            "assets/images/PinkGuy_3.svg", 
+            "assets/images/PinkGuy_4.svg"
+        ]
+    },
+    "tile2": {
+        "main_sprite_source": "assets/images/GreenGuy.svg", 
+        "sprite_animation_frames": [
+            "assets/images/GreenGuy_0.svg", 
+            "assets/images/GreenGuy_1.svg", 
+            "assets/images/GreenGuy_2.svg", 
+            "assets/images/GreenGuy_3.svg", 
+            "assets/images/GreenGuy_4.svg"
+        ]
+    }
+
+}
+
+
+*/
 
 
 

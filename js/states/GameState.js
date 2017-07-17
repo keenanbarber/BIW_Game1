@@ -30,7 +30,7 @@ MyGame.GameState.prototype = {
 		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
-		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
 	},
 
 	preload: function() {
@@ -129,7 +129,7 @@ MyGame.GameState.prototype = {
 		// this.printBoard();
 
 
-		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
 		// tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 		// 	// console.log("Transition completed.");
 		// 	// this.gameTimer = game.time.create(false);

@@ -36,8 +36,8 @@ MyGame.OptionsState.prototype = {
 		this.sceneProps = game.add.group();
 
 		// Background
-		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
-		this.background.anchor.setTo(0.5);
+		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
+		this.background.anchor.setTo(0.5, 1);
 		this.sceneProps.add(this.background);
 
 		// Exit Button
@@ -91,10 +91,12 @@ MyGame.OptionsState.prototype = {
 		let isLandscape = (game.height / game.width < 1.3) ? true : false;
 		if(isLandscape) { // If the game is in landscape, position the elements in this way...
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			ScaleSprite(this.background, width, null, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, null, height, 0, 1);
+			}
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
 			ScaleSprite(this.button.getSprite(), width/2, height/3, 0, 1);
 			this.button.getSprite().x = width/2;
@@ -103,10 +105,12 @@ MyGame.OptionsState.prototype = {
 		}
 		else { // If the game is in portrait, position the elements in this way...
 			// Background
-			this.background.width = width;
-			this.background.height = height;
-			this.background.x = width/2;
-			this.background.y = height/2;
+			ScaleSprite(this.background, width, null, 0, 1);
+			if(this.background.height < height) {
+				ScaleSprite(this.background, null, height, 0, 1);
+			}
+			this.background.x = game.world.centerX;
+			this.background.y = height;
 
 			ScaleSprite(this.button.getSprite(), width/2, height/3, 0, 1);
 			this.button.getSprite().x = width/2;

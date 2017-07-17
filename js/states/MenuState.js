@@ -20,7 +20,7 @@ MyGame.MenuState.prototype = {
 		UpdateScreenInfo();
 		window.addEventListener('resize', this.onResize, false);
 		// Exit the previous scene/state...
-		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
 	
 		
 	},
@@ -49,7 +49,7 @@ MyGame.MenuState.prototype = {
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
 
-		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
 		this.positionComponents(game.width, game.height);
 	},
 
@@ -263,6 +263,7 @@ MyGame.MenuState.prototype = {
 		this.myDialogBox1.addButton('OPTIONS', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
+				obj.game.state.start("OptionsState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.myDialogBox1.addButton('BACK TO ARCADE', null,
