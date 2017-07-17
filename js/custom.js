@@ -715,6 +715,7 @@ function DialogBox(availableSpaceWidth) {
 		let myText = game.add.text(textX, textY, text, myStyle);
 		myText.anchor.setTo(anchorX, anchorY);
 		myText.align = horizontalTextAlign;
+		myText.padding.set(4, 4);
 		this.graphicsSprite.addChild(myText);
 		obj.textGroup.add(myText)
 
@@ -766,10 +767,8 @@ function DialogBox(availableSpaceWidth) {
 				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
 			},
 			function() { //On mouse down...
-				// console.log("Down");
 			}, 
 			function() { //On mouse up...
-				// console.log("Up");
 			}
 		);
 		newButton.setClickBehavior(function() {
@@ -855,11 +854,137 @@ function DialogBox(availableSpaceWidth) {
 		this.graphicsSprite.y = y;
 	};
 
+
+
+
+
+	obj.originalColor;
+	obj.shownCharacters = 0;
+	obj.myTimer;
+	obj.timerDelay = 50;
+	obj.storedColors = [];
+	obj.currentTextSegment = 0;
+	obj.startTimer = function() {
+		// if(obj.myTimer != null) {
+		// 	obj.myTimer.stop(true);
+		// 	obj.textGroup.getAt(0).clearColors();
+		// 	obj.setPartialColor(obj.textGroup.getAt(0), 0, obj.textGroup.getAt(0).text.length, 'rgba(0, 0, 0, 0)', obj.originalColor);
+		// }
+		// obj.shownCharacters = 1;
+		// console.log("clear text");
+		// obj.hideText();
+		// obj.originalColor = obj.textGroup.getAt(0).fill;
+		// obj.myTimer = game.time.create(false);
+		// obj.myTimer.add(obj.timerDelay, obj.showNewCharacter, this, obj.textGroup.getAt(0));
+		// obj.myTimer.start(0);
+
+		// for(let i = 0; i < obj.textGroup.length; i++) {
+		// 	showNewCharacter
+		// }
+
+		obj.hideText();
+		obj.myTimer = game.time.create(false);
+		obj.myTimer.add(obj.timerDelay, obj.showNewCharacter, this, obj.textGroup.getAt(0));
+		obj.myTimer.start(0);
+	};
+	obj.hideText = function() {
+		for(let i = 0; i < obj.textGroup.length; i++) {
+			obj.storedColors.push(obj.textGroup.getAt(i).fill);
+			obj.setPartialColor(obj.textGroup.getAt(i), 0, 0, obj.originalColor, 'rgba(0, 0, 0, 0)');
+		}
+	};
+	obj.showNewCharacter = function(textSegment) {
+		let fontSizeMultiplier = textSegment.fontSize / 12;
+		if(obj.shownCharacters > textSegment.text.length) {
+			obj.shownCharacters = 0;
+			obj.currentTextSegment++;
+			textSegment.clearColors();
+			console.log("Timer over.");
+			if(obj.currentTextSegment >= obj.textGroup.length) {
+				return;
+			}
+			obj.myTimer.stop(true);
+			obj.myTimer.add(1000, obj.showNewCharacter, this, obj.textGroup.getAt(obj.currentTextSegment));
+			obj.myTimer.start(0);
+			return;
+		}
+
+		obj.setPartialColor(textSegment, obj.shownCharacters-1, obj.shownCharacters, obj.originalColor, 'rgba(0, 0, 0, 0)');
+
+		if(textSegment.text[obj.shownCharacters-1] === ',') {
+			obj.timerDelay = 400;
+			obj.myTimer.add(obj.timerDelay * fontSizeMultiplier, obj.showNewCharacter, this, textSegment);
+		}
+		else if(textSegment.text[obj.shownCharacters-1] === '.') {
+			obj.timerDelay = 1000;
+			obj.myTimer.add(obj.timerDelay * fontSizeMultiplier, obj.showNewCharacter, this, textSegment);
+		}
+		else {
+			obj.timerDelay = 50;
+			obj.myTimer.add(obj.timerDelay * fontSizeMultiplier, obj.showNewCharacter, this, textSegment);
+		}
+		obj.shownCharacters++;
+	};
+	obj.setPartialColor = function(textObj, x1, x2, newColor, otherColor) {
+		textObj.addColor(newColor, x1);
+	    textObj.addColor(otherColor, x2);
+    };
+
 	obj.graphicsSprite.visible = false;
 	return obj;
 }
 
 
+
+function ProgressBar(width, height) {
+	let obj = {};
+	let graphics;
+	let graphicsTexture;
+	obj.progressPercentage = 0;
+
+	graphics = game.add.graphics(0,0);
+	graphics.beginFill('0x68588C',1);
+	graphics.drawRoundedRect(0,0,width/2,height,10);
+	graphics.endFill();
+	graphicsTexture = graphics.generateTexture();
+	graphics.destroy();
+
+	obj.progressBarFill = game.add.sprite(game.world.centerX, 100, graphicsTexture);
+	obj.progressBarFill.anchor.setTo(0, 0.5);
+
+
+	// Progress Bar
+	graphics = game.add.graphics(0,0);
+	graphics.lineStyle(2, '0xFFFFFF');
+	// graphics.beginFill('0x68588C',1);
+	graphics.drawRoundedRect(0,0,width,height,10);
+	graphics.endFill();
+	graphicsTexture = graphics.generateTexture();
+	graphics.destroy();
+
+	obj.progressBar = game.add.sprite(game.world.centerX, 100, graphicsTexture);
+	obj.progressBar.anchor.setTo(0, 0.5);
+
+
+	
+	
+
+	obj.updateProgress = function(perc) { // 0 - 1
+		obj.progressPercentage = perc;
+
+		graphics = game.add.graphics(0,0);
+		graphics.beginFill('0x68588C',1);
+		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,height,10);
+		graphics.endFill();
+		graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+
+		console.log("Updating...");
+		obj.progressBarFill.loadTexture(graphicsTexture);
+	};
+
+	return obj;
+}
 
 
 

@@ -48,6 +48,8 @@ MyGame.MenuState.prototype = {
 	update: function() {
 		"use strict"; 
 		//console.log("Update");
+
+		
 	}, 
 
 	positionComponents: function(width, height) {
@@ -238,14 +240,16 @@ MyGame.MenuState.prototype = {
 
 
 		this.myDialogBox1 = DialogBox(300);	 
-		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY, MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
-			{ font: "12px font_1", fill: '#ffffff' }, 'left');
+		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
+			{ font: "12px font_1", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addTextSegment("IT WORKS!",
 			{ font: "40px font_2", fill: '#ffff00' }, 'center');
+		this.myDialogBox1.addTextSegment("THIS TEXT IS FOR TESTING TEXT STUFFS. ISN'T IT PRETTY?",
+			{ font: "12px font_1", fill: '#FFFFFF' }, 'center');
 		this.myDialogBox1.addButton('PLAY', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
-				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				obj.game.state.start("GameState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.myDialogBox1.addButton('OPTIONS', null,
@@ -255,7 +259,8 @@ MyGame.MenuState.prototype = {
 		);
 		this.myDialogBox1.addButton('BACK TO ARCADE', null,
 		 	function() { //On click...
-				obj.myDialogBox1.hide();
+				// obj.myDialogBox1.hide();
+				obj.myDialogBox1.startTimer();
 			}
 		);
 		this.myDialogBox1.addButton('UNICORNS & PONIES', null,
@@ -286,49 +291,12 @@ MyGame.MenuState.prototype = {
 		// this.myDialogBox1.show();
 
 
+
+
 	}, 
 
 	
 
-	newButton: function() {
-		let obj = this;
-		this.buttonStart = SpriteButton(game.world.centerX, game.world.centerY, gameTileKeys[0]);
-		this.buttonStart.setBehaviors(
-			function() { //On mouse over...
-				// console.log("Over");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-			}, 
-			function() { //On mouse off...
-				// console.log("Off");
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			},
-			function() { //On mouse down...
-				// console.log("Down");
-				// this.getSprite().loadTexture('button_start_dark');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-			}, 
-			function() { //On mouse up...
-				// console.log("Up");
-				// this.getSprite().loadTexture('button_start');
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-			}
-		);
-		this.buttonStart.setClickBehavior(function() {
-			// console.log("CLICK");
-			obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-		});
-		this.sceneProps.add(this.buttonStart.getSprite());
-
-
-		// let buttonText = game.add.bitmapText(0, 0, 'testFont', "START", 20);
-		// buttonText.anchor.setTo(0.5);
-		// buttonText.align = 'center';
-		// // this.sceneProps.add(buttonText);
-
-		// this.buttonStart.getSprite().addChild(buttonText);
-	}
-
-	
 
 	
 

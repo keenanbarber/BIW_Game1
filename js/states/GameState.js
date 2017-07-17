@@ -56,19 +56,6 @@ MyGame.GameState.prototype = {
 		this.background.anchor.setTo(0.5, 1);
 		this.sceneProps.add(this.background);
 
-		// Progress Bar
-		let graphics = game.add.graphics(0,0);
-		graphics.lineStyle(2, '0xFFFFFF');
-		graphics.beginFill('0x68588C',1);
-		graphics.drawRoundedRect(0,0,300,27,10);
-		graphics.endFill();
-		let graphicsTexture = graphics.generateTexture();
-		graphics.destroy();
-
-		this.progressBar = game.add.sprite(0, 0, graphicsTexture);
-		this.progressBar.anchor.setTo(0, 0.5);
-		this.sceneProps.add(this.progressBar);
-
 		// Score Display
 		let message = "Score: " + 0;
 		let myStyle = { font: "16px myFont", fill: '#ffffff' };
@@ -79,6 +66,14 @@ MyGame.GameState.prototype = {
 		// this.stopwatch = game.add.sprite(0, 0, 'stopwatch');
 		// this.stopwatch.anchor.setTo(0.5, 0.5);
 		// this.sceneProps.add(this.stopwatch);
+
+		// Game Timer
+		this.gameTimer = game.time.create(false);
+		this.gameTimer.add(30000, test);
+		this.gameTimer.start();
+
+		// Progress Bar
+		this.progressBar = ProgressBar(300, 30);
 
 		// Exit Button
 		this.button = SpriteButton(100, 100, 'button_exit');
@@ -139,10 +134,6 @@ MyGame.GameState.prototype = {
 		// 	obj.scanBoard();
 		// });
 
-		this.gameTimer = game.time.create(false);
-		this.gameTimer.add(30000, test);
-		this.gameTimer.start();
-
 		// console.log(this.gameTimer);
 
 		this.positionComponents(game.width, game.height);
@@ -154,8 +145,8 @@ MyGame.GameState.prototype = {
 	update: function() {
 		"use strict"; 
 		//console.log("Update");
-
 		// console.log("Elapsed: " + (this.gameTimer.duration));
+		this.progressBar.updateProgress( this.gameTimer.duration/30000 );
 	},
 
 	positionComponents: function(width, height) {
@@ -168,10 +159,10 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - configuration.board_rows * this.calculatedTileSize) / 2;
 
 
-			// Progress Bar
-			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
-			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
-			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+			// // Progress Bar
+			// this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
+			// this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
+			// ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
 
 
 			// Board
@@ -229,10 +220,10 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
-			// Progress Bar
-			this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
-			this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
-			ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+			// // Progress Bar
+			// this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
+			// this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
+			// ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
 
 			// Score Display
 			this.scoreDisplay.x = this.horizontalMargin;
