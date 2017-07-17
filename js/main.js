@@ -6,23 +6,23 @@ var tweenManager = GroupTweenManager();
 var gameTileKeys = [];
 
 var configuration = {
-	'canvas_width_max' : 800,					
-	'canvas_width' : 300,						
-	'canvas_height_max' : 2048,				
-	'canvas_height' : 500,						
-	'scale_ratio' : 1,			
+	// 'canvas_width_max' : 1000,					
+	'canvas_width' : 400,						
+	// 'canvas_height_max' : 650,				
+	'canvas_height' : 650,						
+	// 'scale_ratio' : 1,			
 	'min_swipe_length' : 10,				
 	'aspect_ratio' : 1, 
 	'transition_easing' : Phaser.Easing.Linear.None,
 	'board_columns' : 6, 
 	'board_rows' : 6, 
-	'tile_padding' : 8, 
+	'tile_padding' : 6, 
 	'number_of_tiles' : 4, // Up to 5 right now
 	'min_required_tiles_for_points' : 3
 };
 
 
-UpdateScreenInfo();
+
 
 var game = new Phaser.Game(configuration.canvas_width, configuration.canvas_height, Phaser.AUTO, "game_phaser", null, false, true);
 
@@ -37,22 +37,18 @@ game.state.start("BootState", true, false, "assets/json/game_details.json", 'gam
 
 
 
-
+UpdateScreenInfo();
 function UpdateScreenInfo() {
-	// configuration.canvas_width = window.screen.availWidth * window.devicePixelRatio;
-	// configuration.canvas_height = window.screen.availHeight * window.devicePixelRatio;
-	configuration.aspect_ratio = configuration.canvas_width / configuration.canvas_height;
-	if (configuration.aspect_ratio < 1) configuration.scale_ratio = configuration.canvas_height / configuration.canvas_height_max;
-	else configuration.scale_ratio = configuration.canvas_width / configuration.canvas_width_max;
+	configuration.canvas_width = Math.min(window.screen.availWidth * window.devicePixelRatio, 500);
+	configuration.canvas_height = window.screen.availHeight * window.devicePixelRatio;
+
+	// console.log("WINDOW SIZE: " + window.innerWidth + ", " + window.innerHeight);
+	
+
+	// configuration.aspect_ratio = configuration.canvas_width / configuration.canvas_height;
+	// if (configuration.aspect_ratio < 1) configuration.scale_ratio = configuration.canvas_height / configuration.canvas_height_max;
+	// else configuration.scale_ratio = configuration.canvas_width / configuration.canvas_width_max;
 }
-
-
-
-
-
-
-
-
 
 
 

@@ -18,8 +18,11 @@ MyGame.MenuState.prototype = {
 		this.newSceneTransition = newSceneTransition;
 
 		UpdateScreenInfo();
+		window.addEventListener('resize', this.onResize, false);
 		// Exit the previous scene/state...
 		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+	
+		
 	},
 	
 	preload: function() {
@@ -34,7 +37,11 @@ MyGame.MenuState.prototype = {
 		this.addComponents();
 
 
-		// this.testAnimation = game.add.sprite(75, 75, gameTileKeys[0]);
+		// this.test1 = game.add.sprite(50, 50, 'test_image_1');
+		// ScaleSprite(this.test1, 50, 50, 0, 1);
+
+		// this.test2 = game.add.sprite(100, 50, 'test_image_2');
+		// ScaleSprite(this.test2, 50, 50, 0, 1);
 
 		
 
@@ -114,7 +121,6 @@ MyGame.MenuState.prototype = {
 
 			// Dialog Box
 			// this.myDialogBox1.resize(width/2, height/4);
-			console.log("HEUGHT: " + this.myDialogBox1.getHeight());
 			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 
 			// Buttons
@@ -142,6 +148,7 @@ MyGame.MenuState.prototype = {
 
 		this.positionComponents(width, height);
 		game.scale.refresh();
+		game.scale.setGameSize(Math.min(500, window.innerWidth), Math.min(500, window.innerHeight));
 	},
 
 	start_swipe: function(pointer) {
@@ -243,6 +250,8 @@ MyGame.MenuState.prototype = {
 
 
 		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.myDialogBox1.addTextSegment("INSTRUCTIONS",
+			{ font: "16px font_2", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
 			{ font: "12px font_1", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addButton('PLAY', null,

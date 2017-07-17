@@ -18,14 +18,21 @@ MyGame.BootState.prototype = {
 		
 		game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		game.renderer.renderSession.roundPixels = true;
+		game.scale.parentIsWindow = true;
+		game.stage.disableVisibilityChange = true;
+
+		window.addEventListener('resize', this.onResize, false);
+
+
+		// game.scale.setMinMax(200, 300, 800, 600);
 
 		// Determines if mobile or desktop.
 		if (game.device.desktop) {  
 			console.log("This is not running on a mobile device.");
-			game.scale.minWidth = 200;  
-			game.scale.minHeight = 300;  
-			game.scale.maxWidth = 800;
-			game.scale.maxHeight = 600;
+			// game.scale.minWidth = 200;  
+			// game.scale.minHeight = 300;  
+			// game.scale.maxWidth = 800;
+			// game.scale.maxHeight = 600;
 			device = "DESKTOP";
 		}
 		else { 
@@ -54,6 +61,13 @@ MyGame.BootState.prototype = {
 
 		this.game.state.start("LoadingState", true, false);
 		// this.game.state.start(stateToStart, clearGameWorld, clearCache, passedToTargetStatesInitFunction);
+	}, 
+
+	onResize: function() {
+		console.log("Resizing...");
+		UpdateScreenInfo();
+
+		// game.scale.setGameSize(window.innerWidth, window.innerHeight);
 	}
 };
 

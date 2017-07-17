@@ -26,7 +26,7 @@ MyGame.GameState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		this.gameTime = 15000;
+		this.gameTime = 20000;
 		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
