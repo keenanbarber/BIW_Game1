@@ -12,6 +12,7 @@ MyGame.OptionsState.prototype = {
 
 	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
+
 		this.game_details_data = game_details_data;
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;

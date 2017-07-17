@@ -626,15 +626,13 @@ var deleteCookie = function(cname) {
  
 
 
-
-
-function DialogBox(availableSpaceWidth) {
+function DialogBox(x, y, availableSpaceWidth) {
 	let obj = {};
 
 	obj.boxWidth = availableSpaceWidth;
 	obj.boxHeight = 150;
-	obj.boxX = game.world.centerX; 
-	obj.boxY = game.world.centerY + obj.boxHeight/2;
+	obj.boxX = x; 
+	obj.boxY = y;
 	obj.roundedCornerRadius = 8;
 	obj.textPadding = 20;
 	obj.fontSize = 12;
@@ -854,6 +852,14 @@ function DialogBox(availableSpaceWidth) {
 		this.graphicsSprite.y = y;
 	};
 
+	obj.getHeight = function() {
+		return obj.boxHeight;
+	};
+
+	obj.getWidth = function() {
+		return obj.boxWidth;
+	};
+
 
 
 
@@ -944,7 +950,7 @@ function ProgressBar(width, height) {
 
 	graphics = game.add.graphics(0,0);
 	graphics.beginFill('0x68588C',1);
-	graphics.drawRoundedRect(0,0,width/2,height,10);
+	graphics.drawRoundedRect(0,0,width,height,10);
 	graphics.endFill();
 	graphicsTexture = graphics.generateTexture();
 	graphics.destroy();
@@ -979,8 +985,24 @@ function ProgressBar(width, height) {
 		graphicsTexture = graphics.generateTexture();
 		graphics.destroy();
 
-		console.log("Updating...");
+		// console.log("Updating...");
 		obj.progressBarFill.loadTexture(graphicsTexture);
+	};
+
+	obj.setPosition = function(x, y) {
+		obj.progressBar.x = x;
+		obj.progressBar.y = y;
+
+		obj.progressBarFill.x = x;
+		obj.progressBarFill.y = y;
+	};
+
+	obj.getHeight = function() {
+		return obj.progressBar.height;
+	};
+
+	obj.getWidth = function() {
+		return obj.progressBar.width;
 	};
 
 	return obj;

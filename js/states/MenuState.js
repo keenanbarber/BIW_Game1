@@ -34,7 +34,8 @@ MyGame.MenuState.prototype = {
 		this.addComponents();
 
 
-		
+		// this.testAnimation = game.add.sprite(75, 75, gameTileKeys[0]);
+
 		
 
 		// Add events to check for swipe
@@ -60,9 +61,9 @@ MyGame.MenuState.prototype = {
 			// text_test.y = height/4;
 
 			// Background
-			ScaleSprite(this.background, width, 9999, 0, 1);
+			ScaleSprite(this.background, width, null, 0, 1);
 			if(this.background.height < height) {
-				ScaleSprite(this.background, 9999, height, 0, 1);
+				ScaleSprite(this.background, null, height, 0, 1);
 			}
 			this.background.x = game.world.centerX;
 			this.background.y = height;
@@ -74,7 +75,8 @@ MyGame.MenuState.prototype = {
 
 			// Dialog Box
 			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY);
+
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 
 			// Buttons
 			// ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
@@ -112,7 +114,8 @@ MyGame.MenuState.prototype = {
 
 			// Dialog Box
 			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY);
+			console.log("HEUGHT: " + this.myDialogBox1.getHeight());
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 
 			// Buttons
 			// ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
@@ -239,13 +242,9 @@ MyGame.MenuState.prototype = {
 
 
 
-		this.myDialogBox1 = DialogBox(300);	 
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
 		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
 			{ font: "12px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addTextSegment("IT WORKS!",
-			{ font: "40px font_2", fill: '#ffff00' }, 'center');
-		this.myDialogBox1.addTextSegment("THIS TEXT IS FOR TESTING TEXT STUFFS. ISN'T IT PRETTY?",
-			{ font: "12px font_1", fill: '#FFFFFF' }, 'center');
 		this.myDialogBox1.addButton('PLAY', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
@@ -263,16 +262,7 @@ MyGame.MenuState.prototype = {
 				obj.myDialogBox1.startTimer();
 			}
 		);
-		this.myDialogBox1.addButton('UNICORNS & PONIES', null,
-		 	function() { //On click...
-				obj.myDialogBox1.setWidth(game.width/2);
-			}
-		);
-		this.myDialogBox1.addButton('PONIES & UNICORNS', null,
-		 	function() { //On click...
-				obj.myDialogBox1.setWidth(game.width/3);
-			}
-		);
+
 		this.myDialogBox1.show();
 
 

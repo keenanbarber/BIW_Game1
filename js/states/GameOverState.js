@@ -63,8 +63,7 @@ MyGame.GameOverState.prototype = {
 			this.title.y = height * (3/4) * (2/3);
 
 			// Dialog Box
-			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 		}
 		else {
 			// Background
@@ -81,8 +80,7 @@ MyGame.GameOverState.prototype = {
 			this.title.y = height * (3/4) * (2/3);
 
 			// Dialog Box
-			// this.myDialogBox1.resize(width/2, height/4);
-			this.myDialogBox1.setPosition(game.world.centerX, height * 3/4);
+			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 		}
 	},
 
@@ -181,7 +179,7 @@ MyGame.GameOverState.prototype = {
 
 		// End screen dialog
 		// =============================================
-		this.myDialogBox1 = DialogBox(300);
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
 		this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
 		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#7ffff4' }, 'center');

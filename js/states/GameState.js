@@ -17,7 +17,6 @@ MyGame.GameState = function(game) {
 	"use strict"; 
 };
 
-
 MyGame.GameState.prototype = {
 
 	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
@@ -26,6 +25,9 @@ MyGame.GameState.prototype = {
 		
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
+
+		this.gameTime = 15000;
+		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
 		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
@@ -57,10 +59,10 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.background);
 
 		// Score Display
-		let message = "Score: " + 0;
-		let myStyle = { font: "16px myFont", fill: '#ffffff' };
-		this.scoreDisplay = game.add.text(0, 0, message, myStyle);
-		this.scoreDisplay.anchor.setTo(0, 0.5);
+		// let message = "Score: " + 0;
+		// let myStyle = { font: "16px myFont", fill: '#ffffff' };
+		// this.scoreDisplay = game.add.text(0, 0, message, myStyle);
+		// this.scoreDisplay.anchor.setTo(0, 0.5);
 
 		// Stopwatch
 		// this.stopwatch = game.add.sprite(0, 0, 'stopwatch');
@@ -68,12 +70,14 @@ MyGame.GameState.prototype = {
 		// this.sceneProps.add(this.stopwatch);
 
 		// Game Timer
-		this.gameTimer = game.time.create(false);
-		this.gameTimer.add(30000, test);
-		this.gameTimer.start();
+		this.timer = game.time.create();
+		this.gameTimer = this.timer.add(this.gameTime, this.endGameDialogBoxShow, this);
+		// this.gameTimer.add(30000, test);
+		
+		// this.gameTimer.onComplete
 
 		// Progress Bar
-		this.progressBar = ProgressBar(300, 30);
+		this.progressBar = ProgressBar(300, 20);
 
 		// Exit Button
 		this.button = SpriteButton(100, 100, 'button_exit');
@@ -120,7 +124,7 @@ MyGame.GameState.prototype = {
 		this.selectedTileSprite2.visible = false;
 		this.sceneProps.add(this.selectedTileSprite2);
 
-		
+		this.startGameDialogBoxShow();
 		
 		// this.printBoard();
 
@@ -137,7 +141,7 @@ MyGame.GameState.prototype = {
 		// console.log(this.gameTimer);
 
 		this.positionComponents(game.width, game.height);
-		obj.scanBoard();
+		
 		// checkCookie(); // TEST
 		// this.addText();
 	},
@@ -145,8 +149,7 @@ MyGame.GameState.prototype = {
 	update: function() {
 		"use strict"; 
 		//console.log("Update");
-		// console.log("Elapsed: " + (this.gameTimer.duration));
-		this.progressBar.updateProgress( this.gameTimer.duration/30000 );
+		this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
 	},
 
 	positionComponents: function(width, height) {
@@ -154,19 +157,34 @@ MyGame.GameState.prototype = {
 		if(isLandscape) {
 			var availableGridSpace = Math.min(width * 2/3, height);
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
-			this.calculatedTileSize = (availableGridSpace * 0.9) / chosenSideLength;
-			this.horizontalMargin = (width * 2/3 - configuration.board_columns * this.calculatedTileSize) / 2;
-			this.verticalMargin = (height - configuration.board_rows * this.calculatedTileSize) / 2;
+			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
+			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
+			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
 			// // Progress Bar
-			// this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
-			// this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
-			// ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
 
+
+			// Board Selection Squares
+			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+			this.boardSelectionGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+			for(let i = 0; i < configuration.board_columns; i++) {
+				for(let j = 0; j < configuration.board_rows; j++) { 
+					if(this.boardSpriteArray[i][j] != null) {
+						let tileX = i * this.calculatedTileSize;
+						let tileY = j * this.calculatedTileSize;
+
+						this.boardSelectionArray[i][j].getSprite().x = tileX;
+						this.boardSelectionArray[i][j].getSprite().y = tileY;
+						if(this.boardSelectionArray[i][j] != null)
+							ScaleSprite(this.boardSelectionArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+					}
+				}
+			}
 
 			// Board
-			this.boardSpriteGroup.x = (width * 1/3) + this.horizontalMargin + this.calculatedTileSize/2;
+			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
 			this.boardSpriteGroup.y = this.verticalMargin + this.calculatedTileSize/2;
 			for(let i = 0; i < configuration.board_columns; i++) {
 				for(let j = 0; j < configuration.board_rows; j++) { 
@@ -183,7 +201,7 @@ MyGame.GameState.prototype = {
 			}
 
 			// Tiles
-			this.tileGroup.x = (width * 1/3) + this.horizontalMargin + this.calculatedTileSize/2;
+			this.tileGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
 			this.tileGroup.y = this.verticalMargin + this.calculatedTileSize/2;
 			for(let i = 0; i < configuration.board_columns; i++) {
 				for(let j = 0; j < configuration.board_rows; j++) { 
@@ -199,9 +217,9 @@ MyGame.GameState.prototype = {
 			}
 
 			// Background
-			ScaleSprite(this.background, width, 9999, 0, 1);
+			ScaleSprite(this.background, width, null, 0, 1);
 			if(this.background.height < height) {
-				ScaleSprite(this.background, 9999, height, 0, 1);
+				ScaleSprite(this.background, null, height, 0, 1);
 			}
 			this.background.x = game.world.centerX;
 			this.background.y = height;
@@ -220,19 +238,36 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
-			// // Progress Bar
-			// this.progressBar.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
-			// this.progressBar.y = this.verticalMargin - this.calculatedTileSize/2;
-			// ScaleSprite(this.progressBar, this.calculatedTileSize * configuration.board_columns * 3/4, null, 0, 1);
+			// Progress Bar
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
 
-			// Score Display
-			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
+			// // Score Display
+			// this.scoreDisplay.x = this.horizontalMargin;
+			// this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
 
 			// Stopwatch
 			// this.stopwatch.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
 			// this.stopwatch.y = this.verticalMargin - this.calculatedTileSize/2;
 			// ScaleSprite(this.stopwatch, this.calculatedTileSize, this.calculatedTileSize, 0, 1)
+
+
+			// Board Selection Squares
+			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
+			this.boardSelectionGroup.y = this.verticalMargin + this.calculatedTileSize/2;
+			for(let i = 0; i < configuration.board_columns; i++) {
+				for(let j = 0; j < configuration.board_rows; j++) { 
+					if(this.boardSpriteArray[i][j] != null) {
+						let tileX = i * this.calculatedTileSize;
+						let tileY = j * this.calculatedTileSize;
+
+						this.boardSelectionArray[i][j].getSprite().x = tileX;
+						this.boardSelectionArray[i][j].getSprite().y = tileY;
+						if(this.boardSelectionArray[i][j] != null)
+							ScaleSprite(this.boardSelectionArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+					}
+				}
+			}
+
 
 			// Board
 			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -489,50 +524,57 @@ MyGame.GameState.prototype = {
 
 				let state = this;
 				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
+					if(this.allowBoardInput) {
 
+					}
 				}, this);
 				newTile.getSprite().events.onInputOut.add(function() { // On Input Out
+					if(this.allowBoardInput) {
 
+					}
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
-					// console.log("You clicked at array position " + newTile.getArrayPosition());
+					if(this.allowBoardInput) {
+						// console.log("You clicked at array position " + newTile.getArrayPosition());
 
-					if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
-						// console.log("Down");
+						if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
+							// console.log("Down");
 
-						if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
-							selectedTile1 = newTile;
-							state.placeSelectedSprite(selectedTile1);
-						} 
-						else {	// If selectedTile1 is full, save in selectedTile2 and...
-							selectedTile2 = newTile;
-							state.placeSelectedSprite(selectedTile2);
-							if(selectedTile1 === selectedTile2) { // If the two selected tiles are the same, reset.
-								selectedTile1 = null; 
-								selectedTile2 = null;
-								state.hideSelectedSprites();
-								return;
-							}
-
-							let differenceInX = Math.abs(selectedTile1.getArrayPosition().x - selectedTile2.getArrayPosition().x);
-							let differenceInY = Math.abs(selectedTile1.getArrayPosition().y - selectedTile2.getArrayPosition().y);
-							let sum = differenceInX + differenceInY;
-							if(sum == 1) { // If the two tiles are right next to eachother, swap and reset.
-								state.swapTiles(selectedTile1, selectedTile2, true);
-							}
-							else { // If the two tiles are not right next to eachother, don't save the second selection.
-								selectedTile2 = null;
-								state.hideSelectedSprites();
+							if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
 								selectedTile1 = newTile;
 								state.placeSelectedSprite(selectedTile1);
+							} 
+							else {	// If selectedTile1 is full, save in selectedTile2 and...
+								selectedTile2 = newTile;
+								state.placeSelectedSprite(selectedTile2);
+								if(selectedTile1 === selectedTile2) { // If the two selected tiles are the same, reset.
+									selectedTile1 = null; 
+									selectedTile2 = null;
+									state.hideSelectedSprites();
+									return;
+								}
+
+								let differenceInX = Math.abs(selectedTile1.getArrayPosition().x - selectedTile2.getArrayPosition().x);
+								let differenceInY = Math.abs(selectedTile1.getArrayPosition().y - selectedTile2.getArrayPosition().y);
+								let sum = differenceInX + differenceInY;
+								if(sum == 1) { // If the two tiles are right next to eachother, swap and reset.
+									state.swapTiles(selectedTile1, selectedTile2, true);
+								}
+								else { // If the two tiles are not right next to eachother, don't save the second selection.
+									selectedTile2 = null;
+									state.hideSelectedSprites();
+									selectedTile1 = newTile;
+									state.placeSelectedSprite(selectedTile1);
+								}
 							}
 						}
 					}
 
-
 				}, this);
 				newTile.getSprite().events.onInputUp.add(function() { // On Input Up
+					if(this.allowBoardInput) {
 
+					}
 				}, this);
 
 				
@@ -755,7 +797,7 @@ MyGame.GameState.prototype = {
 	checkTile: function(tileType, x, y, ignoreTile1, ignoreTile2, possibleTileToReplace) {
 		let tileMoves = [];
 
-		if(this.onBoard(x, y)) { // If on the board...
+		if(this.onBoard(x, y) && this.tileArray[ x ][ y ] != null) { // If on the board...
 			if( (x != possibleTileToReplace.getArrayPosition().x || y != possibleTileToReplace.getArrayPosition().y) &&
 				(x != ignoreTile1.getArrayPosition().x || y != ignoreTile1.getArrayPosition().y) ) {
 				if(ignoreTile2) {
@@ -1150,11 +1192,41 @@ MyGame.GameState.prototype = {
 		tween.onComplete.add(function() {
 			myText.destroy();
 		}, this);
+	},
+
+	endGameDialogBoxShow: function() {
+		this.allowBoardInput = false;
+		let obj = this;
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.endGameDialogBox.addTextSegment("NICE JOB!",
+			{ font: "20px font_2", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox.addButton('NEXT', null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			}
+		);
+
+		this.endGameDialogBox.show();
+	}, 
+
+	startGameDialogBoxShow: function() {
+		let obj = this;
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.startGameDialogBox.addTextSegment("ARE YOU READY?",
+			{ font: "20px font_2", fill: '#ffffff' }, 'center');
+		this.startGameDialogBox.addButton('YES!', null,
+		 	function() { //On click...
+				obj.startGameDialogBox.hide();
+
+				obj.allowBoardInput = true;
+				obj.timer.start();
+				obj.scanBoard();
+			}
+		);
+
+		this.startGameDialogBox.show();
 	}
-
-
-
-
 
 
 
