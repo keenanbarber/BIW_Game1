@@ -1011,6 +1011,10 @@ function ProgressBar(width, height) {
 function createSpriteSheetFromSprites() {
 	let obj = {};
 
+	// Array of textures
+
+	// Combine textures into one texture while storing the info about each sprite. 
+
 	obj.spriteInfo = {};
 		obj.spriteInfo.name = "sprite_name";
 		obj.spriteInfo.position = new Phaser.Point(0, 0);
@@ -1018,7 +1022,7 @@ function createSpriteSheetFromSprites() {
 		obj.spriteInfo.height = 0;
 
 
-
+	// Return obj that has the sprite sheet as well as sprite infos
 
 	return obj;
 }
