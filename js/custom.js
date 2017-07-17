@@ -1008,7 +1008,20 @@ function ProgressBar(width, height) {
 	return obj;
 }
 
+function createSpriteSheetFromSprites() {
+	let obj = {};
 
+	obj.spriteInfo = {};
+		obj.spriteInfo.name = "sprite_name";
+		obj.spriteInfo.position = new Phaser.Point(0, 0);
+		obj.spriteInfo.width = 0;
+		obj.spriteInfo.height = 0;
+
+
+
+
+	return obj;
+}
 
 
 
