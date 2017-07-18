@@ -71,6 +71,11 @@ MyGame.LoadingState.prototype = {
 	    					gameTileKeys.push("tile_" + i);
 	    				}
 	    				break;
+	    			case "sprite_animation_frames": 
+	    				for (let i = 0; i < assets[asset_key].length; i++) {
+	    					this.load.image("anim_" + i, assets[asset_key][i]);
+	    				}
+	    				break;
 	    			case "font_files":
 	    				// assets = assets_2
 	    				// asset_key = font_files

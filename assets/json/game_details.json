@@ -5,6 +5,7 @@
         "button_exit": {"type": "image", "source": "assets/images/button_exit.png"},
 
         "title": {"type": "image", "source": "assets/images/title_MartianMatch.png"},
+        "end_game_image": {"type": "image", "source": "assets/images/UFO.svg"},
         "background": {"type": "image", "source": "assets/images/background.png"},
 
         "test_beep" : {"type": "audio", "source": "assets/audio/Beep1.wav"} 
@@ -17,6 +18,16 @@
             "assets/images/TealGuy.svg", 
             "assets/images/BlueGuy.svg"
         ], 
+        "sprite_animation_frames": [
+            "assets/images/sprite_blue_01.svg", 
+            "assets/images/sprite_blue_02.svg", 
+            "assets/images/sprite_blue_03.svg", 
+            "assets/images/sprite_blue_04.svg", 
+            "assets/images/sprite_blue_05.svg", 
+            "assets/images/sprite_blue_06.svg", 
+            "assets/images/sprite_blue_07.svg", 
+            "assets/images/sprite_blue_08.svg"
+        ],
         "font_files": {
             "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
             "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 

@@ -205,7 +205,7 @@ function GroupTweenManager() {
 			// console.log(this.tweenArray.length + " tweens remaining.")
 			if(this.tweenArray.length == 0 && this.bool == false) {
 				if(this.funcToCallOnComplete) {
-					game.time.events.add(Phaser.Timer.SECOND * 0.1, this.funcToCallOnComplete, this);
+					game.time.events.add(10, this.funcToCallOnComplete, this);
 				}
 				this.bool = true;
 			}
@@ -1005,21 +1005,85 @@ function ProgressBar(width, height) {
 	return obj;
 }
 
-function createSpriteSheetFromSprites() {
+function Animator(targetSprite) {
 	let obj = {};
+	obj.animations = [];
+	obj.targetSprite = targetSprite;
+	obj.originalSprite = targetSprite.key;
+	obj.timer = game.time.create();
+	obj.frameTimer;
 
-	// Array of textures
+	obj._isPlaying = false;
+	obj.funcToCallOnComplete;
 
-	// Combine textures into one texture while storing the info about each sprite. 
+	obj.currentAnimation = '';
+	obj.frameTime = 60;
+	obj.currentAnimationNum = 0;
+	obj.currentFrameNum = 0;
+	obj.loopCurrentAnim = false;
 
-	obj.spriteInfo = {};
-		obj.spriteInfo.name = "sprite_name";
-		obj.spriteInfo.position = new Phaser.Point(0, 0);
-		obj.spriteInfo.width = 0;
-		obj.spriteInfo.height = 0;
+	obj.newAnimation = function(name, arrayOfKeys) {
+		obj.animations.push({
+			"name": name, 
+			"frameKeys": arrayOfKeys
+		});
+	};
+	obj.playAnimation = function(name, loopBool) {
+		obj._isPlaying = true;
+		obj.loopCurrentAnim = loopBool;
+		obj.currentAnimation = name;
+		for(let i = 0; i < obj.animations.length; i++) {
+			if(obj.animations[i].name === name) {
+				console.log("Found '" + name + "' with (" + obj.animations[i].frameKeys.length + ") frames.");
+				obj.currentAnimationNum = i;
 
+				// obj.frameTimer = obj.timer.add(obj.animationTime, obj.endGameDialogBoxShow, obj);
+				// obj.timer.start();
+				obj.frameTimer = game.time.events.loop(obj.frameTime, obj.nextFrame, this);
+				
+				return;
+			}
+		}
+		console.log("Animation '" + name + "' not found!");
+	}
+	obj.callOnComplete = function(func) {
+		obj.funcToCallOnComplete = func;
+	};
+	obj.resetAnimationDetails = function() {
+		obj._isPlaying = false;
+		obj.loopCurrentAnim = false;
+		game.time.events.remove(obj.frameTimer);
+		obj.frameTimer = null;
+		obj.currentAnimation = '';
+		obj.currentAnimationNum = 0;
+		targetSprite.loadTexture(obj.originalSprite);
+	};
+	obj.endAnimation = function() {
+		obj.resetAnimationDetails();
+		if(obj.funcToCallOnComplete)
+			obj.funcToCallOnComplete();
+	};
+	obj.cancelAnimation = function() {
+		obj.resetAnimationDetails();
+	};
+	obj.nextFrame = function() {
 
-	// Return obj that has the sprite sheet as well as sprite infos
+		if(obj.currentFrameNum > obj.animations[obj.currentAnimationNum].frameKeys.length - 1) {
+			if(obj.loopCurrentAnim) {
+				obj.currentFrameNum = 0;
+			}
+			else {
+				obj.endAnimation();
+				return;
+			}
+		}
+		console.log("New Frame: " + obj.currentFrameNum);
+		targetSprite.loadTexture(obj.animations[obj.currentAnimationNum].frameKeys[obj.currentFrameNum]);
+		obj.currentFrameNum++;
+	};
+	obj.isPlaying = function() {
+		return obj._isPlaying;
+	};
 
 	return obj;
 }

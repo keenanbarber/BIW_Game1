@@ -37,7 +37,11 @@ MyGame.MenuState.prototype = {
 		this.addComponents();
 
 
-		// this.test1 = game.add.sprite(50, 50, 'test_image_1');
+		this.test1 = game.add.sprite(50, 50, gameTileKeys[4]);
+		this.test1.anchor.setTo(0.5);
+		this.newAnimator = Animator(this.test1);
+		this.newAnimator.newAnimation('Poof', [gameTileKeys[4], 'anim_0', 'anim_1', 'anim_2', 'anim_3','anim_4', 'anim_5', 'anim_6', 'anim_7']);
+		this.newAnimator.playAnimation('Poof', true);
 		// ScaleSprite(this.test1, 50, 50, 0, 1);
 
 		// this.test2 = game.add.sprite(100, 50, 'test_image_2');
@@ -262,8 +266,12 @@ MyGame.MenuState.prototype = {
 		);
 		this.myDialogBox1.addButton('OPTIONS', null,
 		 	function() { //On click...
-				obj.myDialogBox1.hide();
-				obj.game.state.start("OptionsState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				// obj.myDialogBox1.hide();
+				// obj.game.state.start("OptionsState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				if(obj.newAnimator.isPlaying())
+					obj.newAnimator.cancelAnimation();
+				else 
+					obj.newAnimator.playAnimation('Poof');
 			}
 		);
 		this.myDialogBox1.addButton('BACK TO ARCADE', null,

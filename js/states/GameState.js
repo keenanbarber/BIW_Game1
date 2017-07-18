@@ -26,7 +26,7 @@ MyGame.GameState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		this.gameTime = 20000;
+		this.gameTime = 30000;
 		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
@@ -71,7 +71,7 @@ MyGame.GameState.prototype = {
 
 		// Game Timer
 		this.timer = game.time.create();
-		this.gameTimer = this.timer.add(this.gameTime, this.endGameDialogBoxShow, this);
+		
 		// this.gameTimer.add(30000, test);
 		
 		// this.gameTimer.onComplete
@@ -148,7 +148,7 @@ MyGame.GameState.prototype = {
 
 	update: function() {
 		"use strict"; 
-		//console.log("Update");
+		// console.log("Update: " + this.timer.duration);
 		this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
 	},
 
@@ -980,7 +980,7 @@ MyGame.GameState.prototype = {
 					if(tempI < 0)
 						return;
 				}
-				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ x: tileX, y: tileY }, 1000, Phaser.Easing.Bounce.Out, true);
+				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ x: tileX, y: tileY }, 800, Phaser.Easing.Bounce.Out, true);
 				this.tileArray[col][tempI].setArrayPosition(col, i);
 				tweenManager.addTween(tween);
 
@@ -1220,6 +1220,7 @@ MyGame.GameState.prototype = {
 				obj.startGameDialogBox.hide();
 
 				obj.allowBoardInput = true;
+				obj.gameTimer = obj.timer.add(obj.gameTime, obj.endGameDialogBoxShow, obj);
 				obj.timer.start();
 				obj.scanBoard();
 			}
