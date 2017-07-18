@@ -84,36 +84,6 @@ MyGame.GameState.prototype = {
 		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
 		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	
 
-		// // Exit Button
-		// this.button = SpriteButton(100, 100, 'button_exit');
-		// this.button.setBehaviors(
-		// 	function() { //On mouse over...
-		// 		// console.log("Over");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
-		// 	}, 
-		// 	function() { //On mouse off...
-		// 		// console.log("Off");
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	},
-		// 	function() { //On mouse down...
-		// 		// console.log("Down");
-		// 		this.storedScale = new Phaser.Point(this.getSprite().scale.x, this.getSprite().scale.y);
-		// 		// this.getSprite().loadTexture('button_exit_dark');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 0.8, this.getIntendedScale().y * 0.8, 1000);
-		// 	}, 
-		// 	function() { //On mouse up...
-		// 		// console.log("Up");
-		// 		this.getSprite().loadTexture('button_exit');
-		// 		Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
-		// 	}
-		// );
-		// this.button.setClickBehavior(function() {
-		// 	// console.log("CLICK");
-		// 	score = 0;
-		// 	scoreMultiplier = 1;
-		// 	obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-		// });
-		// this.sceneProps.add(this.button.getSprite());
 
 
 		this.initializeBoard();

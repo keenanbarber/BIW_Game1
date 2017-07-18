@@ -42,14 +42,9 @@ MyGame.MenuState.prototype = {
 		// this.newAnimator = Animator(this.test1);
 		// this.newAnimator.newAnimation('Poof', [gameTileKeys[4], 'anim_0', 'anim_1', 'anim_2', 'anim_3','anim_4', 'anim_5', 'anim_6', 'anim_7']);
 		// this.newAnimator.playAnimation('Poof', true);
-
 		// this.newAnimator.addCallOnComplete(function() {
 		// 	console.log(":D");
 		// });
-		// ScaleSprite(this.test1, 50, 50, 0, 1);
-
-		// this.test2 = game.add.sprite(100, 50, 'test_image_2');
-		// ScaleSprite(this.test2, 50, 50, 0, 1);
 
 		
 
@@ -71,9 +66,6 @@ MyGame.MenuState.prototype = {
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.3) ? true : false;
 		if(isLandscape) {
-			// ScaleText(text_test, width/2, height, 10, 1);
-			// text_test.x = game.world.centerX;
-			// text_test.y = height/4;
 
 			// Background
 			ScaleSprite(this.background, width, null, 0, 1);
@@ -93,26 +85,8 @@ MyGame.MenuState.prototype = {
 
 			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 
-			// Buttons
-			// ScaleSprite(this.button1.getSprite(), width/3, height/5, 10, 1);
-			// this.button1.getSprite().x = width / 4;
-			// this.button1.getSprite().y = height * 1/4;
-			// this.button1.updateIntendedScale();
-
-			// ScaleSprite(this.button2.getSprite(), width/3, height/5, 10, 1);
-			// this.button2.getSprite().x = width / 4;
-			// this.button2.getSprite().y = height * 2/4;
-			// this.button2.updateIntendedScale();
-
-			// ScaleSprite(this.button3.getSprite(), width/3, height/5, 10, 1);
-			// this.button3.getSprite().x = width / 4;
-			// this.button3.getSprite().y = height * 3/4;
-			// this.button3.updateIntendedScale();
 		}
 		else {
-			// ScaleText(text_test, width, height, 20, 1);
-			// text_test.x = game.world.centerX;
-			// text_test.y = game.world.centerY/2;
 
 			// Background
 			ScaleSprite(this.background, width, null, 0, 1);
@@ -131,21 +105,6 @@ MyGame.MenuState.prototype = {
 			// this.myDialogBox1.resize(width/2, height/4);
 			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 
-			// Buttons
-			// ScaleSprite(this.button1.getSprite(), width/2, height/5, 5, 1);
-			// this.button1.getSprite().x = width / 2;
-			// this.button1.getSprite().y = height * 3/6;
-			// this.button1.updateIntendedScale();
-
-			// ScaleSprite(this.button2.getSprite(), width/2, height/5, 5, 1);
-			// this.button2.getSprite().x = width / 2;
-			// this.button2.getSprite().y = height * 4/6;
-			// this.button2.updateIntendedScale();
-
-			// ScaleSprite(this.button3.getSprite(), width/2, height/5, 5, 1);
-			// this.button3.getSprite().x = width / 2;
-			// this.button3.getSprite().y = height * 5/6;
-			// this.button3.updateIntendedScale();
 		}
 	},
 
@@ -242,20 +201,6 @@ MyGame.MenuState.prototype = {
 		// TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
 
 
-		// let myStyle = { font: "14px Avenir", fill: '#ffffff', wordWrap: true, wordWrapWidth: game.world.width };
-		// let message = game_details_data.user_details.name + ", you have " + game_details_data.user_details.points + " points. ";
-		// let horizontalTextAlign = 'left';
-		// let verticalTextAlign = 'center';
-		// let textX = 20;
-		// let textY = 20;
-		// let anchorX = 0.0;
-		// let anchorY = 0.0;
-
-		// let myText = game.add.text(textX, textY, message, myStyle);
-		// myText.anchor.setTo(anchorX, anchorY);
-		// myText.align = obj.horizontalTextAlign;
-
-
 
 		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
 		this.myDialogBox1.addTextSegment("INSTRUCTIONS",
@@ -284,40 +229,7 @@ MyGame.MenuState.prototype = {
 		this.myDialogBox1.show();
 
 
-		// FOR END SCREEN!
-		// =============================================
-		// this.myDialogBox1 = DialogBox();
-		// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-		// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
-		// this.myDialogBox1.addTextSegment("200", { font: "40px font_2", fill: '#ffffff' }, 'center', 'top');
-		// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center', 'top');
-		// this.myDialogBox1.addButton('CLAIM NOW', null,
-		//  	function() { //On click...
-		// 		obj.myDialogBox1.hide();
-		// 	}
-		// );
-		// this.myDialogBox1.show();
-
-
-
-
 	}, 
-
-	
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
 
 
 
