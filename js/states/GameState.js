@@ -79,6 +79,11 @@ MyGame.GameState.prototype = {
 		// Progress Bar
 		this.progressBar = ProgressBar(300, 20);
 
+		// Dialog Boxes
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	
+
 		// // Exit Button
 		// this.button = SpriteButton(100, 100, 'button_exit');
 		// this.button.setBehaviors(
@@ -162,8 +167,13 @@ MyGame.GameState.prototype = {
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
-			// // Progress Bar
+			// Progress Bar
 			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
+
+			// Dialog Boxes
+			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
 
 			// Board Selection Squares
@@ -240,6 +250,11 @@ MyGame.GameState.prototype = {
 
 			// Progress Bar
 			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
+
+			// Dialog Boxes
+			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
 			// // Score Display
 			// this.scoreDisplay.x = this.horizontalMargin;
@@ -1217,7 +1232,7 @@ MyGame.GameState.prototype = {
 	endGameDialogBoxShow: function() {
 		this.allowBoardInput = false;
 		let obj = this;
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		
 		this.endGameDialogBox.addTextSegment("TIME'S UP!",
 			{ font: "30px font_2", fill: '#ffffff' }, 'center');
 		this.endGameDialogBox.addTextSegment("HOW WELL DO YOU THINK YOU DID?",
@@ -1237,8 +1252,7 @@ MyGame.GameState.prototype = {
 
 		this.endGameDialogBox.show();
 
-
-		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+ 
 		this.endGameDialogBox2.addTextSegment("IT COULDN'T BE THAT BAD...",
 			{ font: "14px font_1", fill: '#ffffff' }, 'center');
 		this.endGameDialogBox2.addButton('YES IT CAN.', null,
@@ -1251,7 +1265,7 @@ MyGame.GameState.prototype = {
 
 	startGameDialogBoxShow: function() {
 		let obj = this;
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		 
 		this.startGameDialogBox.addTextSegment("ARE YOU READY?",
 			{ font: "20px font_2", fill: '#ffffff' }, 'center');
 		this.startGameDialogBox.addButton('YES!', null,
