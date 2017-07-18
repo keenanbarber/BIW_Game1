@@ -21,7 +21,7 @@ MyGame.BootState.prototype = {
 		game.scale.parentIsWindow = true;
 		game.stage.disableVisibilityChange = true;
 
-		window.addEventListener('resize', this.onResize, false);
+		// window.addEventListener('resize', this.onResize, false);
 
 
 		// game.scale.setMinMax(200, 300, 800, 600);
@@ -63,7 +63,7 @@ MyGame.BootState.prototype = {
 		// this.game.state.start(stateToStart, clearGameWorld, clearCache, passedToTargetStatesInitFunction);
 	}, 
 
-	onResize: function() {
+	resize: function() {
 		console.log("Resizing...");
 		UpdateScreenInfo();
 

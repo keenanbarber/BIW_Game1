@@ -217,7 +217,7 @@ function GroupTweenManager() {
 		this.animArray.push(_anim);
 		_anim.addCallOnComplete(function() {
 			obj.animArray.pop(_anim);
-			console.log(obj.tweenArray.length + " + " + obj.animArray.length + " things remaining.")
+			// console.log(obj.tweenArray.length + " + " + obj.animArray.length + " things remaining.")
 			if(obj.tweenArray.length == 0 && obj.animArray.length == 0 && obj.bool == false) {
 				if(obj.funcToCallOnComplete) {
 					game.time.events.add(10, obj.funcToCallOnComplete, this);

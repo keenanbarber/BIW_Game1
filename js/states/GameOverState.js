@@ -187,6 +187,7 @@ MyGame.GameOverState.prototype = {
 		this.myDialogBox1.addButton('CLAIM NOW', null,
 		 	function() { //On click...
 				obj.myDialogBox1.hide();
+				obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.myDialogBox1.addButton('REPLAY', null,

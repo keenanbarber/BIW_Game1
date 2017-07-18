@@ -26,7 +26,7 @@ MyGame.GameState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		this.gameTime = 10000;
+		this.gameTime = 30000;
 		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
@@ -1222,7 +1222,7 @@ MyGame.GameState.prototype = {
 			{ font: "30px font_2", fill: '#ffffff' }, 'center');
 		this.endGameDialogBox.addTextSegment("HOW WELL DO YOU THINK YOU DID?",
 			{ font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addButton('PRETTY GOOD.', null,
+		this.endGameDialogBox.addButton('PRETTY GOOD. SHOW ME THE RESULTS.', null,
 		 	function() { //On click...
 				obj.endGameDialogBox.hide();
 				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
