@@ -26,7 +26,7 @@ MyGame.GameState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		this.gameTime = 30000;
+		this.gameTime = 10000;
 		this.allowBoardInput = false;
 
 		// Exit the previous scene/state...
@@ -594,6 +594,10 @@ MyGame.GameState.prototype = {
 		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
 		let tile = this.boardSprite(x, y, gameTileKeys[num]); // The resulting tile.
 		tile.getSprite().anchor.setTo(0.5);
+
+		tile.animator = Animator(tile.getSprite());
+		tile.animator.newAnimation('disappear', ['anim_0', 'anim_1', 'anim_2', 'anim_3','anim_4', 'anim_5', 'anim_6', 'anim_7']);
+
 		return tile;
 	},
 
@@ -604,6 +608,8 @@ MyGame.GameState.prototype = {
 		obj.arrayPositionY = 0;
 		obj.sprite = game.add.sprite(x, y, spriteKey);
 		obj.key = spriteKey;
+
+		obj.animator = null;
 
 		obj.getSprite = function() {
 			return this.sprite;
@@ -658,7 +664,7 @@ MyGame.GameState.prototype = {
 			and their physical positions.
 	________________________________________*/
 	swapTiles: function(t1, t2, scanOnComplete) {
-		let swapDuration = 300;
+		let swapDuration = 200;
 		let x1 = t1.getArrayPosition().x;
 		let y1 = t1.getArrayPosition().y;
 		let x2 = t2.getArrayPosition().x;
@@ -954,17 +960,31 @@ MyGame.GameState.prototype = {
 	},
 
 	removeTile: function(col, row) {
-		let removeDuration = 300;
+		let removeDuration = 500;
 		let target = this.tileArray[col][row].getSprite();
+		let obj = this;
 
-		let tween = game.add.tween(target.scale).to({ x: 0, y: 0 }, removeDuration, Phaser.Easing.Linear.None, true);
-		tweenManager.addTween(tween);
+		if(this.tileArray[col][row].animator == null) {
+			let tween = game.add.tween(target.scale).to({ x: 0, y: 0 }, removeDuration, Phaser.Easing.Linear.None, true);
+			tweenManager.addTween(tween);
 
-		tween.onComplete.addOnce(function() { // Removes the tile after it has finished its tween.
-			target.destroy();
-			this.tileGroup.remove(this.tileArray[col][row]);
-			this.tileArray[col][row] = null; 
-		}, this);
+			tween.onComplete.addOnce(function() { // Removes the tile after it has finished its tween.
+				target.destroy();
+				this.tileGroup.remove(this.tileArray[col][row]);
+				this.tileArray[col][row] = null; 
+			}, this);
+		}
+		else {
+			this.tileArray[col][row].animator.setTimeToTimeDividedByFrameCount('disappear', removeDuration);
+			this.tileArray[col][row].animator.playAnimation('disappear', false);
+			tweenManager.addAnimation(this.tileArray[col][row].animator);
+
+			this.tileArray[col][row].animator.addCallOnComplete(function() { // Removes the tile after it has finished its tween.
+				target.destroy();
+				obj.tileGroup.remove(obj.tileArray[col][row]);
+				obj.tileArray[col][row] = null; 
+			});
+		}
 	}, 
 
 	updateColumn: function(col) {
@@ -1022,7 +1042,7 @@ MyGame.GameState.prototype = {
 
 					ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 
-					let tween = game.add.tween(tile.getSprite()).to({ x: tileX, y: tileY }, 1000, Phaser.Easing.Bounce.Out, true);
+					let tween = game.add.tween(tile.getSprite()).to({ x: tileX, y: tileY }, 900, Phaser.Easing.Bounce.Out, true);
 					tile.setArrayPosition(col, i);
 					tweenManager.addTween(tween);
 				}
@@ -1198,16 +1218,35 @@ MyGame.GameState.prototype = {
 		this.allowBoardInput = false;
 		let obj = this;
 		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
-		this.endGameDialogBox.addTextSegment("NICE JOB!",
-			{ font: "20px font_2", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addButton('NEXT', null,
+		this.endGameDialogBox.addTextSegment("TIME'S UP!",
+			{ font: "30px font_2", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox.addTextSegment("HOW WELL DO YOU THINK YOU DID?",
+			{ font: "14px font_1", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox.addButton('PRETTY GOOD.', null,
 		 	function() { //On click...
 				obj.endGameDialogBox.hide();
 				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
+		this.endGameDialogBox.addButton("PLEASE DON'T SHOW ME MY SCORE.", null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.endGameDialogBox2.show();
+			}
+		);
 
 		this.endGameDialogBox.show();
+
+
+		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.endGameDialogBox2.addTextSegment("IT COULDN'T BE THAT BAD...",
+			{ font: "14px font_1", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox2.addButton('YES IT CAN.', null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			}
+		);
 	}, 
 
 	startGameDialogBoxShow: function() {

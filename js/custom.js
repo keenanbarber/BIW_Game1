@@ -191,6 +191,7 @@ _________________________________________*/
 function GroupTweenManager() {
 	let obj = {};
 	obj.tweenArray = [];
+	obj.animArray = [];
 	obj.funcToCallOnComplete;
 	obj.bool = false;
 
@@ -203,13 +204,27 @@ function GroupTweenManager() {
 		_tween.onComplete.addOnce(function() {
 			this.tweenArray.pop(_tween);
 			// console.log(this.tweenArray.length + " tweens remaining.")
-			if(this.tweenArray.length == 0 && this.bool == false) {
+			if(this.tweenArray.length == 0 && this.animArray.length == 0 && this.bool == false) {
 				if(this.funcToCallOnComplete) {
 					game.time.events.add(10, this.funcToCallOnComplete, this);
 				}
 				this.bool = true;
 			}
 		}, this);
+	};
+	obj.addAnimation = function(_anim) {
+		let obj = this;
+		this.animArray.push(_anim);
+		_anim.addCallOnComplete(function() {
+			obj.animArray.pop(_anim);
+			console.log(obj.tweenArray.length + " + " + obj.animArray.length + " things remaining.")
+			if(obj.tweenArray.length == 0 && obj.animArray.length == 0 && obj.bool == false) {
+				if(obj.funcToCallOnComplete) {
+					game.time.events.add(10, obj.funcToCallOnComplete, this);
+				}
+				obj.bool = true;
+			}
+		});
 	};
 	obj.clearTweenArray = function() {
 		// for(let i = 0; i < this.tweenArray.length; i++) {
@@ -1014,7 +1029,7 @@ function Animator(targetSprite) {
 	obj.frameTimer;
 
 	obj._isPlaying = false;
-	obj.funcToCallOnComplete;
+	obj.funcsToCallOnComplete = [];
 
 	obj.currentAnimation = '';
 	obj.frameTime = 60;
@@ -1029,12 +1044,13 @@ function Animator(targetSprite) {
 		});
 	};
 	obj.playAnimation = function(name, loopBool) {
+		obj.cancelAnimation();
 		obj._isPlaying = true;
 		obj.loopCurrentAnim = loopBool;
 		obj.currentAnimation = name;
 		for(let i = 0; i < obj.animations.length; i++) {
 			if(obj.animations[i].name === name) {
-				console.log("Found '" + name + "' with (" + obj.animations[i].frameKeys.length + ") frames.");
+				// console.log("Found '" + name + "' with (" + obj.animations[i].frameKeys.length + ") frames.");
 				obj.currentAnimationNum = i;
 
 				// obj.frameTimer = obj.timer.add(obj.animationTime, obj.endGameDialogBoxShow, obj);
@@ -1046,8 +1062,9 @@ function Animator(targetSprite) {
 		}
 		console.log("Animation '" + name + "' not found!");
 	}
-	obj.callOnComplete = function(func) {
-		obj.funcToCallOnComplete = func;
+	obj.addCallOnComplete = function(func) {
+		obj.funcsToCallOnComplete.push(func);
+		// obj.funcToCallOnComplete = func;
 	};
 	obj.resetAnimationDetails = function() {
 		obj._isPlaying = false;
@@ -1056,12 +1073,16 @@ function Animator(targetSprite) {
 		obj.frameTimer = null;
 		obj.currentAnimation = '';
 		obj.currentAnimationNum = 0;
+		obj.currentFrameNum = 0;
 		targetSprite.loadTexture(obj.originalSprite);
 	};
 	obj.endAnimation = function() {
 		obj.resetAnimationDetails();
-		if(obj.funcToCallOnComplete)
-			obj.funcToCallOnComplete();
+		if(obj.funcsToCallOnComplete) {
+			for(let i = 0; i < obj.funcsToCallOnComplete.length; i++) {
+				obj.funcsToCallOnComplete[i]();
+			}
+		}
 	};
 	obj.cancelAnimation = function() {
 		obj.resetAnimationDetails();
@@ -1077,12 +1098,27 @@ function Animator(targetSprite) {
 				return;
 			}
 		}
-		console.log("New Frame: " + obj.currentFrameNum);
+		// console.log("New Frame: " + obj.currentFrameNum);
 		targetSprite.loadTexture(obj.animations[obj.currentAnimationNum].frameKeys[obj.currentFrameNum]);
 		obj.currentFrameNum++;
 	};
+	obj.setTimeToTimeDividedByFrameCount = function(anim, time) {
+		for(let i = 0; i < obj.animations.length; i++) {
+			if(obj.animations[i].name === anim) {
+				obj.frameTime = time / obj.animations[i].frameKeys.length;
+				return;
+			}
+		}
+		console.log("Animation '" + anim + "' not found!");
+	};
 	obj.isPlaying = function() {
 		return obj._isPlaying;
+	};
+	obj.setFPS = function(fps) {
+		obj.frameTime = (1/fps) * 1000;
+	};
+	obj.setFrametime = function(val) {
+		obj.frameTime = val;
 	};
 
 	return obj;
