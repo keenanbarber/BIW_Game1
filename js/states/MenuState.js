@@ -101,11 +101,13 @@ MyGame.MenuState.prototype = {
 
 			// Title
 			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = width/2;
-			this.title.y = height/2 - this.title.height/2;
+			this.title.x = (width / 2) + (game_details_data.position_adjustment.title_image_X_offset * window.devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.position_adjustment.title_image_Y_offset * window.devicePixelRatio);
 
 			// Dialog Box
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
+			this.myDialogBox1.setPosition(
+				game.world.centerX + (game_details_data.position_adjustment.menu_dialog_box_X_offset * window.devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.position_adjustment.menu_dialog_box_Y_offset * window.devicePixelRatio));
 		}
 		else {
 			// Background
@@ -118,11 +120,13 @@ MyGame.MenuState.prototype = {
 
 			// Title
 			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = width/2;
-			this.title.y = height/2 - this.title.height/2;
+			this.title.x = (width / 2) + (game_details_data.position_adjustment.title_image_X_offset * window.devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.position_adjustment.title_image_Y_offset * window.devicePixelRatio);
 
 			// Dialog Box
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
+			this.myDialogBox1.setPosition(
+				game.world.centerX + (game_details_data.position_adjustment.menu_dialog_box_X_offset * window.devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.position_adjustment.menu_dialog_box_Y_offset * window.devicePixelRatio));
 		}
 	},
 
