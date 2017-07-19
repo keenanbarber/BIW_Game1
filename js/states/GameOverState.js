@@ -52,12 +52,12 @@ MyGame.GameOverState.prototype = {
 				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 			}
 		);
-		this.myDialogBox1.addButton('REPLAY', null,
-		 	function() { //On click...
-				obj.myDialogBox1.hide();
-				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-			}
-		);
+		// this.myDialogBox1.addButton('REPLAY', null,
+		//  	function() { //On click...
+		// 		obj.myDialogBox1.hide();
+		// 		obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		// 	}
+		// );
 		this.sceneProps.add(this.myDialogBox1.getGraphicsSprite());
 
 
