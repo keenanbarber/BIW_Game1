@@ -31,7 +31,7 @@ MyGame.GameState.prototype = {
 		this.game.input.onUp.add(this.end_swipe, this);
 
 		// State Specific Variables
-		this.gameTime = 2000;
+		this.gameTime = 30000;
 		this.allowBoardInput = false;
 		this.gameTimerRunning = false;
 

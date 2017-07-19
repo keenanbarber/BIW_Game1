@@ -848,7 +848,6 @@ function DialogBox(x, y, availableSpaceWidth) {
 		if(obj.buttons.length > 0) {
 			let tempButtonHeight = 0;
 			for (let i = 0; i < obj.buttons.length; i++) {
-				// console.log(obj.textGroup[i]);
 				let yVal = -obj.boxHeight/2 + (2 * obj.textPadding) + tempTextHeight + tempButtonHeight + (i * 10);
 				obj.buttons[i].getSprite().y = yVal;
 				obj.buttonsText[i].y = yVal;
