@@ -672,6 +672,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 
 	obj.textHeight = 0;
 	obj.largestButtonTexture = null;
+	obj.myTimer = null;
 
 
 	obj.destroy = function() {
@@ -698,6 +699,17 @@ function DialogBox(x, y, availableSpaceWidth) {
 		tweenShrink.onComplete.addOnce(function() {
 			thisObj.graphicsSprite.visible = false;
 		}, this);
+	};
+
+	obj.setLifetime = function(time, funcToCallOnComplete) {
+		let myFunc = function() {
+			if(funcToCallOnComplete)
+				funcToCallOnComplete();
+			obj.hide
+		};
+		obj.myTimer = game.time.create(false);
+		obj.myTimer.add(time, myFunc, this);
+		obj.myTimer.start(0);
 	};
 
 	obj.addTextSegment = function(text, style, horizontalAlign) {

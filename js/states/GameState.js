@@ -577,12 +577,13 @@ MyGame.GameState.prototype = {
 
 	placeTile: function(x, y) {
 		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
-		let tile = this.boardSprite(x, y, gameTileKeys[num]); // The resulting tile.
+		let tile = this.boardSprite(x, y, gameTileKeys[num].key); // The resulting tile.
 		tile.getSprite().anchor.setTo(0.5);
 
-		tile.animator = Animator(tile.getSprite());
-		tile.animator.newAnimation('disappear', ['anim_0', 'anim_1', 'anim_2', 'anim_3','anim_4', 'anim_5', 'anim_6', 'anim_7']);
-
+		if(gameTileKeys[num].disappear_animation_frames.length != 0) {
+			tile.animator = Animator(tile.getSprite());
+			tile.animator.newAnimation('disappear', gameTileKeys[num].disappear_animation_frames);
+		}
 		return tile;
 	},
 
@@ -1250,6 +1251,7 @@ MyGame.GameState.prototype = {
 		);
 
 		this.startGameDialogBox.show();
+		this.startGameDialogBox.setLifetime(2000, this.startGameDialogBox.hide);
 	}
 
 

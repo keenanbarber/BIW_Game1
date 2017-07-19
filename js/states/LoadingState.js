@@ -67,15 +67,25 @@ MyGame.LoadingState.prototype = {
 	    		switch (asset_key) {
 	    			case "game_tiles":
 	    				for (let i = 0; i < assets[asset_key].length; i++) {
-	    					this.load.image("tile_" + i, assets[asset_key][i]);
-	    					gameTileKeys.push("tile_" + i);
+	    					this.load.image("tile_" + i, assets[asset_key][i].main_sprite_source);
+	    					gameTileKeys.push(
+		    					{
+		    						"key": "tile_" + i, 
+		    						"disappear_animation_frames": []
+		    					}
+	    					);
+	    					for (let j = 0; j < assets[asset_key][i].disappear_animation_frames.length; j++) {
+	    						this.load.image("tile_" + i + "_disappear_" + j, assets[asset_key][i].disappear_animation_frames[j]);
+	    						gameTileKeys[i].disappear_animation_frames.push( "tile_" + i + "_disappear_" + j );
+	    					}
 	    				}
+	    				console.log(gameTileKeys);
 	    				break;
-	    			case "sprite_animation_frames": 
-	    				for (let i = 0; i < assets[asset_key].length; i++) {
-	    					this.load.image("anim_" + i, assets[asset_key][i]);
-	    				}
-	    				break;
+	    			// case "sprite_animation_frames": 
+	    			// 	for (let i = 0; i < assets[asset_key].length; i++) {
+	    			// 		this.load.image("anim_" + i, assets[asset_key][i]);
+	    			// 	}
+	    			// 	break;
 	    			case "font_files":
 	    				// assets = assets_2
 	    				// asset_key = font_files

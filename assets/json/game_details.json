@@ -12,22 +12,67 @@
     },
     "assets_2": {
         "game_tiles": [
-            "assets/images/PinkGuy.svg", 
-            "assets/images/PurpleGuy.svg", 
-            "assets/images/RedGuy.svg", 
-            "assets/images/TealGuy.svg", 
-            "assets/images/BlueGuy.svg"
+            {   "main_sprite_source": "assets/images/martian_blue.svg", 
+                "disappear_animation_frames": [
+                    "assets/images/animation/sprite_blue_01.svg", 
+                    "assets/images/animation/sprite_blue_02.svg", 
+                    "assets/images/animation/sprite_blue_03.svg", 
+                    "assets/images/animation/sprite_blue_04.svg", 
+                    "assets/images/animation/sprite_blue_05.svg", 
+                    "assets/images/animation/sprite_blue_06.svg", 
+                    "assets/images/animation/sprite_blue_07.svg", 
+                    "assets/images/animation/sprite_blue_08.svg"
+                ]
+            },
+            {   "main_sprite_source": "assets/images/martian_green.svg",
+                "disappear_animation_frames": [
+                    "assets/images/animation/sprite_green_01.svg", 
+                    "assets/images/animation/sprite_green_02.svg", 
+                    "assets/images/animation/sprite_green_03.svg", 
+                    "assets/images/animation/sprite_green_04.svg", 
+                    "assets/images/animation/sprite_green_05.svg", 
+                    "assets/images/animation/sprite_green_06.svg", 
+                    "assets/images/animation/sprite_green_07.svg", 
+                    "assets/images/animation/sprite_green_08.svg"
+                ]
+            },
+            {   "main_sprite_source": "assets/images/martian_pink.svg", 
+                "disappear_animation_frames": [
+                    "assets/images/animation/sprite_pink_01.svg", 
+                    "assets/images/animation/sprite_pink_02.svg", 
+                    "assets/images/animation/sprite_pink_03.svg", 
+                    "assets/images/animation/sprite_pink_04.svg", 
+                    "assets/images/animation/sprite_pink_05.svg", 
+                    "assets/images/animation/sprite_pink_06.svg", 
+                    "assets/images/animation/sprite_pink_07.svg", 
+                    "assets/images/animation/sprite_pink_08.svg"
+                ]
+            },
+            {   "main_sprite_source": "assets/images/martian_purple.svg", 
+                "disappear_animation_frames": [
+                    "assets/images/animation/sprite_purple_01.svg", 
+                    "assets/images/animation/sprite_purple_02.svg", 
+                    "assets/images/animation/sprite_purple_03.svg", 
+                    "assets/images/animation/sprite_purple_04.svg", 
+                    "assets/images/animation/sprite_purple_05.svg", 
+                    "assets/images/animation/sprite_purple_06.svg", 
+                    "assets/images/animation/sprite_purple_07.svg", 
+                    "assets/images/animation/sprite_purple_08.svg"
+                ]
+            },
+            {   "main_sprite_source": "assets/images/martian_red.svg", 
+                "disappear_animation_frames": [
+                    "assets/images/animation/sprite_red_01.svg", 
+                    "assets/images/animation/sprite_red_02.svg", 
+                    "assets/images/animation/sprite_red_03.svg", 
+                    "assets/images/animation/sprite_red_04.svg", 
+                    "assets/images/animation/sprite_red_05.svg", 
+                    "assets/images/animation/sprite_red_06.svg", 
+                    "assets/images/animation/sprite_red_07.svg", 
+                    "assets/images/animation/sprite_red_08.svg"
+                ]
+            }
         ], 
-        "sprite_animation_frames": [
-            "assets/images/sprite_blue_01.svg", 
-            "assets/images/sprite_blue_02.svg", 
-            "assets/images/sprite_blue_03.svg", 
-            "assets/images/sprite_blue_04.svg", 
-            "assets/images/sprite_blue_05.svg", 
-            "assets/images/sprite_blue_06.svg", 
-            "assets/images/sprite_blue_07.svg", 
-            "assets/images/sprite_blue_08.svg"
-        ],
         "font_files": {
             "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
             "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
