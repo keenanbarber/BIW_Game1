@@ -10,16 +10,20 @@ MyGame.GameOverState = function() {
 };
 
 MyGame.GameOverState.prototype = {
-	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
+	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
-		this.game_details_data = game_details_data;
-		this.MINIMUM_SWIPE_LENGTH = 40;
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		UpdateScreenInfo();
+		// Add events to check for swipe
+		this.game.input.onDown.add(this.start_swipe, this);
+		this.game.input.onUp.add(this.end_swipe, this);
+
+		// State Specific Variables
+		this.MINIMUM_SWIPE_LENGTH = 40;
+
 		// Exit the previous scene/state...
-		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
+		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, 1000, configuration.transition_easing)); }
 	},
 	
 	preload: function() {
@@ -28,16 +32,41 @@ MyGame.GameOverState.prototype = {
 
 	create: function() {
 		"use strict"; 
-
+		let obj = this;
 		this.sceneProps = game.add.group();
 
-		this.addComponents();
+		// Title
+		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'end_game_image');
+		this.title.anchor.setTo(0.5);
+		this.sceneProps.add(this.title);
 
-		// Add events to check for swipe
-		this.game.input.onDown.add(this.start_swipe, this);
-		this.game.input.onUp.add(this.end_swipe, this);
+		// End screen dialog
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
+		this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
+		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
+		this.myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
+		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
+		this.myDialogBox1.addButton('CLAIM NOW', null,
+		 	function() { //On click...
+				obj.myDialogBox1.hide();
+				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			}
+		);
+		this.myDialogBox1.addButton('REPLAY', null,
+		 	function() { //On click...
+				obj.myDialogBox1.hide();
+				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			}
+		);
+		this.sceneProps.add(this.myDialogBox1.getGraphicsSprite());
 
-		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+
+
+		// Enter this new scene
+		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
+		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
+			obj.myDialogBox1.show();
+		});
 		this.positionComponents(game.width, game.height);
 	},
 
@@ -50,34 +79,34 @@ MyGame.GameOverState.prototype = {
 		let isLandscape = (game.height / game.width < 1.3) ? true : false;
 		if(isLandscape) {
 			// Background
-			ScaleSprite(this.background, width, 9999, 0, 1);
-			if(this.background.height < height) {
-				ScaleSprite(this.background, 9999, height, 0, 1);
+			ScaleSprite(background, width, null, 0, 1);
+			if(background.height < height) {
+				ScaleSprite(background, null, height, 0, 1);
 			}
-			this.background.x = game.world.centerX;
-			this.background.y = height;
+			background.x = game.world.centerX;
+			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, height * 3/4, 10, 1);
+			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
 			this.title.x = width/2;
-			this.title.y = height * (3/4) * (2/3);
+			this.title.y = height/2 - this.title.height/2;
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
 		}
 		else {
 			// Background
-			ScaleSprite(this.background, width, null, 0, 1);
-			if(this.background.height < height) {
-				ScaleSprite(this.background, null, height, 0, 1);
+			ScaleSprite(background, width, null, 0, 1);
+			if(background.height < height) {
+				ScaleSprite(background, null, height, 0, 1);
 			}
-			this.background.x = game.world.centerX;
-			this.background.y = height;
+			background.x = game.world.centerX;
+			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, height * 3/4, 10, 1);
+			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
 			this.title.x = width/2;
-			this.title.y = height * (3/4) * (2/3);
+			this.title.y = height/2 - this.title.height/2;
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
@@ -159,53 +188,7 @@ MyGame.GameOverState.prototype = {
 
 		console.log("Swipe: " + bestVector);
 		return bestVector;
-	}, 
-
-	addComponents: function() {
-		let obj = this; // Reference to the scene
-
-		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
-		this.background.anchor.setTo(0.5, 1);
-		this.sceneProps.add(this.background);
-
-		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
-		this.title.anchor.setTo(0.5);
-		this.sceneProps.add(this.title);
-		// this.title.alpha = 0.1;
-		// TweenProps(this.title, FadeTween("FADE_IN", 1000, Phaser.Easing.Linear.None));
-
-
-
-
-		// End screen dialog
-		// =============================================
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
-		this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
-		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addButton('CLAIM NOW', null,
-		 	function() { //On click...
-				obj.myDialogBox1.hide();
-				obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-		this.myDialogBox1.addButton('REPLAY', null,
-		 	function() { //On click...
-				obj.myDialogBox1.hide();
-				obj.game.state.start("MenuState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-		this.myDialogBox1.show();
-
-
-	}, 
-
-
-
-
-
-
+	}
 
 
 };

@@ -79,13 +79,7 @@ MyGame.LoadingState.prototype = {
 	    						gameTileKeys[i].disappear_animation_frames.push( "tile_" + i + "_disappear_" + j );
 	    					}
 	    				}
-	    				console.log(gameTileKeys);
 	    				break;
-	    			// case "sprite_animation_frames": 
-	    			// 	for (let i = 0; i < assets[asset_key].length; i++) {
-	    			// 		this.load.image("anim_" + i, assets[asset_key][i]);
-	    			// 	}
-	    			// 	break;
 	    			case "font_files":
 	    				// assets = assets_2
 	    				// asset_key = font_files
@@ -143,6 +137,6 @@ MyGame.LoadingState.prototype = {
 
 	create: function() {
 		"use strict"; 
-		this.game.state.start("MenuState", true, false, this.game_details_data, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
+		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}
 };

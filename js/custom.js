@@ -133,7 +133,7 @@ function EnterNewScene(newScenesProps, _tween) {
 function ExitPreviousScene(previousScenesProps, _tween) {
 	let tween = TweenProps(previousScenesProps, _tween);
 	tween.onComplete.add(function() { ClearSceneProps(previousScenesProps); }, this);
-	tweenManager.clearTweenArray();
+	tweenManager.clear();
 	tweenManager.addTween(tween);
 }
 function ClearSceneProps(group) {
@@ -226,14 +226,15 @@ function GroupTweenManager() {
 			}
 		});
 	};
-	obj.clearTweenArray = function() {
+	obj.clear = function() {
 		// for(let i = 0; i < this.tweenArray.length; i++) {
 		// 	this.tweenArray[i].stop(true);
 		// }
 		this.tweenArray = [];
+		this.animArray = [];
 	};
 	obj.getSize = function() {
-		return this.tweenArray.length;
+		return (this.tweenArray.length + this.animArray.length);
 	}
 
 	return obj;
@@ -786,10 +787,13 @@ function DialogBox(x, y, availableSpaceWidth) {
 		
 		newButton.setBehaviors(
 			function() { //On mouse over...
-				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x * 1.1, this.getIntendedScale().y * 1.1, 1000);
+				let newScale = (this.getSprite().width + obj.textPadding) / this.getSprite().width;
+				Tweenimate_ElasticScale(this.getSprite(), newScale, this.getIntendedScale().y, 1000);
+				game.canvas.style.cursor = "pointer";
 			}, 
 			function() { //On mouse off...
 				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+				game.canvas.style.cursor = "default";
 			},
 			function() { //On mouse down...
 			}, 
@@ -887,7 +891,9 @@ function DialogBox(x, y, availableSpaceWidth) {
 		return obj.boxWidth;
 	};
 
-
+	obj.getGraphicsSprite = function() {
+		return obj.graphicsSprite;
+	};
 
 
 
@@ -973,7 +979,9 @@ function ProgressBar(width, height) {
 	let obj = {};
 	let graphics;
 	let graphicsTexture;
+	obj.originalHeight = height;
 	obj.progressPercentage = 0;
+	obj.progressBarGroup = game.add.group(0, 0);
 
 	graphics = game.add.graphics(0,0);
 	graphics.beginFill('0x68588C',1);
@@ -982,8 +990,9 @@ function ProgressBar(width, height) {
 	graphicsTexture = graphics.generateTexture();
 	graphics.destroy();
 
-	obj.progressBarFill = game.add.sprite(game.world.centerX, 100, graphicsTexture);
+	obj.progressBarFill = game.add.sprite(0, 0, graphicsTexture);
 	obj.progressBarFill.anchor.setTo(0, 0.5);
+	obj.progressBarGroup.add(obj.progressBarFill);
 
 
 	// Progress Bar
@@ -995,8 +1004,9 @@ function ProgressBar(width, height) {
 	graphicsTexture = graphics.generateTexture();
 	graphics.destroy();
 
-	obj.progressBar = game.add.sprite(game.world.centerX, 100, graphicsTexture);
+	obj.progressBar = game.add.sprite(0, 0, graphicsTexture);
 	obj.progressBar.anchor.setTo(0, 0.5);
+	obj.progressBarGroup.add(obj.progressBar);
 
 
 	obj.updateProgress = function(perc) { // 0 - 1
@@ -1014,11 +1024,23 @@ function ProgressBar(width, height) {
 	};
 
 	obj.setPosition = function(x, y) {
-		obj.progressBar.x = x;
-		obj.progressBar.y = y;
+		obj.progressBarGroup.x = x;
+		obj.progressBarGroup.y = y;
 
-		obj.progressBarFill.x = x;
-		obj.progressBarFill.y = y;
+		// obj.progressBarFill.x = x;
+		// obj.progressBarFill.y = y;
+	};
+
+	obj.setWidth = function(width) {
+		graphics = game.add.graphics(0,0);
+		graphics.lineStyle(2, '0xFFFFFF');
+		// graphics.beginFill('0x68588C',1);
+		graphics.drawRoundedRect(0,0,width,obj.originalHeight,10);
+		graphics.endFill();
+		graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+
+		obj.progressBar.loadTexture(graphicsTexture);
 	};
 
 	obj.getHeight = function() {
@@ -1027,6 +1049,9 @@ function ProgressBar(width, height) {
 
 	obj.getWidth = function() {
 		return obj.progressBar.width;
+	};
+	obj.getGroup = function() {
+		return obj.progressBarGroup;
 	};
 
 	return obj;

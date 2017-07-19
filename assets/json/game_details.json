@@ -5,8 +5,7 @@
         "button_exit": {"type": "image", "source": "assets/images/button_exit.png"},
 
         "title": {"type": "image", "source": "assets/images/title_MartianMatch.png"},
-        "end_game_image": {"type": "image", "source": "assets/images/UFO.svg"},
-        "background": {"type": "image", "source": "assets/images/background.png"},
+        "end_game_image": {"type": "image", "source": "assets/images/UFO.png"},
 
         "test_beep" : {"type": "audio", "source": "assets/audio/Beep1.wav"} 
     },
@@ -79,7 +78,7 @@
         },
         "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",
-        "background_image": "assets/images/background.png", 
+        "background_image": "assets/images/background_2.png", 
         "stopwatch": "assets/images/Stopwatch.svg"
     },
 	"game_details": {

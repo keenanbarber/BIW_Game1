@@ -19,18 +19,24 @@ MyGame.GameState = function(game) {
 
 MyGame.GameState.prototype = {
 
-	init: function(game_details_data, previousStateProps, oldSceneTransition, newSceneTransition) {
+	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
 		this.game_details_data = game_details_data;
 		
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		this.gameTime = 30000;
+		// Add events to check for swipe
+		this.game.input.onDown.add(this.start_swipe, this);
+		this.game.input.onUp.add(this.end_swipe, this);
+
+		// State Specific Variables
+		this.gameTime = 2000;
 		this.allowBoardInput = false;
+		this.gameTimerRunning = false;
 
 		// Exit the previous scene/state...
-		// if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
+		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
 	},
 
 	preload: function() {
@@ -39,57 +45,47 @@ MyGame.GameState.prototype = {
 
 	create: function() {
 		"use strict"; 
-
 		let obj = this;
-		// Add events to check for swipe
-		this.game.input.onDown.add(this.start_swipe, this);
-		this.game.input.onUp.add(this.end_swipe, this);
-
 		this.sceneProps = game.add.group();
-		// this.thing1 = game.add.sprite(150, 150, 'test_image');
-		// this.thing1.anchor.setTo(0.5);
-		// this.sceneProps.add(this.thing1);
 
-		// this.exit_button = game.add.sprite(this.world.centerX, this.world.centerY, "blue_square");
-		// this.exit_button.anchor.setTo(0.5);	
+		// Time Display
+		let timeDisplayMessage = Math.ceil(this.gameTime / 1000) + " SEC";
+		let timeDisplayStyle = { font: "14px font_1", fill: '#ffffff' };
+		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
+		this.timeDisplay.anchor.setTo(1, 1);
+		this.timeDisplay.align = 'right';
+		this.sceneProps.add(this.timeDisplay);
 
-		// Background
-		this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
-		this.background.anchor.setTo(0.5, 1);
-		this.sceneProps.add(this.background);
+		// Score Text
+		let scoreTextMessage = "SCORE";
+		let scoreTextStyle = { font: "14px font_1", fill: '#ffffff' };
+		this.scoreText = game.add.text(0, 0, scoreTextMessage, scoreTextStyle);
+		this.scoreText.anchor.setTo(0, 1);
+		this.scoreText.align = 'left';
+		this.sceneProps.add(this.scoreText);
 
 		// Score Display
-		// let message = "Score: " + 0;
-		// let myStyle = { font: "16px myFont", fill: '#ffffff' };
-		// this.scoreDisplay = game.add.text(0, 0, message, myStyle);
-		// this.scoreDisplay.anchor.setTo(0, 0.5);
-
-		// Stopwatch
-		// this.stopwatch = game.add.sprite(0, 0, 'stopwatch');
-		// this.stopwatch.anchor.setTo(0.5, 0.5);
-		// this.sceneProps.add(this.stopwatch);
+		let scoreDisplayMessage = score;
+		let scoreDisplayStyle = { font: "30px font_2", fill: '#ffffff' };
+		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
+		this.scoreDisplay.anchor.setTo(0, 0.5);
+		this.scoreDisplay.align = 'left';
+		this.sceneProps.add(this.scoreDisplay);
 
 		// Game Timer
 		this.timer = game.time.create();
-		
-		// this.gameTimer.add(30000, test);
-		
-		// this.gameTimer.onComplete
 
 		// Progress Bar
 		this.progressBar = ProgressBar(300, 20);
+		this.sceneProps.add(this.progressBar.getGroup());
+		this.progressBar.updateProgress(0);
 
-		// Dialog Boxes
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
-		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	
-
-
-
+		// Set up the board
 		this.initializeBoard();
 		this.initializeTiles();
 		this.initializeBoardSelections();
 
+		// Create tiles to show selections
 		this.selectedTileSprite1 = game.add.sprite(0, 0, 'selected_tile');
 		this.selectedTileSprite1.anchor.setTo(0.5);
 		this.selectedTileSprite1.visible = false;
@@ -99,32 +95,29 @@ MyGame.GameState.prototype = {
 		this.selectedTileSprite2.visible = false;
 		this.sceneProps.add(this.selectedTileSprite2);
 
-		this.startGameDialogBoxShow();
+		// Set up dialog boxes (not shown right away)
+		this.createDialogBoxes();
+
+		// Can't touch the board at the start!
+		this.allowBoardInput = false;
 		
-		// this.printBoard();
 
 
-		// EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
-		// tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-		// 	// console.log("Transition completed.");
-		// 	// this.gameTimer = game.time.create(false);
-		// 	// this.gameTimer.add(5000, test);
-		// 	// this.gameTimer.start();
-		// 	obj.scanBoard();
-		// });
-
-		// console.log(this.gameTimer);
-
+		// Enter this new scene
+		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
+		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
+			obj.startGameDialogBox.show();
+		});
 		this.positionComponents(game.width, game.height);
-		
-		// checkCookie(); // TEST
-		// this.addText();
 	},
 
 	update: function() {
 		"use strict"; 
 		// console.log("Update: " + this.timer.duration);
-		this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
+		if(this.gameTimerRunning) {
+			this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
+			this.timeDisplay.setText( Math.ceil(this.timer.duration / 1000) + " SEC");
+		}
 	},
 
 	positionComponents: function(width, height) {
@@ -138,6 +131,7 @@ MyGame.GameState.prototype = {
 
 
 			// Progress Bar
+			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
 
 			// Dialog Boxes
@@ -145,6 +139,17 @@ MyGame.GameState.prototype = {
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
+			// Time Display
+			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
+			this.timeDisplay.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+
+			// Score Text
+			this.scoreText.x = this.horizontalMargin;
+			this.scoreText.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+
+			// Score Display
+			this.scoreDisplay.x = this.horizontalMargin;
+			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -197,18 +202,13 @@ MyGame.GameState.prototype = {
 			}
 
 			// Background
-			ScaleSprite(this.background, width, null, 0, 1);
-			if(this.background.height < height) {
-				ScaleSprite(this.background, null, height, 0, 1);
+			ScaleSprite(background, width, null, 0, 1);
+			if(background.height < height) {
+				ScaleSprite(background, null, height, 0, 1);
 			}
-			this.background.x = game.world.centerX;
-			this.background.y = height;
+			background.x = game.world.centerX;
+			background.y = height;
 
-			// Exit button
-			// ScaleSprite(this.button.getSprite(), width/3, height/3, 20, 1);
-			// this.button.getSprite().x = width/6;
-			// this.button.getSprite().y = this.verticalMargin + this.button.getSprite().height/2;
-			// this.button.updateIntendedScale();
 		}
 		else {
 			var availableGridSpace = width;
@@ -219,6 +219,7 @@ MyGame.GameState.prototype = {
 
 
 			// Progress Bar
+			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
 
 			// Dialog Boxes
@@ -226,15 +227,17 @@ MyGame.GameState.prototype = {
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
-			// // Score Display
-			// this.scoreDisplay.x = this.horizontalMargin;
-			// this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
+			// Time Display
+			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
+			this.timeDisplay.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
 
-			// Stopwatch
-			// this.stopwatch.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns * 1/4); 
-			// this.stopwatch.y = this.verticalMargin - this.calculatedTileSize/2;
-			// ScaleSprite(this.stopwatch, this.calculatedTileSize, this.calculatedTileSize, 0, 1)
+			// Score Text
+			this.scoreText.x = this.horizontalMargin;
+			this.scoreText.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
 
+			// Score Display
+			this.scoreDisplay.x = this.horizontalMargin;
+			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -288,22 +291,13 @@ MyGame.GameState.prototype = {
 
 
 			// Background
-			ScaleSprite(this.background, width, null, 0, 1);
-			if(this.background.height < height) {
-				ScaleSprite(this.background, null, height, 0, 1);
+			ScaleSprite(background, width, null, 0, 1);
+			if(background.height < height) {
+				ScaleSprite(background, null, height, 0, 1);
 			}
-			this.background.x = game.world.centerX;
-			this.background.y = height;
+			background.x = game.world.centerX;
+			background.y = height;
 
-			// Exit Button
-			// ScaleSprite(this.button.getSprite(), width / 2 - this.horizontalMargin, this.verticalMargin, 10, 1);
-			// this.button.getSprite().x = this.horizontalMargin + this.button.getSprite().width/2;
-			// this.button.getSprite().y = height - this.verticalMargin + this.button.getSprite().height;
-			// this.button.updateIntendedScale();
-
-			// Progress Bar
-			// this.progress.position.set(this.horizontalMargin, this.verticalMargin - this.progress.height - this.calculatedTileSize/2);
-			// this.progress.width = (availableGridSpace * 0.8);
 		}
 	},
 
@@ -346,9 +340,8 @@ MyGame.GameState.prototype = {
 			    
 			    let swipeVec = this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
 
-			    if(selectedTile1 != null & selectedTile2 == null) {
+			    if(selectedTile1 != null & selectedTile2 == null && this.allowBoardInput) {
 			    	let otherTileArrayPosition = new Phaser.Point(selectedTile1.getArrayPosition().x + swipeVec.x, selectedTile1.getArrayPosition().y + swipeVec.y);
-			    	// console.log("Swipe swap! " + this.onBoard(otherTileArrayPosition));
 			    	if(this.onBoard(otherTileArrayPosition.x, otherTileArrayPosition.y)) {
 			    		
 			    		selectedTile2 = this.tileArray[ otherTileArrayPosition.x ][ otherTileArrayPosition.y ];
@@ -357,7 +350,6 @@ MyGame.GameState.prototype = {
 			    		this.swapTiles(selectedTile1, selectedTile2, true);
 			    	}
 			    }
-
 
 			    this.showHint();
 			    // this.shuffleBoard();
@@ -510,12 +502,12 @@ MyGame.GameState.prototype = {
 				let state = this;
 				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
 					if(this.allowBoardInput) {
-
+						game.canvas.style.cursor = "pointer";
 					}
 				}, this);
 				newTile.getSprite().events.onInputOut.add(function() { // On Input Out
 					if(this.allowBoardInput) {
-
+						game.canvas.style.cursor = "default";
 					}
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
@@ -904,6 +896,10 @@ MyGame.GameState.prototype = {
 			selectedTile2 = null;
 			scoreMultiplier = 1;
 			console.log("--- Multiplier Reset ---");
+
+			if(this.timer.duration <= 0) {
+				this.endGame();
+			}
 		}
 		else {
 			scoreMultiplier += 1;
@@ -913,10 +909,10 @@ MyGame.GameState.prototype = {
 
 	removeTiles: function(arr) {
 		let str = ("SCORE: " + score + " + (" + arr.length + " * " + scoreMultiplier + ") = ");
-		score += (arr.length * scoreMultiplier);
+		// score += (arr.length * scoreMultiplier);
+		this.addToScore(arr.length * scoreMultiplier);
 		str += score;
 		console.log(str);
-
 
 
 		let sumOfX = 0;
@@ -1067,7 +1063,7 @@ MyGame.GameState.prototype = {
 							str += "[4]";
 							break;
 						default: 
-							str += "[0]";
+							str += "[?]";
 							break;
 					}
 				}
@@ -1180,10 +1176,10 @@ MyGame.GameState.prototype = {
 		let strVal = val.toString();
 
     	let message = "+" + val;
-		let myStyle = { font: "40px font_1", fill: '#ffffff' };
+		let myStyle = { font: "50px font_2", fill: '#ffffff' };
 		let myText = game.add.text(x, y, message, myStyle);
-		myText.stroke = '#68588C';
-    	myText.strokeThickness = 20;
+		// myText.stroke = '#000000';
+  //   	myText.strokeThickness = 20;
 		myText.anchor.setTo(0.5, 0.4);
 		myText.align = 'center';
 		// this.sceneProps.add(text_test);
@@ -1192,51 +1188,30 @@ MyGame.GameState.prototype = {
 
 		let pointLifetime = 1000;
 
-		let tween = game.add.tween(myText.scale).to({ x: 0.5, y: 0.5 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
+		let tween = game.add.tween(myText.scale).to({ x: 0.75, y: 0.75 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
 		let tween1 = game.add.tween(myText).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
-		let tween2 = game.add.tween(myText).to({ y: myText.y - game.height }, pointLifetime, Phaser.Easing.Cubic.In, true);
+		let tween2 = game.add.tween(myText).to({ y: myText.y - this.calculatedTileSize }, pointLifetime, Phaser.Easing.Cubic.In, true);
 		tween.onComplete.add(function() {
 			myText.destroy();
 		}, this);
 	},
 
-	endGameDialogBoxShow: function() {
-		this.allowBoardInput = false;
+	addToScore: function(val) {
+		score += val;
+		this.scoreDisplay.setText(score);
+
+		// Tweenimate_SpinWobble(this.scoreDisplay, 360, 1500);
+	},
+
+	createDialogBoxes: function() {
 		let obj = this;
+
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	
 		
-		this.endGameDialogBox.addTextSegment("TIME'S UP!",
-			{ font: "30px font_2", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addTextSegment("HOW WELL DO YOU THINK YOU DID?",
-			{ font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addButton('PRETTY GOOD. SHOW ME THE RESULTS.', null,
-		 	function() { //On click...
-				obj.endGameDialogBox.hide();
-				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-		this.endGameDialogBox.addButton("PLEASE DON'T SHOW ME MY SCORE.", null,
-		 	function() { //On click...
-				obj.endGameDialogBox.hide();
-				obj.endGameDialogBox2.show();
-			}
-		);
-
-		this.endGameDialogBox.show();
-
- 
-		this.endGameDialogBox2.addTextSegment("IT COULDN'T BE THAT BAD...",
-			{ font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox2.addButton('YES IT CAN.', null,
-		 	function() { //On click...
-				obj.endGameDialogBox.hide();
-				obj.game.state.start("GameOverState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-	}, 
-
-	startGameDialogBoxShow: function() {
-		let obj = this;
-		 
+		// Start Game Dialog Box 
+		// ******************************************************
 		this.startGameDialogBox.addTextSegment("ARE YOU READY?",
 			{ font: "20px font_2", fill: '#ffffff' }, 'center');
 		this.startGameDialogBox.addButton('YES!', null,
@@ -1244,21 +1219,62 @@ MyGame.GameState.prototype = {
 				obj.startGameDialogBox.hide();
 
 				obj.allowBoardInput = true;
-				obj.gameTimer = obj.timer.add(obj.gameTime, obj.endGameDialogBoxShow, obj);
+				obj.gameTimerRunning = true;
+				obj.gameTimer = obj.timer.add(obj.gameTime, function() {
+					if(tweenManager.getSize() == 0) {
+						obj.endGame();
+					}
+				}, obj);
 				obj.timer.start();
 				obj.scanBoard();
 			}
 		);
+		this.sceneProps.add(this.startGameDialogBox.getGraphicsSprite());
 
-		this.startGameDialogBox.show();
-		this.startGameDialogBox.setLifetime(2000, this.startGameDialogBox.hide);
+		
+		// Time's Up Dialog Box 
+		// ******************************************************
+		this.endGameDialogBox.addTextSegment("TIME'S UP!",
+			{ font: "30px font_2", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox.addTextSegment("GREAT JOB!",
+			{ font: "16px font_1", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox.addButton('SHOW ME THE RESULTS!', null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				tweenManager.clear();
+			}
+		);
+		this.endGameDialogBox.addButton("I DID TERRIBLE.", null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.endGameDialogBox2.show();
+			}
+		);
+		this.sceneProps.add(this.endGameDialogBox.getGraphicsSprite());
+
+ 
+ 		// Other Dialog Box 
+		// ******************************************************
+		this.endGameDialogBox2.addTextSegment("YOU DIDN'T DO THAT BAD.",
+			{ font: "16px font_1", fill: '#ffffff' }, 'center');
+		this.endGameDialogBox2.addButton('YES I DID.', null,
+		 	function() { //On click...
+				obj.endGameDialogBox.hide();
+				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				tweenManager.clear();
+			}
+		);
+		this.sceneProps.add(this.endGameDialogBox2.getGraphicsSprite());
+	}, 
+
+	endGame: function() {
+		// console.log("GAME OVER");
+		this.allowBoardInput = false;
+		this.gameTimerRunning = false;
+		this.hideSelectedSprites();
+		this.endGameDialogBox.show();
 	}
-
-
-
-
-
-
 
 
 
