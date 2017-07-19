@@ -48,7 +48,7 @@ MyGame.GameOverState.prototype = {
 		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addButton('CLAIM NOW', null,
 		 	function() { //On click...
-				obj.myDialogBox1.hide();
+				// obj.myDialogBox1.hide();
 				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 			}
 		);

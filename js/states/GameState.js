@@ -1186,11 +1186,11 @@ MyGame.GameState.prototype = {
 
 		// graphicsSprite.addChild(text_test);
 
-		let pointLifetime = 1000;
+		let pointLifetime = 2000;
 
 		let tween = game.add.tween(myText.scale).to({ x: 0.75, y: 0.75 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
 		let tween1 = game.add.tween(myText).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
-		let tween2 = game.add.tween(myText).to({ y: myText.y - this.calculatedTileSize }, pointLifetime, Phaser.Easing.Cubic.In, true);
+		let tween2 = game.add.tween(myText).to({ y: this.scoreDisplay.y, x: this.scoreDisplay.x }, pointLifetime, Phaser.Easing.Cubic.In, true);
 		tween.onComplete.add(function() {
 			myText.destroy();
 		}, this);
@@ -1240,9 +1240,8 @@ MyGame.GameState.prototype = {
 			{ font: "16px font_1", fill: '#ffffff' }, 'center');
 		this.endGameDialogBox.addButton('SHOW ME THE RESULTS!', null,
 		 	function() { //On click...
-				obj.endGameDialogBox.hide();
+				// obj.endGameDialogBox.hide();
 				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-				tweenManager.clear();
 			}
 		);
 		this.endGameDialogBox.addButton("I DID TERRIBLE.", null,
@@ -1260,9 +1259,8 @@ MyGame.GameState.prototype = {
 			{ font: "16px font_1", fill: '#ffffff' }, 'center');
 		this.endGameDialogBox2.addButton('YES I DID.', null,
 		 	function() { //On click...
-				obj.endGameDialogBox.hide();
+				// obj.endGameDialogBox.hide();
 				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-				tweenManager.clear();
 			}
 		);
 		this.sceneProps.add(this.endGameDialogBox2.getGraphicsSprite());
