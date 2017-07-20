@@ -116,7 +116,7 @@ MyGame.GameState.prototype = {
 		// console.log("Update: " + this.timer.duration);
 		if(this.gameTimerRunning) {
 			this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
-			this.timeDisplay.setText( Math.ceil(this.timer.duration / 1000) + " SEC");
+			this.updateTimeText( Math.ceil(this.timer.duration / 1000));
 		}
 	},
 
@@ -132,7 +132,7 @@ MyGame.GameState.prototype = {
 
 			// Progress Bar
 			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.progressBar.getGroup().height);
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
@@ -141,15 +141,15 @@ MyGame.GameState.prototype = {
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
-			this.timeDisplay.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Text
 			this.scoreText.x = this.horizontalMargin;
-			this.scoreText.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Display
 			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
+			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -220,7 +220,7 @@ MyGame.GameState.prototype = {
 
 			// Progress Bar
 			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.calculatedTileSize/2);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.progressBar.getGroup().height);
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
@@ -229,15 +229,15 @@ MyGame.GameState.prototype = {
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
-			this.timeDisplay.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Text
 			this.scoreText.x = this.horizontalMargin;
-			this.scoreText.y = this.verticalMargin - this.calculatedTileSize * (2 / 3);
+			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Display
 			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.calculatedTileSize/2;
+			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -1219,6 +1219,10 @@ MyGame.GameState.prototype = {
 		// Tweenimate_SpinWobble(this.scoreDisplay, 360, 1500);
 	},
 
+	updateTimeText: function(num) {
+		this.timeDisplay.setText(num + " SEC");
+	},
+
 	createDialogBoxes: function() {
 		let obj = this;
 
@@ -1285,6 +1289,7 @@ MyGame.GameState.prototype = {
 	endGame: function() {
 		// console.log("GAME OVER");
 		allowBoardInput = false;
+		this.updateTimeText(0);
 		this.gameTimerRunning = false;
 		this.hideSelectedSprites();
 		this.endGameDialogBox.show();
