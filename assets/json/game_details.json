@@ -1,13 +1,13 @@
 {
     "game_details": {
-        "name": "Keenan", 
-        "points": 1000,
-        "date_played": "____", 
+        "name": "Keenan Barber", 
+        "reward": 100,
+        "date_played": "July 20, 2017", 
 
-        "game_width_min": 300,
-        "game_height_min": 300, 
-        "game_width_max": 1000, 
-        "game_height_max": 1000, 
+        "game_width_min": 400,
+        "game_height_min": 400, 
+        "game_width_max": 700, 
+        "game_height_max": 700, 
 
         "board_rows": 6, 
         "board_columns": 6, 

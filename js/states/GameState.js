@@ -27,7 +27,9 @@ MyGame.GameState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		game.scale.setResizeCallback(this.resize, this);
+		currentState = this;
+		window.addEventListener('resize', currentState.resize );
+		// game.scale.setResizeCallback(this.resize, this);
 
 		// State Specific Variables
 		this.gameTime = 30000;
@@ -106,7 +108,7 @@ MyGame.GameState.prototype = {
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			obj.startGameDialogBox.show();
 		});
-		this.positionComponents(game.width, game.height);
+		this.resize();
 	},
 
 	update: function() {
@@ -299,15 +301,15 @@ MyGame.GameState.prototype = {
 		}
 	},
 
-	resize: function(sm, parentBounds) {
+	resize: function() {
 		"use strict";
 		UpdateGameWindow(game);
 
-		let scaleManager = sm;
-		let width = sm.width; 
-		let height = sm.height;
-		
-		this.positionComponents(width, height);
+		let scaleManager = game.scale;
+		let width = scaleManager.width; 
+		let height = scaleManager.height;
+
+		currentState.positionComponents(width, height);
 	},
 
 	start_swipe: function(pointer) {
@@ -553,8 +555,6 @@ MyGame.GameState.prototype = {
 				
 				this.boardSelectionArray[i][j] = newTile;
 				this.boardSelectionGroup.add(newTile.getSprite());
-
-				// ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, 0, 1);
 			}
 		}
 		this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -564,13 +564,13 @@ MyGame.GameState.prototype = {
 	},
 
 	placeTile: function(x, y) {
-		let num = RandomBetween(0, gameTileKeys.length-1); // Random tile number.
-		let tile = this.boardSprite(x, y, gameTileKeys[num].key); // The resulting tile.
+		let num = RandomBetween(0, gameTileDetails.length-1); // Random tile number.
+		let tile = this.boardSprite(x, y, gameTileDetails[num].key); // The resulting tile.
 		tile.getSprite().anchor.setTo(0.5);
 
-		if(gameTileKeys[num].disappear_animation_frames.length != 0) {
+		if(gameTileDetails[num].disappear_animation_frames.length != 0) {
 			tile.animator = Animator(tile.getSprite());
-			tile.animator.newAnimation('disappear', gameTileKeys[num].disappear_animation_frames);
+			tile.animator.newAnimation('disappear', gameTileDetails[num].disappear_animation_frames);
 		}
 		return tile;
 	},
@@ -1196,7 +1196,7 @@ MyGame.GameState.prototype = {
 		let myText = game.add.text(x, y, message, myStyle);
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;
-		myText.anchor.setTo(0.5, 0.4);
+		myText.anchor.setTo(0.5, 0.5);
 		myText.align = 'center';
 		// this.sceneProps.add(text_test);
 
@@ -1206,7 +1206,7 @@ MyGame.GameState.prototype = {
 
 		let tween = game.add.tween(myText.scale).to({ x: 0.75, y: 0.75 }, pointLifetime, Phaser.Easing.Cubic.Out, true);
 		let tween1 = game.add.tween(myText).to({ alpha: 0 }, pointLifetime, Phaser.Easing.Linear.None, true);
-		let tween2 = game.add.tween(myText).to({ y: this.scoreDisplay.y, x: this.scoreDisplay.x }, pointLifetime, Phaser.Easing.Cubic.In, true);
+		let tween2 = game.add.tween(myText).to({ y: this.scoreDisplay.y, x: this.scoreDisplay.x + this.scoreDisplay.width/2 }, pointLifetime, Phaser.Easing.Cubic.In, true);
 		tween.onComplete.add(function() {
 			myText.destroy();
 		}, this);

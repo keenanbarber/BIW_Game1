@@ -18,7 +18,8 @@ MyGame.GameOverState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		game.scale.setResizeCallback(this.resize, this);
+		currentState = this;
+		window.addEventListener('resize', currentState.resize );
 
 		// State Specific Variables
 		this.MINIMUM_SWIPE_LENGTH = 40;
@@ -68,7 +69,7 @@ MyGame.GameOverState.prototype = {
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			obj.myDialogBox1.show();
 		});
-		this.positionComponents(game.width, game.height);
+		this.resize();
 	},
 
 	update: function() {
@@ -114,15 +115,15 @@ MyGame.GameOverState.prototype = {
 		}
 	},
 
-	resize: function(sm, parentBounds) {
+	resize: function(state) {
 		"use strict";
 		UpdateGameWindow(game);
 
-		let scaleManager = sm;
-		let width = sm.width; 
-		let height = sm.height;
+		let scaleManager = game.scale;
+		let width = scaleManager.width; 
+		let height = scaleManager.height;
 
-		this.positionComponents(width, height);
+		currentState.positionComponents(width, height);
 	},
 
 	start_swipe: function(pointer) {

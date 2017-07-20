@@ -32,11 +32,15 @@ MyGame.LoadingState.prototype = {
 						switch(game_details_header) {
 							case "name": 
 								//this.load.image(asset_key, asset.source);
-								console.log("Found \'" + value + "\' in the json file.");
+								console.log("USER:    " + value);
 								break; 
-							case "points": 
+							case "reward": 
 								//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
-								console.log("Found \'" + value + "\' in the json file.");
+								console.log("REWARD:  " + value);
+								break;
+							case "date_played": 
+								//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
+								console.log("DATE:    " + value);
 								break;
 							case "game_width_min": 
 								configuration.game_width_min = value;
@@ -133,7 +137,7 @@ MyGame.LoadingState.prototype = {
 					let game_tiles_array = game_details_data[ header ];
 					for (let i = 0; i < game_tiles_array.length; i++) {
     					this.load.image("tile_" + i, game_tiles_array[i].main_sprite_source);
-    					gameTileKeys.push(
+    					gameTileDetails.push(
 	    					{
 	    						"key": "tile_" + i, 
 	    						"disappear_animation_frames": []
@@ -141,7 +145,7 @@ MyGame.LoadingState.prototype = {
     					);
     					for (let j = 0; j < game_tiles_array[i].disappear_animation_frames.length; j++) {
     						this.load.image("tile_" + i + "_disappear_" + j, game_tiles_array[i].disappear_animation_frames[j]);
-    						gameTileKeys[i].disappear_animation_frames.push( "tile_" + i + "_disappear_" + j );
+    						gameTileDetails[i].disappear_animation_frames.push( "tile_" + i + "_disappear_" + j );
     					}
     				}
 					break;

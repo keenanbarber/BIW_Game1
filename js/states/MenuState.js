@@ -20,7 +20,10 @@ MyGame.MenuState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		game.scale.setResizeCallback(this.resize, this);
+		currentState = this;
+		window.addEventListener('resize', currentState.resize );
+		
+		// game.scale.setResizeCallback(this.resize, this);
 
 		// Exit the previous scene/state...
 		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
@@ -83,7 +86,8 @@ MyGame.MenuState.prototype = {
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			obj.myDialogBox1.show();
 		});
-		this.positionComponents(game.width, game.height);
+		// this.positionComponents(game.width, game.height);
+		this.resize();
 	},
 
 	update: function() {
@@ -133,15 +137,15 @@ MyGame.MenuState.prototype = {
 		}
 	},
 
-	resize: function(sm, parentBounds) {
+	resize: function() {
 		"use strict";
 		UpdateGameWindow(game);
 
-		let scaleManager = sm;
-		let width = sm.width; 
-		let height = sm.height;
+		let scaleManager = game.scale;
+		let width = scaleManager.width; 
+		let height = scaleManager.height;
 
-		this.positionComponents(width, height);
+		currentState.positionComponents(width, height);
 	},
 
 	start_swipe: function(pointer) {

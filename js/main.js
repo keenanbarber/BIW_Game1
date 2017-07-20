@@ -3,7 +3,8 @@ var device;
 var deviceOrientation;
 
 var tweenManager = GroupTweenManager();
-var gameTileKeys = [];
+var currentState = null;
+var gameTileDetails = [];
 
 // Default values if not provided by json file
 var configuration = {

@@ -206,7 +206,7 @@ function GroupTweenManager() {
 			// console.log(this.tweenArray.length + " tweens remaining.")
 			if(this.tweenArray.length == 0 && this.animArray.length == 0 && this.bool == false) {
 				if(this.funcToCallOnComplete) {
-					game.time.events.add(10, this.funcToCallOnComplete, this);
+					game.time.events.add(0, this.funcToCallOnComplete, this); // Slight delay before calling on complete
 				}
 				this.bool = true;
 			}
@@ -220,7 +220,7 @@ function GroupTweenManager() {
 			// console.log(obj.tweenArray.length + " + " + obj.animArray.length + " things remaining.")
 			if(obj.tweenArray.length == 0 && obj.animArray.length == 0 && obj.bool == false) {
 				if(obj.funcToCallOnComplete) {
-					game.time.events.add(10, obj.funcToCallOnComplete, this);
+					game.time.events.add(0, obj.funcToCallOnComplete, this); // Slight delay before calling on complete
 				}
 				obj.bool = true;
 			}
