@@ -1249,7 +1249,7 @@ MyGame.GameState.prototype = {
 				obj.scanBoard();
 			}
 		);
-		this.sceneProps.add(this.startGameDialogBox.getGraphicsSprite());
+		this.sceneProps.add(this.startGameDialogBox.getGroup());
 
 		
 		// Time's Up Dialog Box 
@@ -1270,7 +1270,7 @@ MyGame.GameState.prototype = {
 				obj.endGameDialogBox2.show();
 			}
 		);
-		this.sceneProps.add(this.endGameDialogBox.getGraphicsSprite());
+		this.sceneProps.add(this.endGameDialogBox.getGroup());
 
  
  		// Other Dialog Box 
@@ -1283,7 +1283,7 @@ MyGame.GameState.prototype = {
 				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.sceneProps.add(this.endGameDialogBox2.getGraphicsSprite());
+		this.sceneProps.add(this.endGameDialogBox2.getGroup());
 	}, 
 
 	endGame: function() {

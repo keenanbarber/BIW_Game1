@@ -130,6 +130,9 @@ MyGame.LoadingState.prototype = {
 							case "end_game_image": 
 								this.load.image(game_sprites_header, value);
 								break;
+							case "popup_background": 
+								this.load.image(game_sprites_header, value);
+								break;
 						}
 					}
 					break;

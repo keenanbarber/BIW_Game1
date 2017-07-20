@@ -55,6 +55,7 @@ MyGame.MenuState.prototype = {
 
 		// Menu Dialog Box
 		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
+		this.myDialogBox1.setBackgroundSprite('popup_background');
 		this.myDialogBox1.addTextSegment("INSTRUCTIONS",
 			{ font: "16px font_2", fill: '#ffffff' }, 'center');
 		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
@@ -67,17 +68,12 @@ MyGame.MenuState.prototype = {
 				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.myDialogBox1.addButton('OPTIONS', null,
-		 	function() { //On click...
-				// obj.game.state.start("OptionsState", true, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
 		this.myDialogBox1.addButton('BACK TO ARCADE', null,
 		 	function() { //On click...
 				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.sceneProps.add(this.myDialogBox1.getGraphicsSprite());
+		this.sceneProps.add(this.myDialogBox1.getGroup());
 
 		
 
