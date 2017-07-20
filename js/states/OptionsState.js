@@ -119,13 +119,15 @@ MyGame.OptionsState.prototype = {
 		}
 	},
 
-	resize: function(width, height) {
+	resize: function(sm, parentBounds) {
 		"use strict";
-		UpdateScreenInfo();
-		//console.log("Resized");
+		UpdateGameWindow(game);
+
+		let scaleManager = sm;
+		let width = sm.width; 
+		let height = sm.height;
 
 		this.positionComponents(width, height);
-		game.scale.refresh();
 	},
 
 	start_swipe: function(pointer) {

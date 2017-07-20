@@ -76,6 +76,11 @@
             "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
             "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
         },
+        "audio_files": {
+            "button_press": ["assets/audio/Beep1.wav"], 
+            "tile_disappearing": ["assets/audio/Beep1.wav"], 
+            "tile_dropping": ["assets/audio/Beep1.wav"]
+        },
         "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",
         "background_image": "assets/images/background_2.png"

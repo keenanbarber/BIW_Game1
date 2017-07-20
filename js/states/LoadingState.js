@@ -106,6 +106,11 @@ MyGame.LoadingState.prototype = {
 						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px font_1", fill:"#FFFFFF"});
 						var t = this.game.add.text(0, 0, "Loading font...", {font:"1px font_2", fill:"#FFFFFF"});
 	    				break;
+	    			case "audio_files":
+	    				// assets = assets_2
+	    				// asset_key = audio_files
+	    				game.load.audio("button_press", assets[asset_key].button_press);
+	    				break;
 	    			case "board_tile": 
 	    				this.load.image(asset_key, assets[asset_key]);
 	    				break;

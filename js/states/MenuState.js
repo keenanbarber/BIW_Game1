@@ -4,6 +4,7 @@ var MyGame = MyGame || {}; // Creates namespace if haven't already.
 
 var background = null;
 var allowBoardInput = false;
+var button_press_sound;
 
 MyGame.MenuState = function() {
 	"use strict"; 
@@ -16,16 +17,17 @@ MyGame.MenuState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		// Add events to check for swipe
+		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
+		game.scale.setResizeCallback(this.resize, this);
 
 		// Exit the previous scene/state...
 		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
 	},
 	
 	preload: function() {
-		
+		button_press_sound = game.add.audio('button_press');
 	},
 
 	create: function() {
@@ -57,6 +59,7 @@ MyGame.MenuState.prototype = {
 		this.myDialogBox1.addButton('PLAY', null,
 		 	function() { //On click...
 				// obj.myDialogBox1.hide();
+				button_press_sound.play();
 				score = 0;
 				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
@@ -130,14 +133,15 @@ MyGame.MenuState.prototype = {
 		}
 	},
 
-	resize: function(width, height) {
+	resize: function(sm, parentBounds) {
 		"use strict";
-		UpdateScreenInfo();
-		//console.log("Resized");
+		UpdateGameWindow(game);
+
+		let scaleManager = sm;
+		let width = sm.width; 
+		let height = sm.height;
 
 		this.positionComponents(width, height);
-		game.scale.refresh();
-		game.scale.setGameSize(Math.min(500, window.innerWidth), Math.min(500, window.innerHeight));
 	},
 
 	start_swipe: function(pointer) {

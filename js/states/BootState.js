@@ -15,13 +15,13 @@ MyGame.BootState = function(game) {
 MyGame.BootState.prototype = {
 	init: function() {
 		"use strict";
-		
-		game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		// ScaleManager Options: .EXACT_FIT, .NO_SCALE, .RESIZE, .SHOW_ALL, .USER_SCALE
+		game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 		game.renderer.renderSession.roundPixels = true;
 		game.scale.parentIsWindow = true;
 		game.stage.disableVisibilityChange = true;
 
-		// window.addEventListener('resize', this.onResize, false);
+		// window.addEventListener('resize', this.resize, false);
 
 
 		// game.scale.setMinMax(200, 300, 800, 600);
@@ -67,7 +67,10 @@ MyGame.BootState.prototype = {
 		console.log("Resizing...");
 		UpdateScreenInfo();
 
-		// game.scale.setGameSize(window.innerWidth, window.innerHeight);
+		game.scale.setGameSize(
+			Math.min(configuration.canvas_width, configuration.canvas_width_max), 
+			Math.min(configuration.canvas_height, configuration.canvas_height_max)
+		);
 	}
 };
 

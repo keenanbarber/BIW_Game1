@@ -15,9 +15,10 @@ MyGame.GameOverState.prototype = {
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
-		// Add events to check for swipe
+		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
+		game.scale.setResizeCallback(this.resize, this);
 
 		// State Specific Variables
 		this.MINIMUM_SWIPE_LENGTH = 40;
@@ -113,13 +114,15 @@ MyGame.GameOverState.prototype = {
 		}
 	},
 
-	resize: function(width, height) {
+	resize: function(sm, parentBounds) {
 		"use strict";
-		UpdateScreenInfo();
-		//console.log("Resized");
+		UpdateGameWindow(game);
+
+		let scaleManager = sm;
+		let width = sm.width; 
+		let height = sm.height;
 
 		this.positionComponents(width, height);
-		game.scale.refresh();
 	},
 
 	start_swipe: function(pointer) {
