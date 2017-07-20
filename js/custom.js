@@ -655,6 +655,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 
 	obj.buttons = [];
 	obj.buttonsText = [];
+	obj.canPressButtons = true;
 
 	let graphics = game.add.graphics(0, 0);
 	graphics.beginFill(0x68588C, 0.8);
@@ -801,10 +802,10 @@ function DialogBox(x, y, availableSpaceWidth) {
 			}
 		);
 		newButton.setClickBehavior(function() {
-			// console.log("CLICK");
-			// obj.game.state.start("GameState", false, false, this.game_details_data, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			clickFunc();
-			// obj.hide();
+			if(obj.canPressButtons) {
+				clickFunc();
+				obj.canPressButtons = false;
+			}
 		});
 
 		obj.graphicsSprite.addChild(newButton.getSprite());

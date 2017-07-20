@@ -21,8 +21,6 @@ MyGame.GameState.prototype = {
 
 	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
-		this.game_details_data = game_details_data;
-		
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
@@ -32,7 +30,6 @@ MyGame.GameState.prototype = {
 
 		// State Specific Variables
 		this.gameTime = 30000;
-		this.allowBoardInput = false;
 		this.gameTimerRunning = false;
 
 		// Exit the previous scene/state...
@@ -99,7 +96,7 @@ MyGame.GameState.prototype = {
 		this.createDialogBoxes();
 
 		// Can't touch the board at the start!
-		this.allowBoardInput = false;
+		allowBoardInput = false;
 		
 
 
@@ -340,7 +337,7 @@ MyGame.GameState.prototype = {
 			    
 			    let swipeVec = this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
 
-			    if(selectedTile1 != null & selectedTile2 == null && this.allowBoardInput) {
+			    if(selectedTile1 != null & selectedTile2 == null && allowBoardInput) {
 			    	let otherTileArrayPosition = new Phaser.Point(selectedTile1.getArrayPosition().x + swipeVec.x, selectedTile1.getArrayPosition().y + swipeVec.y);
 			    	if(this.onBoard(otherTileArrayPosition.x, otherTileArrayPosition.y)) {
 			    		
@@ -501,17 +498,17 @@ MyGame.GameState.prototype = {
 
 				let state = this;
 				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
-					if(this.allowBoardInput) {
+					if(allowBoardInput) {
 						game.canvas.style.cursor = "pointer";
 					}
 				}, this);
 				newTile.getSprite().events.onInputOut.add(function() { // On Input Out
-					if(this.allowBoardInput) {
+					if(allowBoardInput) {
 						game.canvas.style.cursor = "default";
 					}
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
-					if(this.allowBoardInput) {
+					if(allowBoardInput) {
 						// console.log("You clicked at array position " + newTile.getArrayPosition());
 
 						if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
@@ -549,7 +546,7 @@ MyGame.GameState.prototype = {
 
 				}, this);
 				newTile.getSprite().events.onInputUp.add(function() { // On Input Up
-					if(this.allowBoardInput) {
+					if(allowBoardInput) {
 
 					}
 				}, this);
@@ -900,6 +897,9 @@ MyGame.GameState.prototype = {
 			if(this.timer.duration <= 0) {
 				this.endGame();
 			}
+			else {
+				this.checkRemainingMovesAndClear();
+			}
 		}
 		else {
 			scoreMultiplier += 1;
@@ -928,7 +928,7 @@ MyGame.GameState.prototype = {
 
 		let lastTileArrayPosition = arr[arr.length-1];
 		let lastTilePosition = this.tileArray[lastTileArrayPosition.x][lastTileArrayPosition.y].getPosition();
-		this.showPoints(centerX + this.tileGroup.x, centerY + this.tileGroup.y, (arr.length * scoreMultiplier));
+		this.showPoints(centerX + this.tileGroup.x, centerY + this.tileGroup.y, "+" + (arr.length * scoreMultiplier));
 
 		for(let i = 0; i < arr.length; i++) {
 			this.removeTile(arr[i].x, arr[i].y);
@@ -982,7 +982,7 @@ MyGame.GameState.prototype = {
 					if(tempI < 0)
 						return;
 				}
-				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ x: tileX, y: tileY }, 800, Phaser.Easing.Bounce.Out, true);
+				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, 800, Phaser.Easing.Bounce.Out, true);
 				this.tileArray[col][tempI].setArrayPosition(col, i);
 				tweenManager.addTween(tween);
 
@@ -1024,7 +1024,7 @@ MyGame.GameState.prototype = {
 
 					ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 
-					let tween = game.add.tween(tile.getSprite()).to({ x: tileX, y: tileY }, 900, Phaser.Easing.Bounce.Out, true);
+					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, 900, Phaser.Easing.Bounce.Out, true);
 					tile.setArrayPosition(col, i);
 					tweenManager.addTween(tween);
 				}
@@ -1073,7 +1073,24 @@ MyGame.GameState.prototype = {
 		console.log(str);
 	}, 
 
+	checkRemainingMovesAndClear: function() {
+		if(this.checkMoves().length == 0) {
+			for(let j = 0; j < configuration.board_columns; j++) {
+				for(let i = 0; i < configuration.board_rows ; i++) {
+					this.removeTile(j, i);
+				}
+			}
+			this.addToScore(configuration.board_columns * configuration.board_rows);
+			this.showPoints(this.horizontalMargin + ((configuration.board_columns * this.calculatedTileSize) / 2), this.verticalMargin + ((configuration.board_rows * this.calculatedTileSize) / 2), "NO REMAINING \nMOVES! \n+" + (configuration.board_columns * configuration.board_rows));
 
+			let obj = this;
+			tweenManager.callOnComplete(function() {
+				// console.log("All tweens completed.");
+				obj.updateBoard();
+			});
+		}
+
+	},
 
 
 	showHint: function() { // HINT DISPLAY
@@ -1175,7 +1192,7 @@ MyGame.GameState.prototype = {
 	showPoints: function(x, y, val) {
 		let strVal = val.toString();
 
-    	let message = "+" + val;
+    	let message = val;
 		let myStyle = { font: "50px font_2", fill: '#ffffff' };
 		let myText = game.add.text(x, y, message, myStyle);
 		// myText.stroke = '#000000';
@@ -1218,7 +1235,7 @@ MyGame.GameState.prototype = {
 		 	function() { //On click...
 				obj.startGameDialogBox.hide();
 
-				obj.allowBoardInput = true;
+				allowBoardInput = true;
 				obj.gameTimerRunning = true;
 				obj.gameTimer = obj.timer.add(obj.gameTime, function() {
 					if(tweenManager.getSize() == 0) {
@@ -1268,7 +1285,7 @@ MyGame.GameState.prototype = {
 
 	endGame: function() {
 		// console.log("GAME OVER");
-		this.allowBoardInput = false;
+		allowBoardInput = false;
 		this.gameTimerRunning = false;
 		this.hideSelectedSprites();
 		this.endGameDialogBox.show();

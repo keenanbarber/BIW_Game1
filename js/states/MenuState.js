@@ -3,6 +3,7 @@
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
 var background = null;
+var allowBoardInput = false;
 
 MyGame.MenuState = function() {
 	"use strict"; 
@@ -11,8 +12,7 @@ MyGame.MenuState = function() {
 MyGame.MenuState.prototype = {
 	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
 		"use strict";
-		game_details_data = game_details_data;
-		this.MINIMUM_SWIPE_LENGTH = 40;
+
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 

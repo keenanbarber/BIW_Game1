@@ -78,12 +78,11 @@
         },
         "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",
-        "background_image": "assets/images/background_0.png", 
-        "stopwatch": "assets/images/Stopwatch.svg"
+        "background_image": "assets/images/background_2.png"
     },
     "position_adjustment": {
         "title_image_X_offset": 0, 
-        "title_image_Y_offset": 50, 
+        "title_image_Y_offset": 0, 
         "menu_dialog_box_X_offset": 0, 
         "menu_dialog_box_Y_offset": 0 
     },
