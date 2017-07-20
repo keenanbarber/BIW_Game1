@@ -835,7 +835,7 @@ MyGame.GameState.prototype = {
 						repeatedTiles.push(new Phaser.Point(i, j));
 					}
 					else {
-						if(repeatedTiles.length >= configuration.min_required_tiles_for_points) {
+						if(repeatedTiles.length >= configuration.min_tiles_required_for_match) {
 							this.removeTiles(repeatedTiles);
 							foundAnything = true;							
 						}
@@ -846,7 +846,7 @@ MyGame.GameState.prototype = {
 					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
 				}
 			}
-			if(repeatedTiles.length >= configuration.min_required_tiles_for_points) { // Check to see if the remaining tiles in the column are worth anything...
+			if(repeatedTiles.length >= configuration.min_tiles_required_for_match) { // Check to see if the remaining tiles in the column are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}
@@ -865,7 +865,7 @@ MyGame.GameState.prototype = {
 						repeatedTiles.push(new Phaser.Point(j, i));
 					}
 					else {
-						if(repeatedTiles.length >= configuration.min_required_tiles_for_points) { 
+						if(repeatedTiles.length >= configuration.min_tiles_required_for_match) { 
 							this.removeTiles(repeatedTiles);
 							foundAnything = true;	
 						}
@@ -876,7 +876,7 @@ MyGame.GameState.prototype = {
 					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
 				}
 			}
-			if(repeatedTiles.length >= configuration.min_required_tiles_for_points) { // Check to see if the remaining tiles in the row are worth anything...
+			if(repeatedTiles.length >= configuration.min_tiles_required_for_match) { // Check to see if the remaining tiles in the row are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}

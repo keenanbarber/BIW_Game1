@@ -4,7 +4,7 @@ var MyGame = MyGame || {}; // Creates namespace if haven't already.
 
 var background = null;
 var allowBoardInput = false;
-var button_press_sound;
+// var button_press_sound;
 
 MyGame.MenuState = function() {
 	"use strict"; 
@@ -27,7 +27,7 @@ MyGame.MenuState.prototype = {
 	},
 	
 	preload: function() {
-		button_press_sound = game.add.audio('button_press');
+		// button_press_sound = game.add.audio('button_press');
 	},
 
 	create: function() {
@@ -59,7 +59,7 @@ MyGame.MenuState.prototype = {
 		this.myDialogBox1.addButton('PLAY', null,
 		 	function() { //On click...
 				// obj.myDialogBox1.hide();
-				button_press_sound.play();
+				// button_press_sound.play();
 				score = 0;
 				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
@@ -104,13 +104,13 @@ MyGame.MenuState.prototype = {
 
 			// Title
 			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = (width / 2) + (game_details_data.position_adjustment.title_image_X_offset * window.devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.position_adjustment.title_image_Y_offset * window.devicePixelRatio);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * window.devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * window.devicePixelRatio);
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.position_adjustment.menu_dialog_box_X_offset * window.devicePixelRatio), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.position_adjustment.menu_dialog_box_Y_offset * window.devicePixelRatio));
+				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * window.devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * window.devicePixelRatio));
 		}
 		else {
 			// Background
@@ -123,13 +123,13 @@ MyGame.MenuState.prototype = {
 
 			// Title
 			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = (width / 2) + (game_details_data.position_adjustment.title_image_X_offset * window.devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.position_adjustment.title_image_Y_offset * window.devicePixelRatio);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * window.devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * window.devicePixelRatio);
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.position_adjustment.menu_dialog_box_X_offset * window.devicePixelRatio), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.position_adjustment.menu_dialog_box_Y_offset * window.devicePixelRatio));
+				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * window.devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * window.devicePixelRatio));
 		}
 	},
 

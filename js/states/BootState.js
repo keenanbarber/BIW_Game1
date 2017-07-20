@@ -21,18 +21,11 @@ MyGame.BootState.prototype = {
 		game.scale.parentIsWindow = true;
 		game.stage.disableVisibilityChange = true;
 
-		// window.addEventListener('resize', this.resize, false);
 
-
-		// game.scale.setMinMax(200, 300, 800, 600);
 
 		// Determines if mobile or desktop.
 		if (game.device.desktop) {  
 			console.log("This is not running on a mobile device.");
-			// game.scale.minWidth = 200;  
-			// game.scale.minHeight = 300;  
-			// game.scale.maxWidth = 800;
-			// game.scale.maxHeight = 600;
 			device = "DESKTOP";
 		}
 		else { 
@@ -42,7 +35,6 @@ MyGame.BootState.prototype = {
 
 		game.scale.pageAlignVertically = true; 
 		game.scale.pageAlignHorizontally = true; 
-		//this.scale.forceLandscape = true;
 		
 		game.scale.refresh();
 	},
@@ -60,31 +52,6 @@ MyGame.BootState.prototype = {
 
 
 		this.game.state.start("LoadingState", true, false);
-		// this.game.state.start(stateToStart, clearGameWorld, clearCache, passedToTargetStatesInitFunction);
-	}, 
-
-	resize: function() {
-		console.log("Resizing...");
-		UpdateScreenInfo();
-
-		game.scale.setGameSize(
-			Math.min(configuration.canvas_width, configuration.canvas_width_max), 
-			Math.min(configuration.canvas_height, configuration.canvas_height_max)
-		);
 	}
 };
 
-
-
-/*
-
-		"gameTiles": [
-            "assets/images/tile_black.png", 
-            "assets/images/tile_red.png", 
-            "assets/images/tile_blue.png", 
-            "assets/images/tile_green.png"
-        ],
-
-        "assets/json/game_details.json"
-
-*/

@@ -1,16 +1,41 @@
 {
-	 "assets": {
-        "button_start": {"type": "image", "source": "assets/images/button_start.png"},
-        "button_options": {"type": "image", "source": "assets/images/button_options.png"},
-        "button_exit": {"type": "image", "source": "assets/images/button_exit.png"},
+    "game_details": {
+        "name": "Keenan", 
+        "points": 1000,
+        "date_played": "____", 
 
-        "title": {"type": "image", "source": "assets/images/title_MartianMatch.png"},
-        "end_game_image": {"type": "image", "source": "assets/images/UFO.png"},
+        "game_width_min": 300,
+        "game_height_min": 300, 
+        "game_width_max": 1000, 
+        "game_height_max": 1000, 
 
-        "test_beep" : {"type": "audio", "source": "assets/audio/Beep1.wav"} 
+        "board_rows": 6, 
+        "board_columns": 6, 
+        "min_tiles_required_for_match": 3
     },
-    "assets_2": {
-        "game_tiles": [
+    "font_files": {
+        "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
+        "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
+    },
+    "audio_files": {
+        "sound_1": ["assets/audio/Drop1.mp3", "assets/audio/Drop1.wav"], 
+        "sound_2": ["assets/audio/Drop2.mp3", "assets/audio/Drop2.wav"]
+    },
+    "sprite_adjustment": {
+        "menu_title_x_offset": 0, 
+        "menu_title_y_offset": 0, 
+        "menu_popup_x_offset": 0, 
+        "menu_popup_y_offset": 0 
+    },
+    "game_sprites": {
+        "board_tile": "assets/images/BoardTile.png", 
+        "selected_tile": "assets/images/HighlightBoxTemp.png",
+        "background_image": "assets/images/background_2.png", 
+
+        "title": "assets/images/title_MartianMatch.png",
+        "end_game_image": "assets/images/UFO.png"
+    },
+    "game_tiles": [
             {   "main_sprite_source": "assets/images/martian_blue.svg", 
                 "disappear_animation_frames": [
                     "assets/images/animation/sprite_blue_01.svg", 
@@ -71,34 +96,7 @@
                     "assets/images/animation/sprite_red_08.svg"
                 ]
             }
-        ], 
-        "font_files": {
-            "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
-            "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
-        },
-        "audio_files": {
-            "button_press": ["assets/audio/Beep1.wav"], 
-            "tile_disappearing": ["assets/audio/Beep1.wav"], 
-            "tile_dropping": ["assets/audio/Beep1.wav"]
-        },
-        "board_tile": "assets/images/BoardTile.png", 
-        "selected_tile": "assets/images/HighlightBoxTemp.png",
-        "background_image": "assets/images/background_2.png"
-    },
-    "position_adjustment": {
-        "title_image_X_offset": 0, 
-        "title_image_Y_offset": 0, 
-        "menu_dialog_box_X_offset": 0, 
-        "menu_dialog_box_Y_offset": 0 
-    },
-	"game_details": {
-		"screen_width": 600, 
-		"screen_height": 400 
-	},
-	"user_details": {
-		"name": "Keenan", 
-		"points": 1000
-	}
+        ]
 }
 
 
