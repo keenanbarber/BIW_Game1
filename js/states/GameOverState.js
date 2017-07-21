@@ -111,7 +111,7 @@ MyGame.GameOverState.prototype = {
 
 	resize: function(state) {
 		"use strict";
-		UpdateGameWindow(game);
+		updateGameWindow(game);
 
 		let scaleManager = game.scale;
 		let width = scaleManager.width; 

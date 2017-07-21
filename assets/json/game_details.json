@@ -4,11 +4,12 @@
         "reward": 100,
         "date_played": "July 20, 2017", 
 
-        "game_width_min": 400,
-        "game_height_min": 400, 
-        "game_width_max": 700, 
-        "game_height_max": 700, 
+        "desktop_min_width": 400,
+        "desktop_min_height": 400, 
+        "desktop_max_width": 700, 
+        "desktop_max_height": 700, 
 
+        "game_duration": 30,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3
@@ -17,13 +18,16 @@
         "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
         "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
     },
+    "text_styles": {
+        "button_style": { "font": "12px font_2", "fill": "#68588C" }
+    },
     "audio_files": {
         "sound_1": ["assets/audio/Drop1.mp3", "assets/audio/Drop1.wav"], 
         "sound_2": ["assets/audio/Drop2.mp3", "assets/audio/Drop2.wav"]
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 
-        "menu_title_y_offset": 0, 
+        "menu_title_y_offset": 80, 
         "menu_popup_x_offset": 0, 
         "menu_popup_y_offset": 0 
     },
@@ -99,7 +103,34 @@
                     "assets/images/animation/sprite_red_08.svg"
                 ]
             }
+        ],
+    "dialog_box_settings": {
+        "menu_dialog_box": {
+            "width" : 400, 
+            "text_components": [
+                {   
+                    "text": "INSTRUCTIONS", 
+                    "style": { "font": "16px font_2", "fill": "#ffffff" },
+                    "align": "center" 
+                }, 
+                {   
+                    "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!", 
+                    "style": { "font": "12px font_1", "fill": "#ffffff" },
+                    "align": "center" 
+                }
+            ], 
+            "play_button_text": "PLAY"
+        },
+        "game_start_dialog_box": [
+
+        ], 
+        "game_end_dialog_box": [
+
+        ], 
+        "game_over_dialog_box": [
+
         ]
+    }
 }
 
 

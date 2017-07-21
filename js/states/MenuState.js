@@ -54,28 +54,47 @@ MyGame.MenuState.prototype = {
 
 
 		// Menu Dialog Box
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);	 
-		this.myDialogBox1.setBackgroundSprite('popup_background');
-		this.myDialogBox1.addTextSegment("INSTRUCTIONS",
-			{ font: "16px font_2", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
-			{ font: "12px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addButton('PLAY', null,
+		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 400);	 
+		// this.myDialogBox1.setBackgroundSprite('popup_background');
+		// this.myDialogBox1.addTextSegment("INSTRUCTIONS",
+		// 	{ font: "16px font_2", fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
+		// 	{ font: "12px font_1", fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addButton('PLAY', null,
+		//  	function() { //On click...
+		// 		// obj.myDialogBox1.hide();
+		// 		// button_press_sound.play();
+		// 		score = 0;
+		// 		obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 	}
+		// );
+		// this.myDialogBox1.addButton('BACK TO ARCADE', null,
+		//  	function() { //On click...
+		// 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 	}
+		// );
+		// this.sceneProps.add(this.myDialogBox1.getGroup());
+
+		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width);	
+		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
+			let component = menuDialogBoxData.text_components[i];
+			this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
+		}
+		this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
 		 	function() { //On click...
-				// obj.myDialogBox1.hide();
-				// button_press_sound.play();
 				score = 0;
 				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.myDialogBox1.addButton('BACK TO ARCADE', null,
-		 	function() { //On click...
-				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
 		this.sceneProps.add(this.myDialogBox1.getGroup());
 
-		
+
+
+
+
+
+
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
@@ -135,7 +154,7 @@ MyGame.MenuState.prototype = {
 
 	resize: function() {
 		"use strict";
-		UpdateGameWindow(game);
+		updateGameWindow(game);
 
 		let scaleManager = game.scale;
 		let width = scaleManager.width; 

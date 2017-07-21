@@ -32,7 +32,7 @@ MyGame.GameState.prototype = {
 		// game.scale.setResizeCallback(this.resize, this);
 
 		// State Specific Variables
-		this.gameTime = 30000;
+		// this.gameTime = Phaser.Timer.SECOND * 30;
 		this.gameTimerRunning = false;
 
 		// Exit the previous scene/state...
@@ -49,7 +49,7 @@ MyGame.GameState.prototype = {
 		this.sceneProps = game.add.group();
 
 		// Time Display
-		let timeDisplayMessage = Math.ceil(this.gameTime / 1000) + " SEC";
+		let timeDisplayMessage = Math.ceil(configuration.game_duration / 1000) + " SEC";
 		let timeDisplayStyle = { font: "14px font_1", fill: '#ffffff' };
 		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
 		this.timeDisplay.anchor.setTo(1, 1);
@@ -115,7 +115,7 @@ MyGame.GameState.prototype = {
 		"use strict"; 
 		// console.log("Update: " + this.timer.duration);
 		if(this.gameTimerRunning) {
-			this.progressBar.updateProgress( (this.timer.duration)/this.gameTime );
+			this.progressBar.updateProgress( (this.timer.duration)/configuration.game_duration );
 			this.updateTimeText( Math.ceil(this.timer.duration / 1000));
 		}
 	},
@@ -303,7 +303,7 @@ MyGame.GameState.prototype = {
 
 	resize: function() {
 		"use strict";
-		UpdateGameWindow(game);
+		updateGameWindow(game);
 
 		let scaleManager = game.scale;
 		let width = scaleManager.width; 
@@ -891,7 +891,7 @@ MyGame.GameState.prototype = {
 			selectedTile1 = null; 
 			selectedTile2 = null;
 			scoreMultiplier = 1;
-			console.log("--- Multiplier Reset ---");
+			// console.log("--- Multiplier Reset ---");
 
 			if(this.timer.duration <= 0) {
 				this.endGame();
@@ -911,7 +911,7 @@ MyGame.GameState.prototype = {
 		// score += (arr.length * scoreMultiplier);
 		this.addToScore(arr.length * scoreMultiplier);
 		str += score;
-		console.log(str);
+		// console.log(str);
 
 
 		let sumOfX = 0;
@@ -981,7 +981,7 @@ MyGame.GameState.prototype = {
 					if(tempI < 0)
 						return;
 				}
-				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, 800, Phaser.Easing.Bounce.Out, true);
+				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * 0.9, configuration.falling_tile_easing, true);
 				this.tileArray[col][tempI].setArrayPosition(col, i);
 				tweenManager.addTween(tween);
 
@@ -1023,7 +1023,7 @@ MyGame.GameState.prototype = {
 
 					ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 
-					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, 900, Phaser.Easing.Bounce.Out, true);
+					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.new_tile_fall_time, configuration.falling_tile_easing, true);
 					tile.setArrayPosition(col, i);
 					tweenManager.addTween(tween);
 				}
@@ -1188,11 +1188,28 @@ MyGame.GameState.prototype = {
 		}
 	}, 
 
+	goText: function() {
+		let duration = 750;
+		let message = "GO";
+		let myStyle = { font: "" + (50 * devicePixelRatio) + "px font_2", fill: '#ffffff' };
+		let myText = game.add.text(game.world.centerX, game.world.centerY, message, myStyle);
+		// myText.stroke = '#000000';
+  //   	myText.strokeThickness = 20;
+		myText.anchor.setTo(0.5, 0.5);
+		myText.align = 'center';
+
+		let tween = game.add.tween(myText.scale).to({ x: 1.5, y: 1.5 }, duration, Phaser.Easing.Cubic.Out, true);
+		let tween1 = game.add.tween(myText).to({ alpha: 0 }, duration, Phaser.Easing.Linear.None, true);
+		tween.onComplete.add(function() {
+			currentState.beginGame();
+		}, this);
+	},
+
 	showPoints: function(x, y, val) {
 		let strVal = val.toString();
 
     	let message = val;
-		let myStyle = { font: "50px font_2", fill: '#ffffff' };
+		let myStyle = { font: "" + (50 * devicePixelRatio) + "px font_2", fill: '#ffffff' };
 		let myText = game.add.text(x, y, message, myStyle);
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;
@@ -1238,15 +1255,8 @@ MyGame.GameState.prototype = {
 		 	function() { //On click...
 				obj.startGameDialogBox.hide();
 
-				allowBoardInput = true;
-				obj.gameTimerRunning = true;
-				obj.gameTimer = obj.timer.add(obj.gameTime, function() {
-					if(tweenManager.getSize() == 0) {
-						obj.endGame();
-					}
-				}, obj);
-				obj.timer.start();
-				obj.scanBoard();
+				// obj.beginGame();
+				obj.goText();
 			}
 		);
 		this.sceneProps.add(this.startGameDialogBox.getGroup());
@@ -1285,6 +1295,18 @@ MyGame.GameState.prototype = {
 		);
 		this.sceneProps.add(this.endGameDialogBox2.getGroup());
 	}, 
+
+	beginGame: function() {
+		allowBoardInput = true;
+		this.gameTimerRunning = true;
+		this.gameTimer = this.timer.add(configuration.game_duration, function() {
+			if(tweenManager.getSize() == 0) {
+				this.endGame();
+			}
+		}, this);
+		this.timer.start();
+		this.scanBoard();
+	},
 
 	endGame: function() {
 		// console.log("GAME OVER");

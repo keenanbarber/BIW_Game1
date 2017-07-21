@@ -16,26 +16,27 @@ MyGame.BootState.prototype = {
 	init: function() {
 		"use strict";
 		// ScaleManager Options: .EXACT_FIT, .NO_SCALE, .RESIZE, .SHOW_ALL, .USER_SCALE
-		game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-		game.renderer.renderSession.roundPixels = true;
-		game.scale.parentIsWindow = true;
-		game.stage.disableVisibilityChange = true;
-
-
 
 		// Determines if mobile or desktop.
 		if (game.device.desktop) {  
 			console.log("This is not running on a mobile device.");
 			device = "DESKTOP";
+			game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 		}
 		else { 
 			console.log("This is running on a mobile device.");
 			device = "MOBILE";
+			game.scale.scaleMode = Phaser.ScaleManager.RESIZE; // Fills the screen
 		}
+
+		game.renderer.renderSession.roundPixels = true;
+		game.scale.parentIsWindow = true;
+		// game.stage.disableVisibilityChange = true;
 
 		game.scale.pageAlignVertically = true; 
 		game.scale.pageAlignHorizontally = true; 
 		
+		updateGameWindow(game);
 		game.scale.refresh();
 	},
 

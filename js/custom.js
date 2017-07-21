@@ -647,13 +647,13 @@ function DialogBox(x, y, availableSpaceWidth) {
 
 	obj.useDefaultBackground = true;
 
-	obj.boxWidth = availableSpaceWidth;
-	obj.boxHeight = 150;
+	obj.boxWidth = availableSpaceWidth * devicePixelRatio;
+	obj.boxHeight = 150 * devicePixelRatio;
 	obj.boxX = x; 
 	obj.boxY = y;
-	obj.roundedCornerRadius = 8;
-	obj.textPadding = 20;
-	obj.fontSize = 12;
+	obj.roundedCornerRadius = 8 * devicePixelRatio;
+	obj.textPadding = 20 * devicePixelRatio;
+	obj.fontSize = 12 * devicePixelRatio;
 
 	obj.buttons = [];
 	obj.buttonText = game.add.group();
@@ -731,8 +731,6 @@ function DialogBox(x, y, availableSpaceWidth) {
 		obj.graphicsSprite.width = obj.boxWidth;
 		obj.graphicsSprite.height = obj.boxHeight;
 
-		console.log("BoxHeight: " + obj.boxHeight);
-		console.log("SpriteHeight: " + obj.graphicsSprite.height);
 		obj.resize();
 	};
 
@@ -779,9 +777,9 @@ function DialogBox(x, y, availableSpaceWidth) {
 		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.textPadding/2));
 
 		// Text on button
-		let buttonTextStyle = { font: obj.fontSize+"px font_2", fill: '#68588C' }; // #68588C
+		let buttonTextStyle = game_details_data.text_styles.button_style; // #68588C
 		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
-		buttonText.anchor.setTo(0.5, 0.3);
+		buttonText.anchor.setTo(0.5, 0.4);
 		buttonText.align = 'center';
 
 		// The button

@@ -42,17 +42,20 @@ MyGame.LoadingState.prototype = {
 								//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
 								console.log("DATE:    " + value);
 								break;
-							case "game_width_min": 
-								configuration.game_width_min = value;
+							case "desktop_min_width": 
+								configuration.desktop_min_width = value;
 								break;
-							case "game_height_min": 
-								configuration.game_height_min = value;
+							case "desktop_min_height": 
+								configuration.desktop_min_height = value;
 								break;
-							case "game_width_max": 
-								configuration.game_width_max = value;
+							case "desktop_max_width": 
+								configuration.desktop_max_width = value;
 								break;
-							case "game_height_max": 
-								configuration.game_height_max = value;
+							case "desktop_max_height": 
+								configuration.desktop_max_height = value;
+								break;
+							case "game_duration":
+								configuration.game_duration = value * 1000;
 								break;
 							case "board_rows": 
 								configuration.board_rows = value;
