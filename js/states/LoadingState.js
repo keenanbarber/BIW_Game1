@@ -2,6 +2,26 @@
 
 var MyGame = MyGame || {}; /* Created namespace if it hasn't yet been created. */
 
+
+
+function doesSoundExist(sound) {
+	return (sound && sound != null);
+}
+
+// BUTTON PRESS SOUND
+var button_press_sound;
+function playButtonPressSound() {
+	if(doesSoundExist(button_press_sound))
+		button_press_sound.play();
+} // **********************
+
+// TILE DISAPPEAR SOUND
+var tile_disappear_sound;
+function playTileDisappearSound() {
+	if(doesSoundExist(tile_disappear_sound))
+		tile_disappear_sound.play();
+} // **********************
+
 MyGame.LoadingState = function(game) {
 	"use strict";
 	
@@ -15,11 +35,6 @@ MyGame.LoadingState.prototype = {
 
 	preload: function() {
 		"use strict"; 
-
-		// this.stage.backgroundColor = 0xBB4242;
-		// var loadingBar = this.add.sprite(this.world.centerX, this.world.centerY, "loading");
-		// loadingBar.anchor.setTo(0.5);
-		// this.load.setPreloadSprite(loadingBar);
 
 		// READ THE JSON FILE! :D
 		var header;
@@ -103,14 +118,7 @@ MyGame.LoadingState.prototype = {
 					let audio_files_header;
 					for(audio_files_header in game_details_data[ header ]) {
 						let value = game_details_data[ header ][ audio_files_header ];
-						switch(audio_files_header) {
-							case "sound_1": 
-								game.load.audio(audio_files_header, value);
-								break; 
-							case "sound_2": 
-								game.load.audio(audio_files_header, value);
-								break;
-						}
+						game.load.audio(audio_files_header, value);
 					}
 					break;
 				case "game_sprites":
@@ -173,6 +181,21 @@ MyGame.LoadingState.prototype = {
 
 	create: function() {
 		"use strict"; 
+
+		// Assigning audio to variables here because it causes errors above...?
+		if(doesSoundExist(game_details_data.audio_assignment.button_press_sound))
+			button_press_sound = game.add.audio(game_details_data.audio_assignment.button_press_sound);
+		if(doesSoundExist(game_details_data.audio_assignment.tile_disappear_sound))
+			tile_disappear_sound = game.add.audio(game_details_data.audio_assignment.tile_disappear_sound);
+
+
 		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}
 };
+
+
+
+
+
+
+

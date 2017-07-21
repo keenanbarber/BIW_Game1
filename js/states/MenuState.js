@@ -37,7 +37,6 @@ MyGame.MenuState.prototype = {
 		"use strict"; 
 		let obj = this;
 		this.sceneProps = game.add.group();
-		
 
 		// Add background if it doesn't already exist
 		if(background == null) {
@@ -76,14 +75,23 @@ MyGame.MenuState.prototype = {
 		// this.sceneProps.add(this.myDialogBox1.getGroup());
 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width);	
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
 		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
 			let component = menuDialogBoxData.text_components[i];
-			this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
+			if(component.type === "SCORE") {
+				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
+			}
 		}
 		this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
 		 	function() { //On click...
 				score = 0;
+				playButtonPressSound();
 				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);

@@ -640,9 +640,22 @@ var deleteCookie = function(cname) {
     setCookie(cname, "", -1);
 }
  
-
-
-function DialogBox(x, y, availableSpaceWidth) {
+/* EXAMPLE
+*************************
+	myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
+	myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
+	myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
+	myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
+	myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
+	myDialogBox1.addButton('CLAIM NOW', null,
+	 	function() { //On click...
+			// obj.myDialogBox1.hide();
+			obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		}
+	);
+	sceneProps.add(myDialogBox1.getGroup());
+*/
+function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding) {
 	let obj = {};
 
 	obj.useDefaultBackground = true;
@@ -652,7 +665,8 @@ function DialogBox(x, y, availableSpaceWidth) {
 	obj.boxX = x; 
 	obj.boxY = y;
 	obj.roundedCornerRadius = 8 * devicePixelRatio;
-	obj.textPadding = 20 * devicePixelRatio;
+	obj.contentsPadding = contentsPadding * devicePixelRatio;
+	obj.buttonTextPadding = buttonTextPadding * devicePixelRatio;
 	obj.fontSize = 12 * devicePixelRatio;
 
 	obj.buttons = [];
@@ -737,8 +751,8 @@ function DialogBox(x, y, availableSpaceWidth) {
 	obj.addTextSegment = function(text, style, horizontalAlign) {
 		let horizontalTextAlign = horizontalAlign;
 		let verticalTextAlign = 'top';
-		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.textPadding;
-		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.textPadding;
+		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.contentsPadding;
+		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.contentsPadding;
 		let anchorX = 0;
 		let anchorY = 0;
 		if(horizontalTextAlign === 'center') {
@@ -746,20 +760,21 @@ function DialogBox(x, y, availableSpaceWidth) {
 			anchorX = 0.5;
 		}
 		else if(horizontalTextAlign === 'left') {
-			textX = -obj.graphicsSprite.width/2 + obj.textPadding;
+			textX = -obj.graphicsSprite.width/2 + obj.contentsPadding;
 		}
 		if(verticalTextAlign === 'center') {
 			textY = 0;
 			anchorY = 0.5;
 		}
 		else if(verticalTextAlign === 'top') {
-			textY = -obj.graphicsSprite.height/2 + obj.textPadding;
+			textY = -obj.graphicsSprite.height/2 + obj.contentsPadding;
 		}
 		let myStyle = style;
 		myStyle.wordWrap = true;
-		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.textPadding);
+		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.contentsPadding);
 
 		let myText = game.add.text(textX, textY, text, myStyle);
+		myText.fontSize *= devicePixelRatio;
 		myText.anchor.setTo(anchorX, anchorY);
 		myText.align = horizontalTextAlign;
 		myText.padding.set(4, 4);
@@ -774,13 +789,15 @@ function DialogBox(x, y, availableSpaceWidth) {
 
 	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
 		let buttonX = 0;
-		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.textPadding/2));
+		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.contentsPadding/2));
 
 		// Text on button
 		let buttonTextStyle = game_details_data.text_styles.button_style; // #68588C
 		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
+		buttonText.fontSize *= devicePixelRatio;
 		buttonText.anchor.setTo(0.5, 0.4);
 		buttonText.align = 'center';
+
 
 		// The button
 		let newButton; 
@@ -788,7 +805,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 			graphics = game.add.graphics(0, 0);
 			graphics.beginFill(0xffffff, 1.0);
 			// graphics.lineStyle(1, 0x68588C, 1);
-			graphics.drawRoundedRect(0, 0, buttonText.width + (2 * obj.textPadding), buttonText.height, obj.roundedCornerRadius); 
+			graphics.drawRoundedRect(0, 0, buttonText.width + (2 * obj.buttonTextPadding), buttonText.height, obj.roundedCornerRadius); 
 			graphics.endFill();
 
 			let buttonTexture = graphics.generateTexture();
@@ -808,7 +825,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 		
 		newButton.setBehaviors(
 			function() { //On mouse over...
-				let newScale = (this.getSprite().width + obj.textPadding) / this.getSprite().width;
+				let newScale = (this.getSprite().width + obj.contentsPadding) / this.getSprite().width;
 				Tweenimate_ElasticScale(this.getSprite(), newScale, this.getIntendedScale().y, 1000);
 				game.canvas.style.cursor = "pointer";
 			}, 
@@ -843,16 +860,16 @@ function DialogBox(x, y, availableSpaceWidth) {
 
 	obj.resize = function() { 
 		if(obj.buttons.length > 0) {
-			obj.boxHeight = (2*obj.textPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + 10));
+			obj.boxHeight = (2*obj.contentsPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + 10));
 		}
 		else {
-			obj.boxHeight = 2*obj.textPadding + obj.textGroup.height;
+			obj.boxHeight = 2*obj.contentsPadding + obj.textGroup.height;
 		}
 
 		// Update the alignment of left aligned text.
 		for (let i = 0; i < obj.textGroup.children.length; i++) { 
 			if(obj.textGroup.getAt(i).align !== 'center') {
-				obj.textGroup.getAt(i).x = -obj.boxWidth/2 + obj.textPadding;
+				obj.textGroup.getAt(i).x = -obj.boxWidth/2 + obj.contentsPadding;
 			}
 		}
 
@@ -860,7 +877,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 		let tempTextHeight = 0;
 		for (let i = 0; i < obj.textGroup.children.length; i++) {
 			// console.log(obj.textGroup[i]);
-			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.textPadding + tempTextHeight;
+			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight;
 			tempTextHeight += obj.textGroup.getAt(i).height;
 		}
 
@@ -868,7 +885,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 		if(obj.buttons.length > 0) {
 			let tempButtonHeight = 0;
 			for (let i = 0; i < obj.buttons.length; i++) {
-				let yVal = -obj.boxHeight/2 + (2 * obj.textPadding) + tempTextHeight + tempButtonHeight + (i * 10);
+				let yVal = -obj.boxHeight/2 + (2 * obj.contentsPadding) + tempTextHeight + tempButtonHeight + (i * 10);
 				obj.buttons[i].getSprite().y = yVal;
 				obj.buttonText.getChildAt(i).y = yVal;
 				tempButtonHeight += obj.buttons[i].getSprite().height;
@@ -897,7 +914,7 @@ function DialogBox(x, y, availableSpaceWidth) {
 		obj.boxWidth = width;
 		for(let i = 0; i < obj.textGroup.children.length; i++) {
 			obj.textGroup.getAt(i).wordWrap = true;
-			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.textPadding));
+			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.contentsPadding));
 		}
 		obj.resize();
 		obj.resize(); // So... I don't want to do this, but without this, there is a small update bug where the graphicsSprite isn't what it should be sometimes.

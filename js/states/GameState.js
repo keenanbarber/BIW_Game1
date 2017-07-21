@@ -73,7 +73,15 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.scoreDisplay);
 
 		// Game Timer
-		this.timer = game.time.create();
+		this.gameTimer = game.time.create();
+
+		// Hint Timer
+		this.hintTimer = game.time.create();
+		this.hintCallOnComplete = function() {
+			this.showHint();
+			// this.hintTimer.add(5000, this.hintCallOnComplete, this);
+		};
+		this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
 
 		// Progress Bar
 		this.progressBar = ProgressBar(300, 20);
@@ -115,8 +123,8 @@ MyGame.GameState.prototype = {
 		"use strict"; 
 		// console.log("Update: " + this.timer.duration);
 		if(this.gameTimerRunning) {
-			this.progressBar.updateProgress( (this.timer.duration)/configuration.game_duration );
-			this.updateTimeText( Math.ceil(this.timer.duration / 1000));
+			this.progressBar.updateProgress( (this.gameTimer.duration)/configuration.game_duration );
+			this.updateTimeText( Math.ceil(this.gameTimer.duration / 1000));
 		}
 	},
 
@@ -318,6 +326,11 @@ MyGame.GameState.prototype = {
 	    //this.exitTransition();
 	    //this.game.state.start("GameState", false, false, this.game_details_data, this);
 	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
+
+	    this.restartHintTimer();
+
+	    // this.hintTimer.delay = 5000;
+
 	    //Tweenimate_Breathe(this.thing1, 1.5, 1.5, 1200);
 	    // tweenManager.stopAllTweens();
 	},
@@ -349,7 +362,7 @@ MyGame.GameState.prototype = {
 			    	}
 			    }
 
-			    this.showHint();
+			    // this.showHint();
 			    // this.shuffleBoard();
 		    }
 		}
@@ -893,7 +906,7 @@ MyGame.GameState.prototype = {
 			scoreMultiplier = 1;
 			// console.log("--- Multiplier Reset ---");
 
-			if(this.timer.duration <= 0) {
+			if(this.gameTimer.duration <= 0) {
 				this.endGame();
 			}
 			else {
@@ -903,6 +916,7 @@ MyGame.GameState.prototype = {
 		else {
 			scoreMultiplier += 1;
 		}
+		this.restartHintTimer();
 		return foundAnything;
 	}, 
 
@@ -932,6 +946,8 @@ MyGame.GameState.prototype = {
 		for(let i = 0; i < arr.length; i++) {
 			this.removeTile(arr[i].x, arr[i].y);
 		}
+
+		playTileDisappearSound();
 
 		let obj = this;
 		tweenManager.callOnComplete(function() {
@@ -1176,6 +1192,11 @@ MyGame.GameState.prototype = {
 		// }, this);
 	}, 
 
+	restartHintTimer: function() {
+		this.hintTimer.removeAll();
+	    this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
+	},
+
 	removeHint: function(hintSprite, hintTweens) {
 		this.clearHintTweens(hintTweens);
 		hintSprite.destroy();
@@ -1243,19 +1264,41 @@ MyGame.GameState.prototype = {
 	createDialogBoxes: function() {
 		let obj = this;
 
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300);	 
-		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300);	
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	 
+		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
 		
 		// Start Game Dialog Box 
 		// ******************************************************
-		this.startGameDialogBox.addTextSegment("ARE YOU READY?",
-			{ font: "20px font_2", fill: '#ffffff' }, 'center');
-		this.startGameDialogBox.addButton('YES!', null,
-		 	function() { //On click...
-				obj.startGameDialogBox.hide();
+		// this.startGameDialogBox.addTextSegment("ARE YOU READY?",
+		// 	{ font: "20px font_2", fill: '#ffffff' }, 'center');
+		// this.startGameDialogBox.addButton('YES!', null,
+		//  	function() { //On click...
+		// 		obj.startGameDialogBox.hide();
 
-				// obj.beginGame();
+		// 		// obj.beginGame();
+		// 		obj.goText();
+		// 	}
+		// );
+		// this.sceneProps.add(this.startGameDialogBox.getGroup());
+
+		let startGameDialogBoxData = game_details_data.dialog_box_settings.game_start_dialog_box;
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, startGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
+			let component = startGameDialogBoxData.text_components[i];
+			if(component.type === "SCORE") {
+				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
+		 	function() { //On click...
+		 		obj.startGameDialogBox.hide();
 				obj.goText();
 			}
 		);
@@ -1264,53 +1307,64 @@ MyGame.GameState.prototype = {
 		
 		// Time's Up Dialog Box 
 		// ******************************************************
-		this.endGameDialogBox.addTextSegment("TIME'S UP!",
-			{ font: "30px font_2", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addTextSegment("GREAT JOB!",
-			{ font: "16px font_1", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox.addButton('SHOW ME THE RESULTS!', null,
-		 	function() { //On click...
-				// obj.endGameDialogBox.hide();
-				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// this.endGameDialogBox.addTextSegment("TIME'S UP!",
+		// 	{ font: "30px font_2", fill: '#ffffff' }, 'center');
+		// this.endGameDialogBox.addTextSegment("GREAT JOB!",
+		// 	{ font: "16px font_1", fill: '#ffffff' }, 'center');
+		// this.endGameDialogBox.addButton('SHOW ME THE RESULTS!', null,
+		//  	function() { //On click...
+		// 		// obj.endGameDialogBox.hide();
+		// 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 	}
+		// );
+		// this.endGameDialogBox.addButton("I DID TERRIBLE.", null,
+		//  	function() { //On click...
+		// 		obj.endGameDialogBox.hide();
+		// 		obj.endGameDialogBox2.show();
+		// 	}
+		// );
+		// this.sceneProps.add(this.endGameDialogBox.getGroup());
+
+		let endGameDialogBoxData = game_details_data.dialog_box_settings.game_end_dialog_box;
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
+			let component = endGameDialogBoxData.text_components[i];
+			if(component.type === "SCORE") {
+				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
 			}
-		);
-		this.endGameDialogBox.addButton("I DID TERRIBLE.", null,
+			else if(component.type === "REWARD") {
+				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
 		 	function() { //On click...
-				obj.endGameDialogBox.hide();
-				obj.endGameDialogBox2.show();
+		 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
 		this.sceneProps.add(this.endGameDialogBox.getGroup());
 
- 
- 		// Other Dialog Box 
-		// ******************************************************
-		this.endGameDialogBox2.addTextSegment("YOU DIDN'T DO THAT BAD.",
-			{ font: "16px font_1", fill: '#ffffff' }, 'center');
-		this.endGameDialogBox2.addButton('YES I DID.', null,
-		 	function() { //On click...
-				// obj.endGameDialogBox.hide();
-				obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-		this.sceneProps.add(this.endGameDialogBox2.getGroup());
 	}, 
 
 	beginGame: function() {
 		allowBoardInput = true;
 		this.gameTimerRunning = true;
-		this.gameTimer = this.timer.add(configuration.game_duration, function() {
+		this.gameTimer.add(configuration.game_duration, function() {
 			if(tweenManager.getSize() == 0) {
 				this.endGame();
 			}
 		}, this);
-		this.timer.start();
+		this.gameTimer.start();
+		this.hintTimer.start();
 		this.scanBoard();
 	},
 
 	endGame: function() {
 		// console.log("GAME OVER");
 		allowBoardInput = false;
+		this.hintTimer.destroy();
 		this.updateTimeText(0);
 		this.gameTimerRunning = false;
 		this.hideSelectedSprites();

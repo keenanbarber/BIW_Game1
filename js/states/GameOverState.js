@@ -43,15 +43,37 @@ MyGame.GameOverState.prototype = {
 		this.sceneProps.add(this.title);
 
 		// End screen dialog
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
-		this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-		this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
-		this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		this.myDialogBox1.addButton('CLAIM NOW', null,
+		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
+		// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
+		// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
+		// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addButton('CLAIM NOW', null,
+		//  	function() { //On click...
+		// 		// obj.myDialogBox1.hide();
+		// 		obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		// 	}
+		// );
+		// this.sceneProps.add(this.myDialogBox1.getGroup());
+
+
+		let myDialogBox1Data = game_details_data.dialog_box_settings.game_over_dialog_box;
+		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, myDialogBox1Data.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		for(let i = 0; i < myDialogBox1Data.text_components.length; i++) { // Add text
+			let component = myDialogBox1Data.text_components[i];
+			if(component.type === "SCORE") {
+				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.myDialogBox1.addButton(myDialogBox1Data.receive_button_text, null,
 		 	function() { //On click...
-				// obj.myDialogBox1.hide();
-				obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		 		obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 			}
 		);
 		this.sceneProps.add(this.myDialogBox1.getGroup());
