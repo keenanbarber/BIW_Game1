@@ -76,6 +76,9 @@ MyGame.MenuState.prototype = {
 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
 		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+			this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
+		}
 		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
 			let component = menuDialogBoxData.text_components[i];
 			if(component.type === "SCORE") {
@@ -191,7 +194,7 @@ MyGame.MenuState.prototype = {
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length) {
+		    if (swipe_length >= configuration.min_swipe_length * devicePixelRatio) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);

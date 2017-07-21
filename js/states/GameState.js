@@ -49,16 +49,16 @@ MyGame.GameState.prototype = {
 		this.sceneProps = game.add.group();
 
 		// Time Display
-		let timeDisplayMessage = Math.ceil(configuration.game_duration / 1000) + " SEC";
-		let timeDisplayStyle = { font: "14px font_1", fill: '#ffffff' };
+		let timeDisplayMessage = Math.ceil(configuration.game_duration / 1000) + game_details_data.user_interface_settings.remaining_time_text_extension;
+		let timeDisplayStyle = game_details_data.user_interface_settings.remaining_time_style;
 		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
 		this.timeDisplay.anchor.setTo(1, 1);
 		this.timeDisplay.align = 'right';
 		this.sceneProps.add(this.timeDisplay);
 
 		// Score Text
-		let scoreTextMessage = "SCORE";
-		let scoreTextStyle = { font: "14px font_1", fill: '#ffffff' };
+		let scoreTextMessage = game_details_data.user_interface_settings.score_text_text;
+		let scoreTextStyle = game_details_data.user_interface_settings.score_text_style;
 		this.scoreText = game.add.text(0, 0, scoreTextMessage, scoreTextStyle);
 		this.scoreText.anchor.setTo(0, 1);
 		this.scoreText.align = 'left';
@@ -104,7 +104,8 @@ MyGame.GameState.prototype = {
 		this.sceneProps.add(this.selectedTileSprite2);
 
 		// Set up dialog boxes (not shown right away)
-		this.createDialogBoxes();
+		this.createStartGameDialogBox();
+		this.createEndGameDialogBox();
 
 		// Can't touch the board at the start!
 		allowBoardInput = false;
@@ -145,7 +146,6 @@ MyGame.GameState.prototype = {
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
@@ -233,7 +233,6 @@ MyGame.GameState.prototype = {
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-			this.endGameDialogBox2.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
@@ -346,7 +345,7 @@ MyGame.GameState.prototype = {
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length) {
+		    if (swipe_length >= configuration.min_swipe_length * devicePixelRatio) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    let swipeVec = this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
@@ -1211,9 +1210,11 @@ MyGame.GameState.prototype = {
 
 	goText: function() {
 		let duration = 750;
-		let message = "GO";
-		let myStyle = { font: "" + (50 * devicePixelRatio) + "px font_2", fill: '#ffffff' };
+		let message = game_details_data.user_interface_settings.begin_text_text;
+		let myStyle = game_details_data.user_interface_settings.begin_text_style;
 		let myText = game.add.text(game.world.centerX, game.world.centerY, message, myStyle);
+		myText.fontSize *= devicePixelRatio;
+
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;
 		myText.anchor.setTo(0.5, 0.5);
@@ -1258,95 +1259,8 @@ MyGame.GameState.prototype = {
 	},
 
 	updateTimeText: function(num) {
-		this.timeDisplay.setText(num + " SEC");
+		this.timeDisplay.setText(num + game_details_data.user_interface_settings.remaining_time_text_extension);
 	},
-
-	createDialogBoxes: function() {
-		let obj = this;
-
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	 
-		this.endGameDialogBox2 = DialogBox(game.world.centerX, game.world.centerY, 300, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		
-		// Start Game Dialog Box 
-		// ******************************************************
-		// this.startGameDialogBox.addTextSegment("ARE YOU READY?",
-		// 	{ font: "20px font_2", fill: '#ffffff' }, 'center');
-		// this.startGameDialogBox.addButton('YES!', null,
-		//  	function() { //On click...
-		// 		obj.startGameDialogBox.hide();
-
-		// 		// obj.beginGame();
-		// 		obj.goText();
-		// 	}
-		// );
-		// this.sceneProps.add(this.startGameDialogBox.getGroup());
-
-		let startGameDialogBoxData = game_details_data.dialog_box_settings.game_start_dialog_box;
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, startGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
-			let component = startGameDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
-			}
-			else if(component.type === "REWARD") {
-				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
-			}
-			else {
-				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align);
-			}
-		}
-		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
-		 	function() { //On click...
-		 		obj.startGameDialogBox.hide();
-				obj.goText();
-			}
-		);
-		this.sceneProps.add(this.startGameDialogBox.getGroup());
-
-		
-		// Time's Up Dialog Box 
-		// ******************************************************
-		// this.endGameDialogBox.addTextSegment("TIME'S UP!",
-		// 	{ font: "30px font_2", fill: '#ffffff' }, 'center');
-		// this.endGameDialogBox.addTextSegment("GREAT JOB!",
-		// 	{ font: "16px font_1", fill: '#ffffff' }, 'center');
-		// this.endGameDialogBox.addButton('SHOW ME THE RESULTS!', null,
-		//  	function() { //On click...
-		// 		// obj.endGameDialogBox.hide();
-		// 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-		// 	}
-		// );
-		// this.endGameDialogBox.addButton("I DID TERRIBLE.", null,
-		//  	function() { //On click...
-		// 		obj.endGameDialogBox.hide();
-		// 		obj.endGameDialogBox2.show();
-		// 	}
-		// );
-		// this.sceneProps.add(this.endGameDialogBox.getGroup());
-
-		let endGameDialogBoxData = game_details_data.dialog_box_settings.game_end_dialog_box;
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
-			let component = endGameDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
-			}
-			else if(component.type === "REWARD") {
-				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
-			}
-			else {
-				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align);
-			}
-		}
-		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
-		 	function() { //On click...
-		 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
-			}
-		);
-		this.sceneProps.add(this.endGameDialogBox.getGroup());
-
-	}, 
 
 	beginGame: function() {
 		allowBoardInput = true;
@@ -1369,8 +1283,65 @@ MyGame.GameState.prototype = {
 		this.gameTimerRunning = false;
 		this.hideSelectedSprites();
 		this.endGameDialogBox.show();
-	}
+	}, 
 
+	createStartGameDialogBox: function() {
+		let startGameDialogBoxData = game_details_data.dialog_box_settings.game_start_dialog_box;
+		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, startGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+			this.startGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		}
+		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
+			let component = startGameDialogBoxData.text_components[i];
+			if(component.type === "SCORE") {
+				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
+		 	function() { //On click...
+		 		currentState.startGameDialogBox.hide();
+				currentState.goText();
+			}
+		);
+		this.startGameDialogBox.addButton(startGameDialogBoxData.back_button_text, null,
+		 	function() { //On click...
+		 		currentState.game.state.start("MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			}
+		);
+		this.sceneProps.add(this.startGameDialogBox.getGroup());
+	}, 
+
+	createEndGameDialogBox: function() {
+		let endGameDialogBoxData = game_details_data.dialog_box_settings.game_end_dialog_box;
+		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+			this.endGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		}
+		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
+			let component = endGameDialogBoxData.text_components[i];
+			if(component.type === "SCORE") {
+				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
+		 	function() { //On click...
+		 		currentState.game.state.start("GameOverState", false, false, currentState.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+			}
+		);
+		this.sceneProps.add(this.endGameDialogBox.getGroup());
+	}
 
 
 

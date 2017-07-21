@@ -34,7 +34,6 @@ MyGame.GameOverState.prototype = {
 
 	create: function() {
 		"use strict"; 
-		let obj = this;
 		this.sceneProps = game.add.group();
 
 		// Title
@@ -42,48 +41,17 @@ MyGame.GameOverState.prototype = {
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
 
-		// End screen dialog
-		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 300);
-		// this.myDialogBox1.addTextSegment("CONGRATULATIONS!", { font: "22px font_2", fill: '#ffffff' }, 'center', 'top');
-		// this.myDialogBox1.addTextSegment("YOU'VE WON", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		// this.myDialogBox1.addTextSegment(score, { font: "40px font_2", fill: '#7ffff4' }, 'center');
-		// this.myDialogBox1.addTextSegment("POINTS!", { font: "14px font_1", fill: '#ffffff' }, 'center');
-		// this.myDialogBox1.addButton('CLAIM NOW', null,
-		//  	function() { //On click...
-		// 		// obj.myDialogBox1.hide();
-		// 		obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-		// 	}
-		// );
-		// this.sceneProps.add(this.myDialogBox1.getGroup());
 
-
-		let myDialogBox1Data = game_details_data.dialog_box_settings.game_over_dialog_box;
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, myDialogBox1Data.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		for(let i = 0; i < myDialogBox1Data.text_components.length; i++) { // Add text
-			let component = myDialogBox1Data.text_components[i];
-			if(component.type === "SCORE") {
-				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align);
-			}
-			else if(component.type === "REWARD") {
-				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
-			}
-			else {
-				this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
-			}
-		}
-		this.myDialogBox1.addButton(myDialogBox1Data.receive_button_text, null,
-		 	function() { //On click...
-		 		obj.game.state.start("MenuState", false, false, obj.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
-			}
-		);
-		this.sceneProps.add(this.myDialogBox1.getGroup());
-
-
+		// READ FROM JSON FILE
+		// ******************************
+		this.createScoreDialogBox(); // SCORE DIALOG BOX
+		this.createRewardDialogBox(); // REWARD DIALOG BOX
+		// ******************************
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			obj.myDialogBox1.show();
+			currentState.scoreDialogBox.show();
 		});
 		this.resize();
 	},
@@ -110,7 +78,8 @@ MyGame.GameOverState.prototype = {
 			this.title.y = height/2 - this.title.height/2;
 
 			// Dialog Box
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
+			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
+			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
 		}
 		else {
 			// Background
@@ -127,7 +96,8 @@ MyGame.GameOverState.prototype = {
 			this.title.y = height/2 - this.title.height/2;
 
 			// Dialog Box
-			this.myDialogBox1.setPosition(game.world.centerX, game.world.centerY + this.myDialogBox1.getHeight() * (1/2));
+			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
+			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
 		}
 	},
 
@@ -162,7 +132,7 @@ MyGame.GameOverState.prototype = {
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length) {
+		    if (swipe_length >= configuration.min_swipe_length  * devicePixelRatio) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
@@ -208,8 +178,91 @@ MyGame.GameOverState.prototype = {
 
 		console.log("Swipe: " + bestVector);
 		return bestVector;
+	}, 
+
+	createScoreDialogBox: function() {
+		let scoreDialogBoxData;
+		if(score > game_details_data.game_details.high_score && game_details_data.game_details.high_score != null && game_details_data.game_details.high_score)
+			scoreDialogBoxData = game_details_data.dialog_box_settings.beat_high_score_dialog_box;
+		else
+			scoreDialogBoxData = game_details_data.dialog_box_settings.default_score_dialog_box;
+
+
+		this.scoreDialogBox = DialogBox(game.world.centerX, game.world.centerY, scoreDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+			this.scoreDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		}
+		for(let i = 0; i < scoreDialogBoxData.text_components.length; i++) { // Add text
+			let component = scoreDialogBoxData.text_components[i];
+			if(component.type === "SCORE") 
+				this.scoreDialogBox.addTextSegment(score + component.text, component.style, component.align);
+			else if(component.type === "REWARD") 
+				this.scoreDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			else 
+				this.scoreDialogBox.addTextSegment(component.text, component.style, component.align);
+		}
+		this.scoreDialogBox.addButton(scoreDialogBoxData.continue_button_text, null,
+		 	function() { //On click...
+		 		currentState.scoreDialogBox.hide();
+				currentState.rewardDialogBox.show();
+			}
+		);
+		this.sceneProps.add(this.scoreDialogBox.getGroup());
+	}, 
+
+	createRewardDialogBox: function() {
+		let rewardDialogBoxData;
+		if(game_details_data.game_details.reward != 0 && game_details_data.game_details.reward != null && game_details_data.game_details.reward)
+			rewardDialogBoxData = game_details_data.dialog_box_settings.reward_dialog_box;
+		else 
+			rewardDialogBoxData = game_details_data.dialog_box_settings.no_reward_dialog_box;
+
+
+		this.rewardDialogBox = DialogBox(game.world.centerX, game.world.centerY, rewardDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+			this.rewardDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		}
+		for(let i = 0; i < rewardDialogBoxData.text_components.length; i++) { // Add text
+			let component = rewardDialogBoxData.text_components[i];
+			if(component.type === "SCORE") 
+				this.rewardDialogBox.addTextSegment(score + component.text, component.style, component.align);
+			else if(component.type === "REWARD") 
+				this.rewardDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			else 
+				this.rewardDialogBox.addTextSegment(component.text, component.style, component.align);
+		}
+		this.rewardDialogBox.addButton(rewardDialogBoxData.continue_button_text, null,
+		 	function() { //On click...
+		 		currentState.game.state.start("MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+			}
+		);
+		this.sceneProps.add(this.rewardDialogBox.getGroup());
 	}
 
 
+
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -669,13 +669,18 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 	obj.buttonTextPadding = buttonTextPadding * devicePixelRatio;
 	obj.fontSize = 12 * devicePixelRatio;
 
+	obj.defaultBackgroundColor = game_details_data.dialog_box_settings.default_dialog_box_background_color.replace('#', '0x');
+	obj.defaultBackgroundAlpha = game_details_data.dialog_box_settings.default_dialog_box_background_alpha;
+	obj.defaultOutlineColor = game_details_data.dialog_box_settings.default_dialog_box_outline_color.replace('#', '0x');
+	obj.defaultOutlineSize = game_details_data.dialog_box_settings.default_dialog_box_outline_size * devicePixelRatio;
+
 	obj.buttons = [];
 	obj.buttonText = game.add.group();
 	obj.canPressButtons = true;
 
 	let graphics = game.add.graphics(0, 0);
-	graphics.beginFill(0x68588C, 0.8);
-	// graphics.lineStyle(1, 0xffffff, 1);
+	graphics.beginFill(obj.defaultBackgroundColor, obj.defaultBackgroundAlpha);
+	graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor, 1);
 	graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 	graphics.endFill();
 
@@ -788,12 +793,9 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 	};
 
 	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
-		let buttonX = 0;
-		let buttonY = obj.boxHeight/2 + (obj.buttons.length * (20 + obj.contentsPadding/2));
-
 		// Text on button
-		let buttonTextStyle = game_details_data.text_styles.button_style; // #68588C
-		let buttonText = game.add.text(buttonX, buttonY, text, buttonTextStyle);
+		let buttonTextStyle = game_details_data.dialog_box_settings.button_text_style; // #68588C
+		let buttonText = game.add.text(0, 0, text, buttonTextStyle);
 		buttonText.fontSize *= devicePixelRatio;
 		buttonText.anchor.setTo(0.5, 0.4);
 		buttonText.align = 'center';
@@ -810,7 +812,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 			let buttonTexture = graphics.generateTexture();
 			graphics.destroy();
-			newButton = SpriteButton(buttonX, buttonY, buttonTexture);
+			newButton = SpriteButton(0, 0, buttonTexture);
 
 			if(obj.largestButtonTexture == null) {
 				obj.largestButtonTexture = buttonTexture;
@@ -820,7 +822,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 			}
 		}
 		else {
-			newButton = SpriteButton(buttonX, buttonY, desiredSpriteKey);
+			newButton = SpriteButton(0, 0, desiredSpriteKey);
 		}
 		
 		newButton.setBehaviors(
@@ -860,7 +862,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 	obj.resize = function() { 
 		if(obj.buttons.length > 0) {
-			obj.boxHeight = (2*obj.contentsPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + 10));
+			obj.boxHeight = (2*obj.contentsPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + obj.contentsPadding/2));
 		}
 		else {
 			obj.boxHeight = 2*obj.contentsPadding + obj.textGroup.height;
@@ -885,7 +887,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		if(obj.buttons.length > 0) {
 			let tempButtonHeight = 0;
 			for (let i = 0; i < obj.buttons.length; i++) {
-				let yVal = -obj.boxHeight/2 + (2 * obj.contentsPadding) + tempTextHeight + tempButtonHeight + (i * 10);
+				let yVal = -obj.boxHeight/2 + (2 * obj.contentsPadding) + tempTextHeight + tempButtonHeight + (i * obj.contentsPadding/2);
 				obj.buttons[i].getSprite().y = yVal;
 				obj.buttonText.getChildAt(i).y = yVal;
 				tempButtonHeight += obj.buttons[i].getSprite().height;
@@ -896,8 +898,8 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		if(obj.useDefaultBackground) {
 			// Update the background dialog box sprite size
 			let graphics = game.add.graphics(0, 0);
-			graphics.beginFill(0x68588C, 0.8);
-			// graphics.lineStyle(1, 0xffffff, 1);
+			graphics.beginFill(obj.defaultBackgroundColor, obj.defaultBackgroundAlpha);
+			graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor, 1);
 			graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
 			graphics.endFill();
 			let graphicsTexture = graphics.generateTexture();
@@ -917,7 +919,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.contentsPadding));
 		}
 		obj.resize();
-		obj.resize(); // So... I don't want to do this, but without this, there is a small update bug where the graphicsSprite isn't what it should be sometimes.
+		// obj.resize(); // So... I don't want to do this, but without this, there is a small update bug where the graphicsSprite isn't what it should be sometimes.
 	};
 
 	obj.setPosition = function(x, y) {
@@ -1008,8 +1010,13 @@ function ProgressBar(width, height) {
 	obj.progressPercentage = 0;
 	obj.progressBarGroup = game.add.group(0, 0);
 
+	obj.defaultFillColor = game_details_data.user_interface_settings.default_timer_fill_color.replace('#', '0x');
+	obj.defaultFillAlpha = game_details_data.user_interface_settings.default_timer_fill_alpha;
+	obj.defaultOutlineColor = game_details_data.user_interface_settings.default_timer_outline_color.replace('#', '0x');
+	obj.defaultOutlineSize = game_details_data.user_interface_settings.default_timer_outline_size * devicePixelRatio;
+
 	graphics = game.add.graphics(0,0);
-	graphics.beginFill('0x68588C',1);
+	graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
 	graphics.drawRoundedRect(0,0,width,height,10);
 	graphics.endFill();
 	graphicsTexture = graphics.generateTexture();
@@ -1022,7 +1029,7 @@ function ProgressBar(width, height) {
 
 	// Progress Bar
 	graphics = game.add.graphics(0,0);
-	graphics.lineStyle(2, '0xFFFFFF');
+	graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
 	// graphics.beginFill('0x68588C',1);
 	graphics.drawRoundedRect(0,0,width,height,10);
 	graphics.endFill();
@@ -1038,7 +1045,7 @@ function ProgressBar(width, height) {
 		obj.progressPercentage = perc;
 
 		graphics = game.add.graphics(0,0);
-		graphics.beginFill('0x68588C',1);
+		graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
 		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,height,10);
 		graphics.endFill();
 		graphicsTexture = graphics.generateTexture();
@@ -1058,7 +1065,7 @@ function ProgressBar(width, height) {
 
 	obj.setWidth = function(width) {
 		graphics = game.add.graphics(0,0);
-		graphics.lineStyle(2, '0xFFFFFF');
+		graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
 		// graphics.beginFill('0x68588C',1);
 		graphics.drawRoundedRect(0,0,width,obj.originalHeight,10);
 		graphics.endFill();

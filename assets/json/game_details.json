@@ -1,26 +1,39 @@
 {
     "game_details": {
         "name": "Keenan Barber", 
-        "reward": 100,
+        "reward": 29,
         "date_played": "July 20, 2017", 
+        "high_score": 100, 
 
         "desktop_min_width": 400,
         "desktop_min_height": 400, 
         "desktop_max_width": 700, 
         "desktop_max_height": 700, 
 
-        "game_duration": 120,
+        "game_duration": 30,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
         "hint_delay": 5
     },
+    "user_interface_settings": {
+        "score_text_text": "SCORE", 
+        "score_text_style": { "font": "14px font_1", "fill": "#ffffff" }, 
+
+        "remaining_time_text_extension": " SEC", 
+        "remaining_time_style": { "font": "14px font_1", "fill": "#ffffff" }, 
+
+        "begin_text_text": "GO", 
+        "begin_text_style": { "font": "50px font_2", "fill": "#ffffff" }, 
+
+        "default_timer_fill_color": "#68588C", 
+        "default_timer_fill_alpha": 0.8, 
+        "default_timer_outline_color": "#ffffff",
+        "default_timer_outline_size": 2 
+    },
     "font_files": {
         "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
         "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
-    },
-    "text_styles": {
-        "button_style": { "font": "12px font_2", "fill": "#68588C" }
     },
     "audio_files": {
         "sound_1": ["assets/audio/Drop1.mp3", "assets/audio/Drop1.wav"], 
@@ -37,15 +50,15 @@
         "menu_popup_y_offset": 0 
     },
     "game_sprites": {
+        "dialog_box_background_sprite": "assets/images/DialogBoxBackground.svg",
+
         "background_image": "assets/images/background_0.png", 
         "title": "assets/images/title_MartianMatch.png",
 
         "board_tile": "assets/images/BoardTile.png", 
         "selected_tile": "assets/images/HighlightBoxTemp.png",
                 
-        "end_game_image": "assets/images/UFO.png", 
-
-        "popup_background": "assets/images/DialogBoxBackground.svg"
+        "end_game_image": "assets/images/UFO.png" 
     },
     "game_tiles": [
         {   "main_sprite_source": "assets/images/martian_blue.svg", 
@@ -112,51 +125,103 @@
     "dialog_box_settings": {
         "contents_padding": 20, 
         "button_text_padding": 20,
+        "button_text_style": { "font": "18px font_2", "fill": "#68588C" },
+
+        "default_dialog_box_background_color": "#68588C", 
+        "default_dialog_box_background_alpha": 0.8, 
+        "default_dialog_box_outline_color": "#ffffff",
+        "default_dialog_box_outline_size": 0,
+
         "menu_dialog_box": {
             "width" : 400, 
             "text_components": [
                 {   
-                    "text": "INSTRUCTIONS", 
-                    "style": { "font": "16px font_2", "fill": "#ffffff" },
-                    "align": "center" 
-                }, 
-                {   
                     "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!", 
-                    "style": { "font": "12px font_1", "fill": "#ffffff" },
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 
             "play_button_text": "PLAY"
         },
         "game_start_dialog_box": {
-            "width" : 200, 
+            "width" : 400, 
             "text_components": [
                 {   
-                    "text": "ARE YOU READY?", 
-                    "style": { "font": "20px font_2", "fill": "#ffffff" },
+                    "text": "GET AS MANY POINTS AS POSSIBLE BEFORE THE TIME RUNS OUT!", 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 
-            "start_button_text": "YES!"
+            "start_button_text": "START", 
+            "back_button_text": "BACK"
         }, 
         "game_end_dialog_box": {
             "width" : 300, 
             "text_components": [
                 {   
                     "text": "TIME'S UP!", 
-                    "style": { "font": "30px font_2", "fill": "#ffffff" },
-                    "align": "center" 
-                }, 
-                {   
-                    "text": "GREAT JOB!", 
-                    "style": { "font": "16px font_1", "fill": "#ffffff" },
+                    "style": { "font": "22px font_2", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 
             "finish_button_text": "SHOW ME THE RESULTS!"
         }, 
-        "game_over_dialog_box": {
+        "default_score_dialog_box": {
             "width" : 300, 
+            "text_components": [
+                {   
+                    "type": "DEFAULT",
+                    "text": "GREAT JOB!", 
+                    "style": { "font": "22px font_2", "fill": "#ffffff" },
+                    "align": "center" 
+                }, 
+                {   
+                    "type": "DEFAULT", 
+                    "text": "YOU GOT A SCORE OF", 
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "align": "center" 
+                },
+                {   
+                    "type": "SCORE", 
+                    "text": " POINTS", 
+                    "style": { "font": "40px font_2", "fill": "#7ffff4" },
+                    "align": "center" 
+                }
+            ], 
+            "continue_button_text": "ANY REWARD?"
+        }, 
+        "beat_high_score_dialog_box": {
+            "width" : 300, 
+            "text_components": [
+                {   
+                    "type": "DEFAULT",
+                    "text": "NEW HIGH SCORE!", 
+                    "style": { "font": "22px font_2", "fill": "#ffffff" },
+                    "align": "center" 
+                }, 
+                {   
+                    "type": "DEFAULT", 
+                    "text": "YOU GOT A SCORE OF: ", 
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "align": "center" 
+                },
+                {   
+                    "type": "SCORE", 
+                    "text": " POINTS", 
+                    "style": { "font": "40px font_2", "fill": "#7ffff4" },
+                    "align": "center" 
+                },
+                {   
+                    "type": "DEFAULT",
+                    "text": "GREAT WORK!", 
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "align": "center" 
+                }
+            ], 
+            "continue_button_text": "ANY REWARD?"
+        }, 
+        "reward_dialog_box": {
+            "width" : 400, 
             "text_components": [
                 {   
                     "type": "DEFAULT",
@@ -166,24 +231,30 @@
                 }, 
                 {   
                     "type": "DEFAULT", 
-                    "text": "YOU'VE WON", 
+                    "text": "THE FOLLOWING CREDITS HAVE BEEN ADDED TO YOUR ACCOUNT:", 
                     "style": { "font": "14px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 },
                 {   
-                    "type": "SCORE", 
-                    "text": "", 
-                    "style": { "font": "40px font_2", "fill": "#7ffff4" },
-                    "align": "center" 
-                },
-                {   
-                    "type": "DEFAULT",
-                    "text": "POINTS!", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "type": "REWARD", 
+                    "text": " CREDITS", 
+                    "style": { "font": "26px font_2", "fill": "#f4ce42" },
                     "align": "center" 
                 }
             ], 
-            "receive_button_text": "CLAIM"
+            "continue_button_text": "THANKS!"
+        }, 
+        "no_reward_dialog_box": {
+            "width" : 400, 
+            "text_components": [
+                {   
+                    "type": "DEFAULT",
+                    "text": "BETTER LUCK NEXT TIME!", 
+                    "style": { "font": "22px font_2", "fill": "#ffffff" },
+                    "align": "center" 
+                }
+            ], 
+            "continue_button_text": "RETURN TO MENU"
         }
     }
 }

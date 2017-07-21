@@ -141,8 +141,9 @@ MyGame.LoadingState.prototype = {
 							case "end_game_image": 
 								this.load.image(game_sprites_header, value);
 								break;
-							case "popup_background": 
-								this.load.image(game_sprites_header, value);
+							case "dialog_box_background_sprite": 
+								if(value != null)
+									this.load.image(game_sprites_header, value);
 								break;
 						}
 					}
