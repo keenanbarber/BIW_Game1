@@ -27,8 +27,8 @@ MyGame.GameState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		currentState = this;
 		window.removeEventListener('resize', currentState.resize );
+		currentState = this;
 		window.addEventListener('resize', currentState.resize );
 		// game.scale.setResizeCallback(this.resize, this);
 
@@ -90,7 +90,7 @@ MyGame.GameState.prototype = {
 		// Progress Bar
 		this.progressBar = ProgressBar(300, 20);
 		this.sceneProps.add(this.progressBar.getGroup());
-		this.progressBar.updateProgress(0);
+		this.progressBar.updateProgress(1);
 
 		// Set up the board
 		this.initializeBoard();

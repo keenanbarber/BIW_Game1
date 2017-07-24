@@ -4,13 +4,14 @@
         "reward": 29,
         "date_played": "July 20, 2017", 
         "high_score": 100, 
+        "attempts_remaining": 3, 
 
         "desktop_min_width": 400,
         "desktop_min_height": 400, 
-        "desktop_max_width": 700, 
-        "desktop_max_height": 700, 
+        "desktop_max_width": 1000, 
+        "desktop_max_height": 1000, 
 
-        "game_duration": 30,
+        "game_duration": 100,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
@@ -29,7 +30,7 @@
         "default_timer_fill_color": "#68588C", 
         "default_timer_fill_alpha": 0.8, 
         "default_timer_outline_color": "#ffffff",
-        "default_timer_outline_size": 2 
+        "default_timer_outline_size": 1 
     },
     "font_files": {
         "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
@@ -48,14 +49,14 @@
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 
-        "menu_title_y_offset": 0, 
+        "menu_title_y_offset": 80, 
         "menu_popup_x_offset": 0, 
         "menu_popup_y_offset": 0 
     },
     "game_sprites": {
         "dialog_box_background_sprite": "assets/images/DialogBoxBackground.svg",
 
-        "background_image": "assets/images/background_2.png", 
+        "background_image": "assets/images/background_0.png", 
         "title": "assets/images/title_MartianMatch.png",
 
         "board_tile": "assets/images/BoardTile.png", 

@@ -20,8 +20,8 @@ MyGame.MenuState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		currentState = this;
 		window.removeEventListener('resize', currentState.resize );
+		currentState = this;
 		window.addEventListener('resize', currentState.resize );
 		
 		// game.scale.setResizeCallback(this.resize, this);
@@ -51,6 +51,15 @@ MyGame.MenuState.prototype = {
 		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
+
+		// Attempts Text
+		// let attemptsTextMessage = "ATTEMPTS REMAINING: " + game_details_data.game_details.attempts_remaining;
+		// let attemptsTextStyle = game_details_data.user_interface_settings.score_text_style;
+		// this.attemptsText = game.add.text(0, 0, attemptsTextMessage, attemptsTextStyle);
+		// this.attemptsText.anchor.setTo(0.5);
+		// this.attemptsText.align = 'center';
+		// this.attemptsText.fontSize = this.attemptsText.fontSize * devicePixelRatio;
+		// this.sceneProps.add(this.attemptsText);
 
 
 		// Menu Dialog Box
@@ -134,14 +143,18 @@ MyGame.MenuState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * window.devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * window.devicePixelRatio);
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
+
+			// Attempts Text
+			// this.attemptsText.y = height - 50;
+			// this.attemptsText.x = width / 2;
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * window.devicePixelRatio), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * window.devicePixelRatio));
+				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * devicePixelRatio));
 		}
 		else {
 			// Background
@@ -153,20 +166,23 @@ MyGame.MenuState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * window.devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * window.devicePixelRatio);
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
+
+			// Attempts Text
+			// this.attemptsText.y = height - 50;
+			// this.attemptsText.x = width/2;
 
 			// Dialog Box
 			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * window.devicePixelRatio), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * window.devicePixelRatio));
+				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * devicePixelRatio), 
+				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * devicePixelRatio));
 		}
 	},
 
 	resize: function() {
 		"use strict";
-		console.log("Still being called.");
 		updateGameWindow(game);
 
 		let scaleManager = game.scale;
@@ -175,7 +191,7 @@ MyGame.MenuState.prototype = {
 
 		currentState.positionComponents(width, height);
 
-		currentState.myDialogBox1.setWidth(game.width, game.width, 500, 50);
+		currentState.myDialogBox1.setWidth(game.width, 300, 500, 50);
 	},
 
 	start_swipe: function(pointer) {

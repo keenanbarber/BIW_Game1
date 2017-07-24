@@ -18,8 +18,8 @@ MyGame.GameOverState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		currentState = this;
 		window.removeEventListener('resize', currentState.resize );
+		currentState = this;
 		window.addEventListener('resize', currentState.resize );
 
 		// State Specific Variables
@@ -74,9 +74,9 @@ MyGame.GameOverState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = width/2;
-			this.title.y = height/2 - this.title.height/2;
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
 
 			// Dialog Box
 			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
@@ -92,9 +92,9 @@ MyGame.GameOverState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width * (2 / 3), height, 10, 1);
-			this.title.x = width/2;
-			this.title.y = height/2 - this.title.height/2;
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
 
 			// Dialog Box
 			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));

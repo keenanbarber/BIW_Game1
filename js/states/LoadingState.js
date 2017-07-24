@@ -50,8 +50,18 @@ MyGame.LoadingState = function(game) {
 
 MyGame.LoadingState.prototype = { 
 	init: function() {
-		// Recieves game_details_data from BootState and stores it. 
 		"use strict";
+
+		currentState = this;
+		window.addEventListener('resize', currentState.resize );
+
+		// Loading Text
+		let loadingTextMessage = game.load.progress;
+		let loadingTextStyle = game_details_data.user_interface_settings.score_text_style;
+		this.loadingText = game.add.text(game.world.centerX, game.world.centerY, loadingTextMessage, loadingTextStyle);
+		this.loadingText.anchor.setTo(0.5);
+		this.loadingText.align = 'center';
+		this.loadingText.fontSize = this.loadingText.fontSize * devicePixelRatio;
 	}, 
 
 	preload: function() {
@@ -199,10 +209,19 @@ MyGame.LoadingState.prototype = {
 	loadUpdate: function() {  // every frame during loading, set the scale.x of the bar to the progress (an integer between 0  // and 100) divided by 100 to give a float between 0 and 1  
 		// this.preloadBar.scale.x = game.load.progress * 0.01;
 		// console.log("Loading Bar...");
+		updateGameWindow(game);
+		currentState.loadingText.x = game.world.centerX; 
+		currentState.loadingText.y = game.world.centerY;
+
+		this.loadingText.setText(game.load.progress);
 	},
 
 	create: function() {
 		"use strict"; 
+
+		
+
+
 
 		// Assigning audio to variables here because it causes errors above...?
 		if(doesSoundExist(game_details_data.audio_assignment.button_press_sound))
@@ -217,6 +236,15 @@ MyGame.LoadingState.prototype = {
 			tile_select_sound = game.add.audio(game_details_data.audio_assignment.tile_select_sound);
 
 		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
+	}, 
+
+	resize: function() {
+		"use strict";
+		updateGameWindow(game);
+
+		let scaleManager = game.scale;
+		let width = scaleManager.width; 
+		let height = scaleManager.height;
 	}
 };
 

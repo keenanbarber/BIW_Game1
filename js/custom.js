@@ -912,7 +912,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		}
 	};
 
-	obj.setWidth = function(availableWidth, maxWidth, minWidth, padding) {
+	obj.setWidth = function(availableWidth, minWidth, maxWidth, padding) {
 		let desiredWidth = Math.max(
 			Math.min(maxWidth - 2*padding, availableWidth - 2*padding), 
 			minWidth
@@ -1079,6 +1079,8 @@ function ProgressBar(width, height) {
 		graphics.destroy();
 
 		obj.progressBar.loadTexture(graphicsTexture);
+
+		obj.updateProgress(obj.progressPercentage);
 	};
 
 	obj.getHeight = function() {
