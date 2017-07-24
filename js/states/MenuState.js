@@ -52,6 +52,8 @@ MyGame.MenuState.prototype = {
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
 
+		this.alphaMaskTest();
+
 		// Attempts Text
 		// let attemptsTextMessage = "ATTEMPTS REMAINING: " + game_details_data.game_details.attempts_remaining;
 		// let attemptsTextStyle = game_details_data.user_interface_settings.score_text_style;
@@ -260,7 +262,46 @@ MyGame.MenuState.prototype = {
 
 		console.log("Swipe: " + bestVector);
 		return bestVector;
+	}, 
+
+	alphaMaskTest: function() {
+		// graphics = game.add.graphics(0,0);
+		// graphics.beginFill('#ffffff', 1);
+		// graphics.drawRoundedRect(0, 0, 100, 30, 10);
+		// graphics.endFill();
+		// graphicsTexture = graphics.generateTexture();
+		// graphics.destroy();
+
+		let mask = game.add.sprite(150, 150, gameTileDetails[0].key);
+
+		let toBeMasked = game.add.sprite(300, 300, 'background_image');
+
+
+		//	Create a new bitmap data the same size as our picture
+		var bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
+
+		//	And create an alpha mask image by combining pic and mask from the cache
+		bmd.alphaMask(gameTileDetails[0].key, 'background_image');
+
+		game.add.image(game.world.centerX, 320, bmd);
+		// mask.destroy();
+		toBeMasked.destroy();
 	}
 
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
