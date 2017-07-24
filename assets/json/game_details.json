@@ -221,7 +221,7 @@
             "continue_button_text": "ANY REWARD?"
         }, 
         "reward_dialog_box": {
-            "width" : 400, 
+            "width" : 300, 
             "text_components": [
                 {   
                     "type": "DEFAULT",

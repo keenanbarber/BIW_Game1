@@ -54,6 +54,7 @@ MyGame.GameState.prototype = {
 		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
 		this.timeDisplay.anchor.setTo(1, 1);
 		this.timeDisplay.align = 'right';
+		this.timeDisplay.fontSize = this.timeDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.timeDisplay);
 
 		// Score Text
@@ -62,6 +63,7 @@ MyGame.GameState.prototype = {
 		this.scoreText = game.add.text(0, 0, scoreTextMessage, scoreTextStyle);
 		this.scoreText.anchor.setTo(0, 1);
 		this.scoreText.align = 'left';
+		this.scoreText.fontSize = this.scoreText.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreText);
 
 		// Score Display
@@ -70,6 +72,7 @@ MyGame.GameState.prototype = {
 		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
 		this.scoreDisplay.anchor.setTo(0, 0.5);
 		this.scoreDisplay.align = 'left';
+		this.scoreDisplay.fontSize = this.scoreDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreDisplay);
 
 		// Game Timer
@@ -328,7 +331,7 @@ MyGame.GameState.prototype = {
 	    //this.game.state.start("GameState", false, false, this.game_details_data, this);
 	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
 
-	    this.restartHintTimer();
+	    // this.restartHintTimer();
 
 	    // this.hintTimer.delay = 5000;
 
@@ -936,6 +939,7 @@ MyGame.GameState.prototype = {
 		}
 		else {
 			scoreMultiplier += 1;
+			this.restartHintTimer();
 		}
 		this.restartHintTimer();
 		return foundAnything;

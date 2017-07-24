@@ -1006,7 +1006,8 @@ function ProgressBar(width, height) {
 	let obj = {};
 	let graphics;
 	let graphicsTexture;
-	obj.originalHeight = height;
+	obj.originalHeight = height * devicePixelRatio;
+	obj.originalWidth = width * devicePixelRatio;
 	obj.progressPercentage = 0;
 	obj.progressBarGroup = game.add.group(0, 0);
 
@@ -1017,7 +1018,7 @@ function ProgressBar(width, height) {
 
 	graphics = game.add.graphics(0,0);
 	graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
-	graphics.drawRoundedRect(0,0,width,height,10);
+	graphics.drawRoundedRect(0,0,obj.originalHeight,obj.originalHeight,10);
 	graphics.endFill();
 	graphicsTexture = graphics.generateTexture();
 	graphics.destroy();
@@ -1046,7 +1047,7 @@ function ProgressBar(width, height) {
 
 		graphics = game.add.graphics(0,0);
 		graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
-		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,height,10);
+		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,obj.originalHeight,10 * devicePixelRatio);
 		graphics.endFill();
 		graphicsTexture = graphics.generateTexture();
 		graphics.destroy();
