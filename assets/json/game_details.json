@@ -156,7 +156,7 @@
             "back_button_text": "BACK"
         }, 
         "game_end_dialog_box": {
-            "width" : 300, 
+            "width" : 400, 
             "text_components": [
                 {   
                     "text": "TIME'S UP!", 
@@ -208,7 +208,7 @@
                 {   
                     "type": "SCORE", 
                     "text": " POINTS", 
-                    "style": { "font": "40px font_2", "fill": "#7ffff4" },
+                    "style": { "font": "30px font_2", "fill": "#7ffff4" },
                     "align": "center" 
                 },
                 {   
@@ -238,23 +238,29 @@
                 {   
                     "type": "REWARD", 
                     "text": " CREDITS", 
-                    "style": { "font": "26px font_2", "fill": "#f4ce42" },
+                    "style": { "font": "30px font_2", "fill": "#f4ce42" },
                     "align": "center" 
                 }
             ], 
             "continue_button_text": "THANKS!"
         }, 
         "no_reward_dialog_box": {
-            "width" : 400, 
+            "width" : 300, 
             "text_components": [
                 {   
                     "type": "DEFAULT",
-                    "text": "BETTER LUCK NEXT TIME!", 
+                    "text": "NO REWARD", 
                     "style": { "font": "22px font_2", "fill": "#ffffff" },
+                    "align": "center" 
+                },
+                {   
+                    "type": "DEFAULT",
+                    "text": "BETTER LUCK NEXT TIME!", 
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 
-            "continue_button_text": "RETURN TO MENU"
+            "continue_button_text": "MENU"
         }
     }
 }

@@ -31,7 +31,7 @@ MyGame.BootState.prototype = {
 
 		game.renderer.renderSession.roundPixels = true;
 		game.scale.parentIsWindow = true;
-		// game.stage.disableVisibilityChange = true;
+		game.stage.disableVisibilityChange = true;
 
 		game.scale.pageAlignVertically = true; 
 		game.scale.pageAlignHorizontally = true; 

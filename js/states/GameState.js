@@ -317,6 +317,8 @@ MyGame.GameState.prototype = {
 		let height = scaleManager.height;
 
 		currentState.positionComponents(width, height);
+
+		currentState.updateTweens();
 	},
 
 	start_swipe: function(pointer) {
@@ -595,6 +597,7 @@ MyGame.GameState.prototype = {
 		obj.sprite = game.add.sprite(x, y, spriteKey);
 		obj.key = spriteKey;
 
+		obj.fallingTween = null;
 		obj.animator = null;
 
 		obj.getSprite = function() {
@@ -613,6 +616,12 @@ MyGame.GameState.prototype = {
 		obj.setPosition = function(x, y) {
 			this.sprite.x = x; 
 			this.sprite.y = y;
+		};
+		obj.setFallingTween = function(val) {
+			this.fallingTween = val;
+		};
+		obj.getFallingTween = function() {
+			return this.fallingTween;
 		};
 		obj.getTag = function() {
 			return this.key;
@@ -680,24 +689,37 @@ MyGame.GameState.prototype = {
 
 	},
 
-	shuffleBoard: function() {
-		let theTiles = [];
+	updateTweens: function() {
 		for(let x = 0; x < configuration.board_columns; x++) { // For each column...
 			for(let y = 0; y < configuration.board_rows; y++) { // Go down the column...
-				theTiles.push(this.tileArray[ x ][ y ]);
+				if(this.tileArray[ x ][ y ] != null) {
+
+					let theTween = this.tileArray[ x ][ y ].fallingTween; 
+					if(theTween && theTween != null) {
+						console.log("Falling Tween");
+
+						var tweenDatum = this.tileArray[ x ][ y ].getFallingTween().timeline[this.tileArray[ x ][ y ].getFallingTween().current];
+						var remaining = tweenDatum.duration - tweenDatum.dt;
+
+						let tileX = x * this.calculatedTileSize;
+						let tileY = y * this.calculatedTileSize;
+
+						// this.tileArray[i][j].setPosition(tileX, tileY);
+
+						this.tileArray[ x ][ y ].getFallingTween().isPaused = false; 
+						this.tileArray[ x ][ y ].getFallingTween().isRunning = false;
+						this.tileArray[ x ][ y ].getFallingTween().timeline.length = 0;
+						this.tileArray[ x ][ y ].getFallingTween().to({ y: tileY });
+						this.tileArray[ x ][ y ].getFallingTween().start();
+					}
+
+					
+
+				}
 			}
 		}
 
-		while(theTiles.length > 1) {
-			let num1 = RandomBetween(0, theTiles.length-1);
-			let tile1 = theTiles[num1];
-			theTiles.splice(num1, 1);
-			let num2 = RandomBetween(0, theTiles.length-1);
-			let tile2 = theTiles[num2];
-			theTiles.splice(num2, 1);
 
-			this.swapTiles(tile1, tile2, false);
-		}
 	},
 
 	/*_______________________________________
@@ -998,6 +1020,7 @@ MyGame.GameState.prototype = {
 				}
 				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * 0.9, configuration.falling_tile_easing, true);
 				this.tileArray[col][tempI].setArrayPosition(col, i);
+				this.tileArray[col][tempI].setFallingTween(tween);
 				tweenManager.addTween(tween);
 
 				this.tileArray[col][i] = this.tileArray[col][tempI];
@@ -1016,6 +1039,13 @@ MyGame.GameState.prototype = {
 		tweenManager.callOnComplete(function() {
 			// console.log("All tweens completed.");
 			// obj.printBoard();
+
+			for(let i = 0; i < configuration.board_rows; i++) {
+				for(let j = 0; j < configuration.board_columns; j++) { 
+					currentState.tileArray[ i ][ j ].setFallingTween(null);
+				}
+			}
+
 			obj.scanBoard();
 		});
 	}, 
@@ -1039,6 +1069,7 @@ MyGame.GameState.prototype = {
 					ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 
 					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.new_tile_fall_time, configuration.falling_tile_easing, true);
+					tile.setFallingTween(tween);
 					tile.setArrayPosition(col, i);
 					tweenManager.addTween(tween);
 				}
