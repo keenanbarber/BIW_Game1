@@ -172,6 +172,8 @@ MyGame.MenuState.prototype = {
 		let height = scaleManager.height;
 
 		currentState.positionComponents(width, height);
+
+		currentState.myDialogBox1.setWidth(game.width, game.width, 500, 50);
 	},
 
 	start_swipe: function(pointer) {

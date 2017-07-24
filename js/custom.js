@@ -912,8 +912,13 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		}
 	};
 
-	obj.setWidth = function(width) {
-		obj.boxWidth = width;
+	obj.setWidth = function(availableWidth, maxWidth, minWidth, padding) {
+		let desiredWidth = Math.max(
+			Math.min(maxWidth - 2*padding, availableWidth - 2*padding), 
+			minWidth
+		); 
+
+		obj.boxWidth = desiredWidth;
 		for(let i = 0; i < obj.textGroup.children.length; i++) {
 			obj.textGroup.getAt(i).wordWrap = true;
 			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.contentsPadding));

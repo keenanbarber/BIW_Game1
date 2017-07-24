@@ -13,14 +13,14 @@ var button_press_sound;
 function playButtonPressSound() {
 	if(doesSoundExist(button_press_sound))
 		button_press_sound.play();
-} // **********************
+} 
 
 // TILE DISAPPEAR SOUND
 var tile_disappear_sound;
 function playTileDisappearSound() {
 	if(doesSoundExist(tile_disappear_sound))
 		tile_disappear_sound.play();
-} // **********************
+} 
 
 MyGame.LoadingState = function(game) {
 	"use strict";
