@@ -19,6 +19,7 @@ MyGame.GameOverState.prototype = {
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
 		currentState = this;
+		window.removeEventListener('resize', currentState.resize );
 		window.addEventListener('resize', currentState.resize );
 
 		// State Specific Variables

@@ -55,7 +55,7 @@
     "game_sprites": {
         "dialog_box_background_sprite": "assets/images/DialogBoxBackground.svg",
 
-        "background_image": "assets/images/background_0.png", 
+        "background_image": "assets/images/background_2.png", 
         "title": "assets/images/title_MartianMatch.png",
 
         "board_tile": "assets/images/BoardTile.png", 
