@@ -531,6 +531,7 @@ MyGame.GameState.prototype = {
 
 						if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
 							// console.log("Down");
+							playTileSelectSound();
 
 							if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
 								selectedTile1 = newTile;
@@ -924,6 +925,7 @@ MyGame.GameState.prototype = {
 			
 			if(scoreMultiplier == 1 && selectedTile1 != null && selectedTile2 != null) {
 				this.swapTiles(selectedTile1, selectedTile2, false);
+				playMatchFailedSound();
 			}
 			selectedTile1 = null; 
 			selectedTile2 = null;
@@ -939,7 +941,7 @@ MyGame.GameState.prototype = {
 		}
 		else {
 			scoreMultiplier += 1;
-			this.restartHintTimer();
+			playMatchSucessSound();
 		}
 		this.restartHintTimer();
 		return foundAnything;

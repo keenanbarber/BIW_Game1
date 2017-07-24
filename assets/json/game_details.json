@@ -41,8 +41,10 @@
     },
     "audio_assignment": { 
         "button_press_sound": "sound_1", 
-        "tile_disappear_sound": "sound_2"
-
+        "tile_disappear_sound": "sound_2", 
+        "match_success_sound": "sound_1", 
+        "match_failed_sound": "sound_2", 
+        "tile_select_sound": "sound_1"
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 

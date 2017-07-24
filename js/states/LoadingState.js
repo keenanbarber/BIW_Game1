@@ -22,6 +22,27 @@ function playTileDisappearSound() {
 		tile_disappear_sound.play();
 } 
 
+// MATCH SUCCESS SOUND
+var match_success_sound;
+function playMatchSucessSound() {
+	if(doesSoundExist(match_success_sound))
+		match_success_sound.play();
+} 
+
+// MATCH FAILED SOUND
+var match_failed_sound;
+function playMatchFailedSound() {
+	if(doesSoundExist(match_failed_sound))
+		match_failed_sound.play();
+} 
+
+// TILE SELECT SOUND
+var tile_select_sound;
+function playTileSelectSound() {
+	if(doesSoundExist(tile_select_sound))
+		tile_select_sound.play();
+} 
+
 MyGame.LoadingState = function(game) {
 	"use strict";
 	
@@ -188,7 +209,12 @@ MyGame.LoadingState.prototype = {
 			button_press_sound = game.add.audio(game_details_data.audio_assignment.button_press_sound);
 		if(doesSoundExist(game_details_data.audio_assignment.tile_disappear_sound))
 			tile_disappear_sound = game.add.audio(game_details_data.audio_assignment.tile_disappear_sound);
-
+		if(doesSoundExist(game_details_data.audio_assignment.match_success_sound))
+			match_success_sound = game.add.audio(game_details_data.audio_assignment.match_success_sound);
+		if(doesSoundExist(game_details_data.audio_assignment.match_failed_sound))
+			match_failed_sound = game.add.audio(game_details_data.audio_assignment.match_failed_sound);
+		if(doesSoundExist(game_details_data.audio_assignment.tile_select_sound))
+			tile_select_sound = game.add.audio(game_details_data.audio_assignment.tile_select_sound);
 
 		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}
