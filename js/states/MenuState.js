@@ -291,6 +291,7 @@ MyGame.MenuState.prototype = {
 
 };
 
+// https://phaser.io/examples/v2/bitmapdata/alpha-mask
 
 
 
