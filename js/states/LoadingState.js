@@ -71,6 +71,9 @@ MyGame.LoadingState.prototype = {
 		var header;
 		for(header in game_details_data) {
 			switch(header) {
+				case "test": 
+					this.load.image(header, game_details_data[header]);
+					break;
 				case "game_details":
 					let game_details_header;
 					for(game_details_header in game_details_data[ header ]) {

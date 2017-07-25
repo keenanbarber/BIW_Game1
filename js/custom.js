@@ -1202,6 +1202,75 @@ function Animator(targetSprite) {
 }
 
 
+function NewProgressBar() {
+	let obj = this; 
+
+	// Variables
+	obj.fillPercent=0;
+
+	obj.sillhouetteColor = {r:0, g:0, b:0}; // black 
+
+	obj.sillhouetteBMD; // our sillhouette bitmapdata
+	obj.fillBMD; // our fill rectangle
+	obj.maskedBMD;// the fill, masked by the sillhouette
+	obj.maskedSprite; // the sprite to show the maskedBMD
+
+	obj.forEachPixel = function(pixel) { // processPixelRGB won't take any more arguments 
+		pixel.r = obj.sillhouetteColor.r;
+		pixel.g = obj.sillhouetteColor.g;
+		pixel.b = obj.sillhouetteColor.b;
+		return pixel;
+	};
+
+	// create our sillhouette from the original player image
+	var bmd = game.make.bitmapData();
+	bmd.load('test'); // load our texture into the bitmap
+	bmd.processPixelRGB(obj.forEachPixel, obj);
+	obj.sillhouetteBMD = bmd;
+		
+	var w = sillhouetteBMD.width;
+	var h = sillhouetteBMD.height;
+	
+	// this is the sprite we will use to fill the sillhouette
+    obj.fillBMD = game.add.bitmapData(w,h);
+    obj.fillBMD.load('test');
+
+    // obj.backgroundBMD = game.add.bitmapData(w,h);
+    // obj.backgroundBMD.load('title');
+
+	obj.maskedBMD = game.add.bitmapData(w,h);
+
+	// Final sprite
+	obj.maskedSprite = game.add.sprite(0, 0, obj.maskedBMD);
+    obj.maskedSprite.anchor.set(0.5,1);
+	obj.maskedSprite.position.set(game.width/2, game.height);
+
+	obj.setFillPercent = function(percent) {
+		var w = obj.maskedBMD.width;
+		var h = obj.maskedBMD.height;
+		
+		// need to clear it, otherwise it stacks drawing and looks a mess
+		obj.maskedBMD.clear();
+		
+		// fill from the bottom
+		var fillY = h - ((percent/100)*h);
+		
+		// this shifts the fill
+		var srcRect = {x:0, y:fillY, width:w , height:h};
+		
+		obj.maskedBMD.alphaMask(obj.fillBMD, obj.sillhouetteBMD, srcRect);
+	};
+	obj.update = function() {
+		this.setFillPercent(fillPercent);
+	    fillPercent = (fillPercent+1)%101;
+	    // console.log(fillPercent);
+	};
+
+
+	return obj;
+}
+
+
 
 
 /*_______________________________________

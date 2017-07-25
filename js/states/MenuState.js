@@ -6,6 +6,10 @@ var background = null;
 var allowBoardInput = false;
 // var button_press_sound;
 
+var	progBar;
+
+
+
 MyGame.MenuState = function() {
 	"use strict"; 
 };
@@ -128,10 +132,11 @@ MyGame.MenuState.prototype = {
 		this.resize();
 	},
 
-	update: function() {
-		"use strict"; 
-		//console.log("Update");
-	}, 
+	// update: function() {
+	// 	"use strict"; 
+	// 	//console.log("Update");
+	// 	// this.tileSprite.tilePosition.x += 1;
+	// }, 
 
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.3) ? true : false;
@@ -272,28 +277,83 @@ MyGame.MenuState.prototype = {
 		// graphicsTexture = graphics.generateTexture();
 		// graphics.destroy();
 
-		let mask = game.add.sprite(150, 150, gameTileDetails[0].key);
+		// let mask = game.add.sprite(0, 0, 'test');
 
-		let toBeMasked = game.add.sprite(300, 300, 'background_image');
+		// let toBeMasked = game.add.sprite(300, 300, 'background_image');
 
 
-		//	Create a new bitmap data the same size as our picture
-		var bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
+		// //	Create a new bitmap data the same size as our picture
+		// var bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
 
-		//	And create an alpha mask image by combining pic and mask from the cache
-		bmd.alphaMask(gameTileDetails[0].key, 'background_image');
+		// //	And create an alpha mask image by combining pic and mask from the cache
+		// bmd.alphaMask('background_image', 'test');
 
-		game.add.image(game.world.centerX, 320, bmd);
+		// game.add.image(100, 100, bmd);
 		// mask.destroy();
-		toBeMasked.destroy();
-	}
+		// toBeMasked.destroy();
 
+		// let pixels = [];
+
+		// ***********************
+
+		// let mask_bmd = game.make.bitmapData();
+	 //    mask_bmd.load(gameTileDetails[0].key);
+	 //    mask_bmd.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5);
+	 //    mask_bmd.processPixelRGB(this.forEachPixel, this);
+	 //    game.cache.addBitmapData('new_mask', mask_bmd);
+
+	 //    let toBeMasked = game.add.sprite(0, 0, 'title');
+
+	 //    let bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
+	 //    bmd.alphaMask('title', game.cache.getBitmapData('new_mask'));
+	 //    game.add.image(0, 0, bmd);
+	 //    toBeMasked.destroy();
+
+	 	// ***********************
+
+	 	// this.tileSprite = game.add.tileSprite(0, 0, 300, 300, 'background_image');
+	 	// this.tileSprite.tilePosition.x = 0;
+	 	// this.tileSprite.tilePosition.y = 0;
+
+	 	// ***********************
+
+		// let mask_bmd = game.make.bitmapData();
+		// mask_bmd.load('test');
+		// mask_bmd.addToWorld(0, 0, 0, 0);
+		// mask_bmd.processPixelRGB(this.forEachPixel, this);
+		// game.cache.addBitmapData('new_mask', mask_bmd);
+
+		// let bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
+
+
+	 	// let toBeMasked = game.add.sprite(200, 200, 'test');
+	 	// let mask = game.add.graphics(200, 200);
+	 	// mask.beginFill(0xffffff);
+	 	// mask.drawCircle(0, 0, 100);
+	 	// // let mask = game.add.sprite(0, 0, game.cache.getBitmapData('new_mask'));
+	 	// toBeMasked.mask = mask;
+
+	 	// mask.x = 0;
+	 	// mask.y = 0;
+	 	// toBeMasked.x = 0;
+	 	// toBeMasked.y = -100;
+
+	 	// ***********************
+
+	 	// create our sillhouette from the original player image
+		progBar = NewProgressBar();
+		progBar.setFillPercent(0);
+	}, 
+
+	update: function() {
+	    progBar.update();
+	}
 
 };
 
 // https://phaser.io/examples/v2/bitmapdata/alpha-mask
 
-
+// https://phaser.io/docs/2.6.2/Phaser.Graphics.html
 
 
 
