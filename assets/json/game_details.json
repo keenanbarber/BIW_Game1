@@ -1,5 +1,6 @@
 {   
     "test": "assets/images/progress_bar_fill.svg",
+    "test2": "assets/images/progress_bar_frame.svg",
     "game_details": {
         "name": "Keenan Barber", 
         "reward": 29,
@@ -130,7 +131,7 @@
     "dialog_box_settings": {
         "contents_padding": 20, 
         "button_text_padding": 20,
-        "button_text_style": { "font": "18px font_2", "fill": "#68588C" },
+        "button_text_style": { "font": "30px font_2", "fill": "#68588C" },
 
         "default_dialog_box_background_color": "#68588C", 
         "default_dialog_box_background_alpha": 0.8, 
@@ -142,7 +143,7 @@
             "text_components": [
                 {   
                     "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "style": { "font": "20px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 

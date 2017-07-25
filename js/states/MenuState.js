@@ -93,7 +93,7 @@ MyGame.MenuState.prototype = {
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
 		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
 		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
+			// this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
 		}
 		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
 			let component = menuDialogBoxData.text_components[i];
@@ -162,6 +162,8 @@ MyGame.MenuState.prototype = {
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * devicePixelRatio), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * devicePixelRatio));
+		
+			// currentState.myDialogBox1.setWidth(game.width, 300, 800, 0);
 		}
 		else {
 			// Background
@@ -185,6 +187,8 @@ MyGame.MenuState.prototype = {
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset * devicePixelRatio), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset * devicePixelRatio));
+		
+			// currentState.myDialogBox1.setWidth(game.width, 300, 500, 50);
 		}
 	},
 
@@ -192,13 +196,16 @@ MyGame.MenuState.prototype = {
 		"use strict";
 		updateGameWindow(game);
 
+
+
 		let scaleManager = game.scale;
 		let width = scaleManager.width; 
 		let height = scaleManager.height;
 
 		currentState.positionComponents(width, height);
 
-		currentState.myDialogBox1.setWidth(game.width, 300, 500, 50);
+		console.log("GAME [" + width + ", " + height + "]");
+		console.log("WINDOW [" + window.innerWidth + ", " + window.innerHeight + "]");
 	},
 
 	start_swipe: function(pointer) {
@@ -341,12 +348,12 @@ MyGame.MenuState.prototype = {
 	 	// ***********************
 
 	 	// create our sillhouette from the original player image
-		progBar = NewProgressBar();
-		progBar.setFillPercent(0);
+		// progBar = NewProgressBar2();
+		// progBar.setFillPercent(100);
 	}, 
 
 	update: function() {
-	    progBar.update();
+	    // progBar.update();
 	}
 
 };

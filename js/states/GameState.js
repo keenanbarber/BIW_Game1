@@ -701,7 +701,6 @@ MyGame.GameState.prototype = {
 
 					let theTween = this.tileArray[ x ][ y ].fallingTween; 
 					if(theTween && theTween != null) {
-						console.log("Falling Tween");
 
 						var tweenDatum = this.tileArray[ x ][ y ].getFallingTween().timeline[this.tileArray[ x ][ y ].getFallingTween().current];
 						var remaining = tweenDatum.duration - tweenDatum.dt;

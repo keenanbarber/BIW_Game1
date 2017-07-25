@@ -1270,6 +1270,54 @@ function NewProgressBar() {
 	return obj;
 }
 
+function NewProgressBar2() {
+	let obj = this; 
+
+	// Variables
+	obj.fillPercent=0;
+
+	obj.sillhouetteColor = {r:0, g:0, b:0}; // black 
+
+	obj.sillhouetteBMD; // our sillhouette bitmapdata
+	obj.fillBMD; // our fill rectangle
+	obj.maskedBMD;// the fill, masked by the sillhouette
+	obj.maskedSprite; // the sprite to show the maskedBMD
+
+	obj.forEachPixel = function(pixel) { // processPixelRGB won't take any more arguments 
+		pixel.r = obj.sillhouetteColor.r;
+		pixel.g = obj.sillhouetteColor.g;
+		pixel.b = obj.sillhouetteColor.b;
+		return pixel;
+	};
+
+	// create our sillhouette from the original player image
+	var bmd = game.make.bitmapData();
+	bmd.load('test'); // load our texture into the bitmap
+	bmd.processPixelRGB(obj.forEachPixel, obj);
+	obj.sillhouetteBMD = bmd;
+		
+	var w = sillhouetteBMD.width;
+	var h = sillhouetteBMD.height;
+	
+	// this is the sprite we will use to fill the sillhouette
+    obj.fillBMD = game.add.bitmapData(w,h);
+    obj.fillBMD.load('test2');
+
+    // obj.backgroundBMD = game.add.bitmapData(w,h);
+    // obj.backgroundBMD.load('title');
+
+	obj.maskedBMD = game.add.bitmapData(w,h);
+
+	// Final sprite
+	obj.maskedSprite = game.add.sprite(0, 0, obj.maskedBMD);
+    obj.maskedSprite.anchor.set(0.5);
+	obj.maskedSprite.position.set(game.width/2, game.height/2);
+
+	// var srcRect = {x:0, y:0, width:obj.maskedBMD.width , height:obj.maskedBMD.height};
+	obj.maskedBMD.alphaMask(obj.fillBMD, obj.sillhouetteBMD);
+
+	return obj;
+}
 
 
 
