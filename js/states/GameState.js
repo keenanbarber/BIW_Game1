@@ -434,7 +434,25 @@ MyGame.GameState.prototype = {
 				let tileX = i * this.calculatedTileSize;
 				let tileY = j * this.calculatedTileSize;
 				
-				let tile = game.add.sprite(tileX, tileY, 'board_tile');
+				let tile;
+				if(i == 0 || i == configuration.board_columns-1 || j == 0 || j == configuration.board_rows-1) {
+					if(i == 0 && j == 0)
+						tile = game.add.sprite(tileX, tileY, 'corner_upperleft');
+					else if(i == 0 && j == configuration.board_rows-1)
+						tile = game.add.sprite(tileX, tileY, 'corner_lowerleft');
+					else if(i == configuration.board_columns-1 && j == 0)
+						tile = game.add.sprite(tileX, tileY, 'corner_upperright');
+					else if(i == configuration.board_columns-1 && j == configuration.board_rows-1)
+						tile = game.add.sprite(tileX, tileY, 'corner_lowerright');
+
+					else // If it is not a corner piece but is on the edge...
+						tile = game.add.sprite(tileX, tileY, 'board_tile');
+				}
+				else {
+					tile = game.add.sprite(tileX, tileY, 'board_tile');
+				}
+
+
 				tile.anchor.setTo(0.5);
 				
 				this.boardSpriteArray[i][j] = tile;
