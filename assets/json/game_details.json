@@ -10,10 +10,10 @@
 
         "desktop_min_width": 400,
         "desktop_min_height": 400, 
-        "desktop_max_width": 1000, 
-        "desktop_max_height": 1000, 
+        "desktop_max_width": 3000, 
+        "desktop_max_height": 3000, 
 
-        "game_duration": 100,
+        "game_duration": 30,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
@@ -51,18 +51,23 @@
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 
-        "menu_title_y_offset": 80, 
+        "menu_title_y_offset": 20, 
         "menu_popup_x_offset": 0, 
         "menu_popup_y_offset": 0 
     },
     "game_sprites": {
         "dialog_box_background_sprite": "assets/images/DialogBoxBackground.svg",
 
-        "background_image": "assets/images/background_2.png", 
+        "background_image": "assets/images/background_0.png", 
         "title": "assets/images/title_MartianMatch.png",
 
-        "board_tile": "assets/images/BoardTile.png", 
-        "selected_tile": "assets/images/HighlightBoxTemp.png",
+        "board_tile": "assets/images/full.png", 
+        "corner_upperright": "assets/images/corner_upperright.png", 
+        "corner_upperleft": "assets/images/corner_upperleft.png", 
+        "corner_lowerright": "assets/images/corner_lowerright.png", 
+        "corner_lowerleft": "assets/images/corner_lowerleft.png", 
+
+        "selected_tile": "assets/images/Selected_full.png",
                 
         "end_game_image": "assets/images/UFO.png" 
     },
@@ -131,7 +136,7 @@
     "dialog_box_settings": {
         "contents_padding": 20, 
         "button_text_padding": 20,
-        "button_text_style": { "font": "30px font_2", "fill": "#68588C" },
+        "button_text_style": { "font": "22px font_2", "fill": "#68588C" },
 
         "default_dialog_box_background_color": "#68588C", 
         "default_dialog_box_background_alpha": 0.8, 
@@ -142,8 +147,8 @@
             "width" : 400, 
             "text_components": [
                 {   
-                    "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!", 
-                    "style": { "font": "20px font_1", "fill": "#ffffff" },
+                    "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. READY, SET, GO!", 
+                    "style": { "font": "16px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
             ], 

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="149" height="149" viewBox="0 0 149 149">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""/>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .cls-1 {
+        opacity: 0.8;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #5bc3ce;
+        stroke-linecap: round;
+        stroke-width: 2px;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="-6" y="-6" width="162" height="162" filterUnits="userSpaceOnUse">
+      <feGaussianBlur result="blur" stdDeviation="2.333" in="SourceAlpha"/>
+      <feComposite result="composite"/>
+      <feComposite result="composite-2"/>
+      <feComposite result="composite-3"/>
+      <feFlood result="flood" flood-color="#7ffff4" flood-opacity="0.75"/>
+      <feComposite result="composite-4" operator="in" in2="composite-3"/>
+      <feBlend result="blend" mode="screen" in2="SourceGraphic"/>
+      <feBlend result="blend-2" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <image class="cls-1" width="149" height="149" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAACVAQMAAABrbCoMAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABlBMVEUrDGoAAABZZ7ZcAAAAAXRSTlPM0jRW/QAAAAFiS0dEAf8CLd4AAAAJcEhZcwAAFiUAABYlAUlSJPAAAAAHdElNRQfhBxoLEhoVi28kAAAAGklEQVRIx+3BMQEAAADCoPVPbQ0PoAAAgCcDC6QAAUQjsXoAAAAASUVORK5CYII="/>
+  <g style="fill: none; filter: url(#filter)">
+    <path id="Rounded_Rectangle_2" data-name="Rounded Rectangle 2" class="cls-2" d="M51,0h88a10,10,0,0,1,10,10V139a10,10,0,0,1-10,10H10A10,10,0,0,1,0,139V51A51,51,0,0,1,51,0Z" style="stroke: inherit; filter: none; fill: inherit"/>
+  </g>
+  <use xlink:href="#Rounded_Rectangle_2" style="stroke: #5bc3ce; filter: none; fill: none"/>
+</svg>

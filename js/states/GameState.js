@@ -55,7 +55,7 @@ MyGame.GameState.prototype = {
 		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
 		this.timeDisplay.anchor.setTo(1, 1);
 		this.timeDisplay.align = 'right';
-		this.timeDisplay.fontSize = this.timeDisplay.fontSize * devicePixelRatio;
+		// this.timeDisplay.fontSize = this.timeDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.timeDisplay);
 
 		// Score Text
@@ -64,7 +64,7 @@ MyGame.GameState.prototype = {
 		this.scoreText = game.add.text(0, 0, scoreTextMessage, scoreTextStyle);
 		this.scoreText.anchor.setTo(0, 1);
 		this.scoreText.align = 'left';
-		this.scoreText.fontSize = this.scoreText.fontSize * devicePixelRatio;
+		// this.scoreText.fontSize = this.scoreText.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreText);
 
 		// Score Display
@@ -73,7 +73,7 @@ MyGame.GameState.prototype = {
 		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
 		this.scoreDisplay.anchor.setTo(0, 0.5);
 		this.scoreDisplay.align = 'left';
-		this.scoreDisplay.fontSize = this.scoreDisplay.fontSize * devicePixelRatio;
+		// this.scoreDisplay.fontSize = this.scoreDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreDisplay);
 
 		// Game Timer
@@ -149,6 +149,7 @@ MyGame.GameState.prototype = {
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.startGameDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -236,6 +237,7 @@ MyGame.GameState.prototype = {
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
+			this.startGameDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -351,7 +353,7 @@ MyGame.GameState.prototype = {
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length * devicePixelRatio) {
+		    if (swipe_length >= configuration.min_swipe_length) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    let swipeVec = this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
@@ -1250,7 +1252,7 @@ MyGame.GameState.prototype = {
 		let message = game_details_data.user_interface_settings.begin_text_text;
 		let myStyle = game_details_data.user_interface_settings.begin_text_style;
 		let myText = game.add.text(game.world.centerX, game.world.centerY, message, myStyle);
-		myText.fontSize *= devicePixelRatio;
+		// myText.fontSize *= devicePixelRatio;
 
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;
@@ -1268,7 +1270,7 @@ MyGame.GameState.prototype = {
 		let strVal = val.toString();
 
     	let message = val;
-		let myStyle = { font: "" + (50 * devicePixelRatio) + "px font_2", fill: '#ffffff' };
+		let myStyle = { font: "" + (50) + "px font_2", fill: '#ffffff' };
 		let myText = game.add.text(x, y, message, myStyle);
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;

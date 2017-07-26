@@ -505,11 +505,11 @@ function ScaleSprite(sprite, availableSpaceWidth, availableSpaceHeight, padding,
 
 	let widthRatio;
 	if(availableSpaceWidth != null)
-		widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (spriteWidth);
+		widthRatio = ((availableSpaceWidth) - (2*padding)) / (spriteWidth);
 
 	let heightRatio;
 	if(availableSpaceHeight != null)
-		heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (spriteHeight);
+		heightRatio = ((availableSpaceHeight) - (2*padding)) / (spriteHeight);
 	
 	let scale;
 	if(availableSpaceWidth == null) {
@@ -542,8 +542,8 @@ function GetScaleSprite(sprite, availableSpaceWidth, availableSpaceHeight, paddi
 	let spriteWidth = sprite._frame.width;
 	let spriteHeight = sprite._frame.height;
 
-	let widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (spriteWidth);
-	let heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (spriteHeight);
+	let widthRatio = ((availableSpaceWidth) - (2*padding)) / (spriteWidth);
+	let heightRatio = ((availableSpaceHeight) - (2*padding)) / (spriteHeight);
 	
 	let scale = Math.min(widthRatio, heightRatio);
 	
@@ -552,15 +552,15 @@ function GetScaleSprite(sprite, availableSpaceWidth, availableSpaceHeight, paddi
 
 function ScaleText(text, availableSpaceWidth, availableSpaceHeight, padding, scaleMultiplier) {
 	let currentDevicePixelRatio = window.devicePixelRatio;
-	let maxWidth = 200 * currentDevicePixelRatio;
+	let maxWidth = 200;
 
 	
 
 	let textWidth = text.width;
 	let textHeight = text.height;
 
-	let widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (textWidth);
-	let heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (textHeight);
+	let widthRatio = ((availableSpaceWidth) - (2*padding)) / (textWidth);
+	let heightRatio = ((availableSpaceHeight) - (2*padding)) / (textHeight);
 	
 	let scale = Math.min(widthRatio, heightRatio);
 
@@ -588,8 +588,8 @@ function ScaleGroup(prop, availableSpaceWidth, availableSpaceHeight, padding, sc
 	let spriteWidth = prop.width;
 	let spriteHeight = prop.height;
 
-	let widthRatio = ((availableSpaceWidth) - (2*padding*currentDevicePixelRatio)) / (spriteWidth);
-	let heightRatio = ((availableSpaceHeight) - (2*padding*currentDevicePixelRatio)) / (spriteHeight);
+	let widthRatio = ((availableSpaceWidth) - (2*padding)) / (spriteWidth);
+	let heightRatio = ((availableSpaceHeight) - (2*padding)) / (spriteHeight);
 	
 	let scale = Math.min(widthRatio, heightRatio);
 	
@@ -660,19 +660,19 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 	obj.useDefaultBackground = true;
 
-	obj.boxWidth = availableSpaceWidth * devicePixelRatio;
-	obj.boxHeight = 150 * devicePixelRatio;
+	obj.boxWidth = availableSpaceWidth;
+	obj.boxHeight = 150;
 	obj.boxX = x; 
 	obj.boxY = y;
-	obj.roundedCornerRadius = 8 * devicePixelRatio;
-	obj.contentsPadding = contentsPadding * devicePixelRatio;
-	obj.buttonTextPadding = buttonTextPadding * devicePixelRatio;
-	obj.fontSize = 12 * devicePixelRatio;
+	obj.roundedCornerRadius = 8;
+	obj.contentsPadding = contentsPadding;
+	obj.buttonTextPadding = buttonTextPadding;
+	obj.fontSize = 12;
 
 	obj.defaultBackgroundColor = game_details_data.dialog_box_settings.default_dialog_box_background_color.replace('#', '0x');
 	obj.defaultBackgroundAlpha = game_details_data.dialog_box_settings.default_dialog_box_background_alpha;
 	obj.defaultOutlineColor = game_details_data.dialog_box_settings.default_dialog_box_outline_color.replace('#', '0x');
-	obj.defaultOutlineSize = game_details_data.dialog_box_settings.default_dialog_box_outline_size * devicePixelRatio;
+	obj.defaultOutlineSize = game_details_data.dialog_box_settings.default_dialog_box_outline_size;
 
 	obj.buttons = [];
 	obj.buttonText = game.add.group();
@@ -779,7 +779,8 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.contentsPadding);
 
 		let myText = game.add.text(textX, textY, text, myStyle);
-		myText.fontSize *= devicePixelRatio;
+		myText.lineSpacing = -(myText.fontSize/2);
+		// myText.fontSize *= devicePixelRatio;
 		myText.anchor.setTo(anchorX, anchorY);
 		myText.align = horizontalTextAlign;
 		myText.padding.set(4, 4);
@@ -796,7 +797,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		// Text on button
 		let buttonTextStyle = game_details_data.dialog_box_settings.button_text_style; // #68588C
 		let buttonText = game.add.text(0, 0, text, buttonTextStyle);
-		buttonText.fontSize *= devicePixelRatio;
+		// buttonText.fontSize *= devicePixelRatio;
 		buttonText.anchor.setTo(0.5, 0.4);
 		buttonText.align = 'center';
 
@@ -862,7 +863,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 	obj.resize = function() { 
 		if(obj.buttons.length > 0) {
-			obj.boxHeight = (2*obj.contentsPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + obj.contentsPadding/2));
+			obj.boxHeight = (2*obj.contentsPadding + obj.textGroup.height) + (obj.buttons.length * (obj.buttons[0].getSprite().height + obj.contentsPadding/2) -  obj.contentsPadding/2);
 		}
 		else {
 			obj.boxHeight = 2*obj.contentsPadding + obj.textGroup.height;
@@ -1011,15 +1012,15 @@ function ProgressBar(width, height) {
 	let obj = {};
 	let graphics;
 	let graphicsTexture;
-	obj.originalHeight = height * devicePixelRatio;
-	obj.originalWidth = width * devicePixelRatio;
+	obj.originalHeight = height;
+	obj.originalWidth = width;
 	obj.progressPercentage = 0;
 	obj.progressBarGroup = game.add.group(0, 0);
 
 	obj.defaultFillColor = game_details_data.user_interface_settings.default_timer_fill_color.replace('#', '0x');
 	obj.defaultFillAlpha = game_details_data.user_interface_settings.default_timer_fill_alpha;
 	obj.defaultOutlineColor = game_details_data.user_interface_settings.default_timer_outline_color.replace('#', '0x');
-	obj.defaultOutlineSize = game_details_data.user_interface_settings.default_timer_outline_size * devicePixelRatio;
+	obj.defaultOutlineSize = game_details_data.user_interface_settings.default_timer_outline_size;
 
 	graphics = game.add.graphics(0,0);
 	graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
@@ -1052,7 +1053,7 @@ function ProgressBar(width, height) {
 
 		graphics = game.add.graphics(0,0);
 		graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
-		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,obj.originalHeight,10 * devicePixelRatio);
+		graphics.drawRoundedRect(0,0,obj.progressBar.width * perc,obj.originalHeight,10);
 		graphics.endFill();
 		graphicsTexture = graphics.generateTexture();
 		graphics.destroy();

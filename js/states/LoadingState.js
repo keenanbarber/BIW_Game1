@@ -61,7 +61,7 @@ MyGame.LoadingState.prototype = {
 		this.loadingText = game.add.text(game.world.centerX, game.world.centerY, loadingTextMessage, loadingTextStyle);
 		this.loadingText.anchor.setTo(0.5);
 		this.loadingText.align = 'center';
-		this.loadingText.fontSize = this.loadingText.fontSize * devicePixelRatio;
+		// this.loadingText.fontSize = this.loadingText.fontSize * devicePixelRatio;
 	}, 
 
 	preload: function() {
@@ -164,6 +164,18 @@ MyGame.LoadingState.prototype = {
 						let value = game_details_data[ header ][ game_sprites_header ];
 						switch(game_sprites_header) {
 							case "board_tile": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "corner_upperright": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "corner_upperleft": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "corner_lowerright": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "corner_lowerleft": 
 								this.load.image(game_sprites_header, value);
 								break; 
 							case "selected_tile": 

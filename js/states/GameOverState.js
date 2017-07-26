@@ -74,13 +74,15 @@ MyGame.GameOverState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
 
 			// Dialog Box
 			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
 			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
+			this.scoreDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+			this.rewardDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 		}
 		else {
 			// Background
@@ -92,13 +94,15 @@ MyGame.GameOverState.prototype = {
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio), 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset * devicePixelRatio);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset * devicePixelRatio);
+			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset), 10, 1);
+			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset);
+			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
 
 			// Dialog Box
 			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
 			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
+			this.scoreDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+			this.rewardDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 		}
 	},
 
@@ -133,7 +137,7 @@ MyGame.GameOverState.prototype = {
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length  * devicePixelRatio) {
+		    if (swipe_length >= configuration.min_swipe_length) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
 			    
 			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
