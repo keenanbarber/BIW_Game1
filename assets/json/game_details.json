@@ -3,7 +3,7 @@
     "test2": "assets/images/progress_bar_frame.svg",
     "game_details": {
         "name": "Keenan Barber", 
-        "reward": 29,
+        "reward": 0,
         "date_played": "July 20, 2017", 
         "high_score": 100, 
         "attempts_remaining": 3, 
