@@ -178,6 +178,18 @@ MyGame.LoadingState.prototype = {
 							case "corner_lowerleft": 
 								this.load.image(game_sprites_header, value);
 								break; 
+							case "side_top": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "side_bottom": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "side_right": 
+								this.load.image(game_sprites_header, value);
+								break; 
+							case "side_left": 
+								this.load.image(game_sprites_header, value);
+								break; 
 							case "selected_tile": 
 								this.load.image(game_sprites_header, value);
 								break;

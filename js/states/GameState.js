@@ -428,25 +428,39 @@ MyGame.GameState.prototype = {
 		this.boardSpriteGroup = game.add.group();
 		
 
-		for(let i = 0; i < configuration.board_columns; i++) {
-			this.boardSpriteArray[i] = [];
-			for(let j = 0; j < configuration.board_rows; j++) { 
-				let tileX = i * this.calculatedTileSize;
-				let tileY = j * this.calculatedTileSize;
+		for(let x = 0; x < configuration.board_columns; x++) { // X
+			this.boardSpriteArray[x] = [];
+			for(let y = 0; y < configuration.board_rows; y++) { // Y
+				let tileX = x * this.calculatedTileSize;
+				let tileY = y * this.calculatedTileSize;
 				
 				let tile;
-				if(i == 0 || i == configuration.board_columns-1 || j == 0 || j == configuration.board_rows-1) {
-					if(i == 0 && j == 0)
+				if(x == 0 || x == configuration.board_columns-1 || y == 0 || y == configuration.board_rows-1) {
+					if(x == 0 && y == 0)
 						tile = game.add.sprite(tileX, tileY, 'corner_upperleft');
-					else if(i == 0 && j == configuration.board_rows-1)
+					else if(x == 0 && y == configuration.board_rows-1)
 						tile = game.add.sprite(tileX, tileY, 'corner_lowerleft');
-					else if(i == configuration.board_columns-1 && j == 0)
+					else if(x == configuration.board_columns-1 && y == 0)
 						tile = game.add.sprite(tileX, tileY, 'corner_upperright');
-					else if(i == configuration.board_columns-1 && j == configuration.board_rows-1)
+					else if(x == configuration.board_columns-1 && y == configuration.board_rows-1)
 						tile = game.add.sprite(tileX, tileY, 'corner_lowerright');
 
-					else // If it is not a corner piece but is on the edge...
-						tile = game.add.sprite(tileX, tileY, 'board_tile');
+					else { // If it is not a corner piece but is on the edge...
+						if(x != 0 && y == 0) { // Top edge...
+							tile = game.add.sprite(tileX, tileY, 'side_top');
+						}
+						else if(x != 0 && y == configuration.board_rows-1) { // Bottom edge...
+							tile = game.add.sprite(tileX, tileY, 'side_bottom');
+						}
+						else if(x == configuration.board_columns-1 && y != 0) { // Right edge...
+							tile = game.add.sprite(tileX, tileY, 'side_right');
+						}
+						else if(x == 0 && y != 0) { // Left edge...
+							tile = game.add.sprite(tileX, tileY, 'side_left');
+						}
+						else // DEFAULT (in case needed)
+							tile = game.add.sprite(tileX, tileY, 'board_tile');
+					}
 				}
 				else {
 					tile = game.add.sprite(tileX, tileY, 'board_tile');
@@ -455,7 +469,7 @@ MyGame.GameState.prototype = {
 
 				tile.anchor.setTo(0.5);
 				
-				this.boardSpriteArray[i][j] = tile;
+				this.boardSpriteArray[x][y] = tile;
 				this.boardSpriteGroup.add(tile);
 
 				ScaleSprite(tile, this.calculatedTileSize, this.calculatedTileSize, 0, 1);

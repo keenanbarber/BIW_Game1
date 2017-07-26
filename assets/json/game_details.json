@@ -67,6 +67,11 @@
         "corner_lowerright": "assets/images/corner_lowerright.png", 
         "corner_lowerleft": "assets/images/corner_lowerleft.png", 
 
+        "side_top": "assets/images/side_top.png", 
+        "side_bottom": "assets/images/side_bottom.png", 
+        "side_right": "assets/images/side_right.png", 
+        "side_left": "assets/images/side_left.png", 
+
         "selected_tile": "assets/images/Selected_full.png",
                 
         "end_game_image": "assets/images/UFO.png" 
