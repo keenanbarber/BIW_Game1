@@ -3,15 +3,15 @@
     "test2": "assets/images/timer_bar.svg",
     "game_details": {
         "name": "Keenan Barber", 
-        "reward": 0,
+        "reward": 29,
         "date_played": "July 20, 2017", 
         "high_score": 100, 
         "attempts_remaining": 3, 
 
         "desktop_min_width": 400,
         "desktop_min_height": 400, 
-        "desktop_max_width": 3000, 
-        "desktop_max_height": 3000, 
+        "desktop_max_width": 650, 
+        "desktop_max_height": 650, 
 
         "game_duration": 30,
         "board_rows": 6, 
