@@ -56,7 +56,18 @@ MyGame.MenuState.prototype = {
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
 
-		this.alphaMaskTest();
+		// this.alphaMaskTest();
+
+		// this.progBar.addBarOverlayImage();
+
+
+		// this.testGroup = game.add.group();
+		// this.testGroup.x = game.world.centerX;
+		// this.testGroup.y = game.world.centerY;
+
+		// this.groupObj1 = game.add.sprite(0, 0, 'title');
+		// this.groupObj1.anchor.setTo(0.5);
+		// this.testGroup.add(this.groupObj1);
 
 		// Attempts Text
 		// let attemptsTextMessage = "ATTEMPTS REMAINING: " + game_details_data.game_details.attempts_remaining;
@@ -189,7 +200,6 @@ MyGame.MenuState.prototype = {
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
-		
 		}
 		else {
 			// Background
@@ -214,8 +224,8 @@ MyGame.MenuState.prototype = {
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
-		
 		}
+		// console.log("[ " + this.progBar.getGroup().width + ", " + this.progBar.getGroup().height + " ]");
 	},
 
 	resize: function() {

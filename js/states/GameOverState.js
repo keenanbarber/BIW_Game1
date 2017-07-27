@@ -79,8 +79,8 @@ MyGame.GameOverState.prototype = {
 			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
 
 			// Dialog Box
-			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
-			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
+			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/3));
+			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/3));
 			this.scoreDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 			this.rewardDialogBox.setWidth(game.width, game.width/2, game.width, 50);
 		}

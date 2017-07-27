@@ -582,18 +582,29 @@ function ScaleText(text, availableSpaceWidth, availableSpaceHeight, padding, sca
 
 function ScaleGroup(prop, availableSpaceWidth, availableSpaceHeight, padding, scaleMultiplier) {
 	//var scale = this.getSpriteScale(sprite._frame.width, sprite._frame.height, availableSpaceWidth, availableSpaceHeight, padding, isFullScale);
-	
-	let currentDevicePixelRatio = window.devicePixelRatio;
-
 	let spriteWidth = prop.width;
 	let spriteHeight = prop.height;
 
-	let widthRatio = ((availableSpaceWidth) - (2*padding)) / (spriteWidth);
-	let heightRatio = ((availableSpaceHeight) - (2*padding)) / (spriteHeight);
+	let widthRatio;
+	if(availableSpaceWidth != null)
+		widthRatio = ((availableSpaceWidth) - (2*padding)) / (spriteWidth);
+
+	let heightRatio;
+	if(availableSpaceHeight != null)
+		heightRatio = ((availableSpaceHeight) - (2*padding)) / (spriteHeight);
 	
-	let scale = Math.min(widthRatio, heightRatio);
+	let scale;
+	if(availableSpaceWidth == null) {
+		scale = heightRatio;
+	}
+	else if(availableSpaceHeight == null) {
+		scale = widthRatio;
+	}
+	else  {
+		scale = Math.min(widthRatio, heightRatio);
+	}
 	
-	prop.scale.set(scale * scaleMultiplier, scale * scaleMultiplier);
+	prop.scale.setTo(scale * scaleMultiplier, scale * scaleMultiplier);
 	game.scale.refresh();
 	
 }
@@ -779,7 +790,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.contentsPadding);
 
 		let myText = game.add.text(textX, textY, text, myStyle);
-		myText.lineSpacing = -(myText.fontSize/2);
+		myText.lineSpacing = -(myText.fontSize/3);
 		// myText.fontSize *= devicePixelRatio;
 		myText.anchor.setTo(anchorX, anchorY);
 		myText.align = horizontalTextAlign;
@@ -1320,6 +1331,95 @@ function NewProgressBar2() {
 	return obj;
 }
 
+function NewProgressBar3() {
+	let obj = {};
+
+	obj.fillPercent = 0;
+	obj.align = 'center';
+
+	obj.fillOffsetX_left = 13;
+	obj.fillOffsetX_right = -26;
+	obj.fillOffsetY = -5;
+	obj.fillHeight = 14;
+
+	obj.barGroup = game.add.group();
+	obj.barGroup.x = 50;
+	obj.barGroup.y = 50;
+
+	obj.progressBarFrame = game.add.sprite(0, 0, 'test2');
+	obj.progressBarFrame.anchor.setTo(0, 0.5);
+	obj.barGroup.add(obj.progressBarFrame);
+
+	obj.defaultFillColor = game_details_data.user_interface_settings.default_timer_fill_color.replace('#', '0x');
+	obj.defaultFillAlpha = game_details_data.user_interface_settings.default_timer_fill_alpha;
+	obj.defaultOutlineColor = game_details_data.user_interface_settings.default_timer_outline_color.replace('#', '0x');
+	obj.defaultOutlineSize = game_details_data.user_interface_settings.default_timer_outline_size;
+
+	graphics = game.add.graphics(0,0);
+	graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
+	graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
+	graphics.drawRoundedRect(0, 0, obj.progressBarFrame.width + obj.fillOffsetX_right, obj.fillHeight, 10);
+	graphics.endFill();
+	graphicsTexture = graphics.generateTexture();
+	graphics.destroy();
+
+	obj.progressBarFill = game.add.sprite(obj.fillOffsetX_left, obj.fillOffsetY, graphicsTexture);
+	obj.progressBarFill.anchor.setTo(0, 0.5);
+	obj.barGroup.add(obj.progressBarFill);
+
+
+	obj.updateProgress = function(perc) {
+		obj.fillPercent = perc;
+
+		graphics = game.add.graphics(0,0);
+		graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
+		graphics.drawRoundedRect(0, 0, obj.fillPercent * (obj.progressBarFrame.width + (obj.fillOffsetX_right * obj.progressBarFrame.scale.x)), obj.fillHeight * obj.progressBarFrame.scale.y, 10);
+		graphics.endFill();
+		graphicsTexture = graphics.generateTexture();
+		graphics.destroy();
+
+		obj.progressBarFill.loadTexture(graphicsTexture);
+	};
+	obj.addBarOverlayImage = function() {
+		obj.timer = game.add.sprite(0, 0, 'test');
+		obj.timer.anchor.setTo(0.5);
+		obj.barGroup.add(obj.timer);
+	};
+	obj.getGroup = function() {
+		return obj.barGroup;
+	};
+	obj.setPosition = function(x, y) {
+		if(obj.align === 'left') {
+			obj.barGroup.x = x;
+			obj.barGroup.y = y;
+		}
+		else if(obj.align === 'center') {
+			obj.barGroup.x = x - (obj.barGroup.width/2);
+			obj.barGroup.y = y;
+		}
+		else if(obj.align === 'right') {
+			obj.barGroup.x = x - (obj.barGroup.width);
+			obj.barGroup.y = y;
+		}
+		else {
+			obj.barGroup.x = x;
+			obj.barGroup.y = y;
+		}
+	};
+	obj.setAlignment = function(val) {
+		obj.align = val;
+	};
+	obj.resize = function(availableWidth, availableHeight, padding, scaleMultiplier) {
+		ScaleSprite(obj.progressBarFrame, availableWidth, availableHeight, padding, scaleMultiplier);
+		
+		obj.progressBarFill.x = obj.fillOffsetX_left * obj.progressBarFrame.scale.x;
+		obj.progressBarFill.y = obj.fillOffsetY * obj.progressBarFrame.scale.y;
+
+		obj.updateProgress(obj.fillPercent);
+	};
+
+	return obj;
+}
 
 
 /*_______________________________________

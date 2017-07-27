@@ -1,6 +1,6 @@
 {   
-    "test": "assets/images/progress_bar_fill.svg",
-    "test2": "assets/images/progress_bar_frame.svg",
+    "test": "assets/images/clock.svg",
+    "test2": "assets/images/timer_bar.svg",
     "game_details": {
         "name": "Keenan Barber", 
         "reward": 0,
@@ -29,10 +29,10 @@
         "begin_text_text": "GO", 
         "begin_text_style": { "font": "50px font_2", "fill": "#ffffff" }, 
 
-        "default_timer_fill_color": "#68588C", 
+        "default_timer_fill_color": "#18CCBD", 
         "default_timer_fill_alpha": 0.8, 
         "default_timer_outline_color": "#ffffff",
-        "default_timer_outline_size": 1 
+        "default_timer_outline_size": 5
     },
     "font_files": {
         "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
@@ -51,7 +51,7 @@
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 
-        "menu_title_y_offset": 20, 
+        "menu_title_y_offset": 50, 
         "menu_popup_x_offset": 0, 
         "menu_popup_y_offset": 0 
     },
@@ -180,7 +180,7 @@
                     "align": "center" 
                 }
             ], 
-            "finish_button_text": "SHOW ME THE RESULTS!"
+            "finish_button_text": "CONTINUE"
         }, 
         "default_score_dialog_box": {
             "width" : 300, 
@@ -224,7 +224,7 @@
                 {   
                     "type": "SCORE", 
                     "text": " POINTS", 
-                    "style": { "font": "30px font_2", "fill": "#7ffff4" },
+                    "style": { "font": "30px font_2", "fill": "#18CCBD" },
                     "align": "center" 
                 },
                 {   

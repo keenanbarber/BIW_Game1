@@ -88,9 +88,15 @@ MyGame.GameState.prototype = {
 		this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
 
 		// Progress Bar
-		this.progressBar = ProgressBar(300, 20);
+		this.progressBar = NewProgressBar3();
 		this.sceneProps.add(this.progressBar.getGroup());
 		this.progressBar.updateProgress(1);
+		this.progressBar.setAlignment('right');
+
+		// Progress Bar Icon
+		this.clock = game.add.sprite(0, 0, 'test');
+		this.clock.anchor.setTo(0.5);
+		this.sceneProps.add(this.clock);
 
 		// Set up the board
 		this.initializeBoard();
@@ -144,8 +150,13 @@ MyGame.GameState.prototype = {
 
 
 			// Progress Bar
-			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.progressBar.getGroup().height);
+			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
+			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
+
+			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
+			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
+			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
@@ -232,8 +243,13 @@ MyGame.GameState.prototype = {
 
 
 			// Progress Bar
-			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getWidth(), this.verticalMargin - this.progressBar.getGroup().height);
+			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
+			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
+
+			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
+			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
+			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Dialog Boxes
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
