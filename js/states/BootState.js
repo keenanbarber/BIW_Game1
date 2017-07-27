@@ -19,12 +19,12 @@ MyGame.BootState.prototype = {
 
 		// Determines if mobile or desktop.
 		if (game.device.desktop) {  
-			console.log("This is not running on a mobile device.");
+			// console.log("This is not running on a mobile device.");
 			device = "DESKTOP";
 			game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 		}
 		else { 
-			console.log("This is running on a mobile device.");
+			// console.log("This is running on a mobile device.");
 			device = "MOBILE";
 			game.scale.scaleMode = Phaser.ScaleManager.RESIZE; // Fills the screen
 		}

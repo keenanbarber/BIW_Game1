@@ -78,15 +78,15 @@ MyGame.LoadingState.prototype = {
 						switch(game_details_header) {
 							case "name": 
 								//this.load.image(asset_key, asset.source);
-								console.log("USER:    " + value);
+								// console.log("USER:    " + value);
 								break; 
 							case "reward": 
 								//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
-								console.log("REWARD:  " + value);
+								// console.log("REWARD:  " + value);
 								break;
 							case "date_played": 
 								//this.load.spritesheet(asset_key, asset_source, asset.frame_width, asset.frame_height, asset.frames, asset.margin, asset.spacing);
-								console.log("DATE:    " + value);
+								// console.log("DATE:    " + value);
 								break;
 							case "desktop_min_width": 
 								configuration.desktop_min_width = value;
