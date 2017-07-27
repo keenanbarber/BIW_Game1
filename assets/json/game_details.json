@@ -1,6 +1,4 @@
 {   
-    "test": "assets/images/clock.svg",
-    "test2": "assets/images/timer_bar.svg",
     "game_details": {
         "name": "Keenan Barber", 
         "reward": 29,
@@ -77,6 +75,9 @@
         "selected_corner_upperleft": "assets/images/selected_corner_upperleft.png",
         "selected_corner_lowerright": "assets/images/selected_corner_lowerright.png",
         "selected_corner_lowerleft": "assets/images/selected_corner_lowerleft.png",
+
+        "timer_bar_icon": "assets/images/clock.svg",
+        "timer_bar_background": "assets/images/timer_bar.svg",
                 
         "end_game_image": "assets/images/UFO.png" 
     },
@@ -169,7 +170,7 @@
             "min_width" : 200,
             "text_components": [
                 {   
-                    "text": "MATCH AS MANY AS YOU CAN BEFORE THE TIME RUNS OUT.", 
+                    "text": "MATCH AS MANY AS YOU CAN BEFORE THE TIME RUNS OUT!", 
                     "style": { "font": "18px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }

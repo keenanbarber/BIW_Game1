@@ -88,13 +88,13 @@ MyGame.GameState.prototype = {
 		this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
 
 		// Progress Bar
-		this.progressBar = NewProgressBar3();
+		this.progressBar = NewProgressBar3('timer_bar_background');
 		this.sceneProps.add(this.progressBar.getGroup());
 		this.progressBar.updateProgress(1);
 		this.progressBar.setAlignment('right');
 
 		// Progress Bar Icon
-		this.clock = game.add.sprite(0, 0, 'test');
+		this.clock = game.add.sprite(0, 0, 'timer_bar_icon');
 		this.clock.anchor.setTo(0.5);
 		this.sceneProps.add(this.clock);
 

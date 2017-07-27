@@ -1331,7 +1331,7 @@ function NewProgressBar2() {
 	return obj;
 }
 
-function NewProgressBar3() {
+function NewProgressBar3(timerBarBackgroundKey) {
 	let obj = {};
 
 	obj.fillPercent = 0;
@@ -1346,7 +1346,7 @@ function NewProgressBar3() {
 	obj.barGroup.x = 50;
 	obj.barGroup.y = 50;
 
-	obj.progressBarFrame = game.add.sprite(0, 0, 'test2');
+	obj.progressBarFrame = game.add.sprite(0, 0, timerBarBackgroundKey);
 	obj.progressBarFrame.anchor.setTo(0, 0.5);
 	obj.barGroup.add(obj.progressBarFrame);
 
