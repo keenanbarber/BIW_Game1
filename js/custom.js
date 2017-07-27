@@ -1421,6 +1421,14 @@ function NewProgressBar3() {
 	return obj;
 }
 
+function BoundNumber(num, min, max) {
+	// console.log(num + ", " + max + ", " + min);
+	return Math.min(
+		Math.max(min, num),
+		max
+	)
+}
+
 
 /*_______________________________________
 	REFERENCE CODE						|

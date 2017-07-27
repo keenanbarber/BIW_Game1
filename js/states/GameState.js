@@ -140,40 +140,48 @@ MyGame.GameState.prototype = {
 	},
 
 	positionComponents: function(width, height) {
-		let isLandscape = (game.height / game.width < 1.3) ? true : false;
+		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
 			var availableGridSpace = Math.min(width * 2/3, height);
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
 			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
-			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
+			this.horizontalMargin = (width * (6/10)) - (configuration.board_columns * this.calculatedTileSize);
 			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
 
 
 			// Progress Bar
-			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
+			this.progressBar.setPosition(
+				this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.progressBar.getGroup().width + this.calculatedTileSize/2, 
+				this.verticalMargin + this.progressBar.getGroup().height
+			);
 
 			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
-			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
-			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
+			this.clock.y = this.verticalMargin + this.progressBar.getGroup().height;
 
 			// Dialog Boxes
+			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_start_dialog_box.max_width, 0, game.width); 
+			currentState.startGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-			this.startGameDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+
+			minWidth = game_details_data.dialog_box_settings.game_end_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_end_dialog_box.max_width, 0, game.width); 
+			currentState.endGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
-			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
-			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2 + this.timeDisplay.width;
+			this.timeDisplay.y = this.verticalMargin + this.progressBar.getGroup().height + this.timeDisplay.height + this.progressBar.getGroup().height;
 
 			// Score Text
-			this.scoreText.x = this.horizontalMargin;
-			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.scoreText.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
+			this.scoreText.y = height/2;
 
 			// Score Display
-			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.scoreDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
+			this.scoreDisplay.y = height/2 + this.scoreText.height;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -225,6 +233,17 @@ MyGame.GameState.prototype = {
 				}
 			}
 
+			if(selectedTile1) {
+				ScaleSprite(this.selectedTileSprite1, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+				this.selectedTileSprite1.x = selectedTile1.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+				this.selectedTileSprite1.y = selectedTile1.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
+			}
+			if(selectedTile2) {
+				ScaleSprite(this.selectedTileSprite2, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+				this.selectedTileSprite2.x = selectedTile2.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+				this.selectedTileSprite2.y = selectedTile2.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
+			}
+
 			// Background
 			ScaleSprite(background, width, null, 0, 1);
 			if(background.height < height) {
@@ -252,8 +271,14 @@ MyGame.GameState.prototype = {
 			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Dialog Boxes
+			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_start_dialog_box.max_width, 0, game.width); 
+			currentState.startGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-			this.startGameDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+
+			minWidth = game_details_data.dialog_box_settings.game_end_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_end_dialog_box.max_width, 0, game.width); 
+			currentState.endGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -318,6 +343,16 @@ MyGame.GameState.prototype = {
 				}
 			}
 
+			if(selectedTile1) {
+				ScaleSprite(this.selectedTileSprite1, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+				this.selectedTileSprite1.x = selectedTile1.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+				this.selectedTileSprite1.y = selectedTile1.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
+			}
+			if(selectedTile2) {
+				ScaleSprite(this.selectedTileSprite2, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+				this.selectedTileSprite2.x = selectedTile2.getArrayPosition().x * this.calculatedTileSize + this.horizontalMargin + this.calculatedTileSize/2;
+				this.selectedTileSprite2.y = selectedTile2.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
+			}
 
 			// Background
 			ScaleSprite(background, width, null, 0, 1);
@@ -688,6 +723,17 @@ MyGame.GameState.prototype = {
 			this.selectedTileSprite1.y = t.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
 
 			ScaleSprite(this.selectedTileSprite1, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+
+			if(t.getArrayPosition().x == 0 && t.getArrayPosition().y == 0)
+				this.selectedTileSprite1.loadTexture('selected_corner_upperleft');
+			else if(t.getArrayPosition().x == 0 && t.getArrayPosition().y == game_details_data.game_details.board_rows-1)
+				this.selectedTileSprite1.loadTexture('selected_corner_lowerleft');
+			else if(t.getArrayPosition().x == game_details_data.game_details.board_columns-1 && t.getArrayPosition().y == 0)
+				this.selectedTileSprite1.loadTexture('selected_corner_upperright');
+			else if(t.getArrayPosition().x == game_details_data.game_details.board_columns-1 && t.getArrayPosition().y == game_details_data.game_details.board_rows-1)
+				this.selectedTileSprite1.loadTexture('selected_corner_lowerright');
+			else 
+				this.selectedTileSprite1.loadTexture('selected_tile');
 		}
 		else if(!this.selectedTileSprite2.visible) {
 			this.selectedTileSprite2.visible = true;
@@ -695,6 +741,17 @@ MyGame.GameState.prototype = {
 			this.selectedTileSprite2.y = t.getArrayPosition().y * this.calculatedTileSize + this.verticalMargin + this.calculatedTileSize/2;
 
 			ScaleSprite(this.selectedTileSprite2, this.calculatedTileSize, this.calculatedTileSize, 0, 1);
+
+			if(t.getArrayPosition().x == 0 && t.getArrayPosition().y == 0)
+				this.selectedTileSprite2.loadTexture('selected_corner_upperleft');
+			else if(t.getArrayPosition().x == 0 && t.getArrayPosition().y == game_details_data.game_details.board_rows-1)
+				this.selectedTileSprite2.loadTexture('selected_corner_lowerleft');
+			else if(t.getArrayPosition().x == game_details_data.game_details.board_columns-1 && t.getArrayPosition().y == 0)
+				this.selectedTileSprite2.loadTexture('selected_corner_upperright');
+			else if(t.getArrayPosition().x == game_details_data.game_details.board_columns-1 && t.getArrayPosition().y == game_details_data.game_details.board_rows-1)
+				this.selectedTileSprite2.loadTexture('selected_corner_lowerright');
+			else 
+				this.selectedTileSprite2.loadTexture('selected_tile');
 		}
 	},
 	hideSelectedSprites: function() {
@@ -1388,12 +1445,14 @@ MyGame.GameState.prototype = {
 		}
 		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
 		 	function() { //On click...
+		 		playButtonPressSound();
 		 		currentState.startGameDialogBox.hide();
 				currentState.goText();
 			}
 		);
 		this.startGameDialogBox.addButton(startGameDialogBoxData.back_button_text, null,
 		 	function() { //On click...
+		 		playButtonPressSound();
 		 		currentState.game.state.start("MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 			}
 		);
@@ -1420,6 +1479,7 @@ MyGame.GameState.prototype = {
 		}
 		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
 		 	function() { //On click...
+		 		playButtonPressSound();
 		 		currentState.game.state.start("GameOverState", false, false, currentState.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);

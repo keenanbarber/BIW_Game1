@@ -162,51 +162,7 @@ MyGame.LoadingState.prototype = {
 					let game_sprites_header;
 					for(game_sprites_header in game_details_data[ header ]) {
 						let value = game_details_data[ header ][ game_sprites_header ];
-						switch(game_sprites_header) {
-							case "board_tile": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "corner_upperright": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "corner_upperleft": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "corner_lowerright": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "corner_lowerleft": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "side_top": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "side_bottom": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "side_right": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "side_left": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "selected_tile": 
-								this.load.image(game_sprites_header, value);
-								break;
-							case "background_image": 
-								this.load.image(game_sprites_header, value);
-								break; 
-							case "title": 
-								this.load.image(game_sprites_header, value);
-								break;
-							case "end_game_image": 
-								this.load.image(game_sprites_header, value);
-								break;
-							case "dialog_box_background_sprite": 
-								if(value != null)
-									this.load.image(game_sprites_header, value);
-								break;
-						}
+						this.load.image(game_sprites_header, value);
 					}
 					break;
 				case "game_tiles":

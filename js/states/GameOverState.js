@@ -63,7 +63,7 @@ MyGame.GameOverState.prototype = {
 	}, 
 
 	positionComponents: function(width, height) {
-		let isLandscape = (game.height / game.width < 1.3) ? true : false;
+		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
 			// Background
 			ScaleSprite(background, width, null, 0, 1);
@@ -79,10 +79,17 @@ MyGame.GameOverState.prototype = {
 			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
 
 			// Dialog Box
+			minWidth = game_details_data.dialog_box_settings.default_score_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.default_score_dialog_box.max_width, 0, game.width); 
+			currentState.scoreDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/3));
+
+
+			minWidth = game_details_data.dialog_box_settings.reward_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.reward_dialog_box.max_width, 0, game.width); 
+			currentState.rewardDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/3));
-			this.scoreDialogBox.setWidth(game.width, game.width/2, game.width, 50);
-			this.rewardDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+
 		}
 		else {
 			// Background
@@ -99,10 +106,17 @@ MyGame.GameOverState.prototype = {
 			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
 
 			// Dialog Box
-			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/2));
-			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/2));
-			this.scoreDialogBox.setWidth(game.width, game.width/2, game.width, 50);
-			this.rewardDialogBox.setWidth(game.width, game.width/2, game.width, 50);
+			minWidth = game_details_data.dialog_box_settings.default_score_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.default_score_dialog_box.max_width, 0, game.width); 
+			currentState.scoreDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
+			this.scoreDialogBox.setPosition(game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * (1/3));
+
+
+			minWidth = game_details_data.dialog_box_settings.reward_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.reward_dialog_box.max_width, 0, game.width); 
+			currentState.rewardDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
+			this.rewardDialogBox.setPosition(game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * (1/3));
+
 		}
 	},
 
@@ -208,11 +222,16 @@ MyGame.GameOverState.prototype = {
 		}
 		this.scoreDialogBox.addButton(scoreDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
+		 		playButtonPressSound();
 		 		currentState.scoreDialogBox.hide();
 				currentState.rewardDialogBox.show();
 			}
 		);
 		this.sceneProps.add(this.scoreDialogBox.getGroup());
+
+		minWidth = game_details_data.dialog_box_settings.default_score_dialog_box.min_width; 
+		maxWidth = BoundNumber(game_details_data.dialog_box_settings.default_score_dialog_box.max_width, 0, game.width); 
+		this.scoreDialogBox.setWidth(game.width, minWidth, maxWidth, 50);
 	}, 
 
 	createRewardDialogBox: function() {
@@ -238,10 +257,15 @@ MyGame.GameOverState.prototype = {
 		}
 		this.rewardDialogBox.addButton(rewardDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
+		 		playButtonPressSound();
 		 		currentState.game.state.start("MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
 			}
 		);
 		this.sceneProps.add(this.rewardDialogBox.getGroup());
+
+		minWidth = game_details_data.dialog_box_settings.reward_dialog_box.min_width; 
+		maxWidth = BoundNumber(game_details_data.dialog_box_settings.reward_dialog_box.max_width, 0, game.width); 
+		this.rewardDialogBox.setWidth(game.width, minWidth, maxWidth, 50);
 	}
 
 

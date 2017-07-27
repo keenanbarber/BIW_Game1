@@ -176,7 +176,7 @@ MyGame.MenuState.prototype = {
 	}, 
 
 	positionComponents: function(width, height) {
-		let isLandscape = (game.height / game.width < 1.3) ? true : false;
+		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
 			// Background
 			ScaleSprite(background, width, null, 0, 1);
@@ -196,7 +196,9 @@ MyGame.MenuState.prototype = {
 			// this.attemptsText.x = width/2;
 
 			// Dialog Box
-			currentState.myDialogBox1.setWidth(game.width, game.width/2, game.width, 50);
+			minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
+			currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
@@ -220,7 +222,9 @@ MyGame.MenuState.prototype = {
 			// this.attemptsText.x = width/2;
 
 			// Dialog Box
-			currentState.myDialogBox1.setWidth(game.width, game.width/2, game.width, 50);
+			minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
+			maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
+			currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
 			this.myDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));

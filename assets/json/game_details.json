@@ -10,12 +10,12 @@
 
         "desktop_min_width": 400,
         "desktop_min_height": 400, 
-        "desktop_max_width": 650, 
-        "desktop_max_height": 650, 
+        "desktop_max_width": 1000, 
+        "desktop_max_height": 1000, 
 
-        "game_duration": 30,
-        "board_rows": 6, 
-        "board_columns": 6, 
+        "game_duration": 120,
+        "board_rows": 5, 
+        "board_columns": 5, 
         "min_tiles_required_for_match": 3,
         "hint_delay": 5
     },
@@ -72,7 +72,11 @@
         "side_right": "assets/images/side_right.png", 
         "side_left": "assets/images/side_left.png", 
 
-        "selected_tile": "assets/images/Selected_full.png",
+        "selected_tile": "assets/images/selected_full.png",
+        "selected_corner_upperright": "assets/images/selected_corner_upperright.png",
+        "selected_corner_upperleft": "assets/images/selected_corner_upperleft.png",
+        "selected_corner_lowerright": "assets/images/selected_corner_lowerright.png",
+        "selected_corner_lowerleft": "assets/images/selected_corner_lowerleft.png",
                 
         "end_game_image": "assets/images/UFO.png" 
     },
@@ -149,10 +153,11 @@
         "default_dialog_box_outline_size": 0,
 
         "menu_dialog_box": {
-            "width" : 400, 
+            "max_width" : 500, 
+            "min_width" : 200,
             "text_components": [
                 {   
-                    "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. READY, SET, GO!", 
+                    "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. READY, SET, GO!", 
                     "style": { "font": "16px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
@@ -160,10 +165,11 @@
             "play_button_text": "PLAY"
         },
         "game_start_dialog_box": {
-            "width" : 400, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
-                    "text": "GET AS MANY POINTS AS POSSIBLE BEFORE THE TIME RUNS OUT!", 
+                    "text": "MATCH AS MANY AS YOU CAN BEFORE THE TIME RUNS OUT.", 
                     "style": { "font": "18px font_1", "fill": "#ffffff" },
                     "align": "center" 
                 }
@@ -172,7 +178,8 @@
             "back_button_text": "BACK"
         }, 
         "game_end_dialog_box": {
-            "width" : 400, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
                     "text": "TIME'S UP!", 
@@ -183,7 +190,8 @@
             "finish_button_text": "CONTINUE"
         }, 
         "default_score_dialog_box": {
-            "width" : 300, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
                     "type": "DEFAULT",
@@ -207,7 +215,8 @@
             "continue_button_text": "ANY REWARD?"
         }, 
         "beat_high_score_dialog_box": {
-            "width" : 300, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
                     "type": "DEFAULT",
@@ -237,7 +246,8 @@
             "continue_button_text": "ANY REWARD?"
         }, 
         "reward_dialog_box": {
-            "width" : 300, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
                     "type": "DEFAULT",
@@ -261,7 +271,8 @@
             "continue_button_text": "THANKS!"
         }, 
         "no_reward_dialog_box": {
-            "width" : 300, 
+            "max_width" : 400, 
+            "min_width" : 200,
             "text_components": [
                 {   
                     "type": "DEFAULT",
