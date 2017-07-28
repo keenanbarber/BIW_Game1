@@ -43,6 +43,36 @@ function playTileSelectSound() {
 		tile_select_sound.play();
 } 
 
+// TILE BOUNCE SOUND
+var tile_bounce_sound;
+function playTileBounceSound(tileFallTime) {
+	if(doesSoundExist(tile_select_sound)) {
+		let timerDuration = tileFallTime / 2.7;
+		let bounceSoundTimer = game.time.create();
+		bounceSoundTimer.add(timerDuration, function() {
+			timerDuration /= 1;
+			tile_bounce_sound.play();
+			bounceSoundTimer.add(timerDuration, function() {
+				timerDuration /= 2;
+				tile_bounce_sound.play();
+				bounceSoundTimer.add(timerDuration, function() {
+					timerDuration /= 1.75;
+					tile_bounce_sound.play();
+					bounceSoundTimer.add(timerDuration, function() {
+						tile_bounce_sound.play();
+						bounceSoundTimer.destroy();
+
+					}, this);
+
+				}, this);
+
+			}, this);
+
+		}, this);
+		bounceSoundTimer.start();
+	}
+}
+
 MyGame.LoadingState = function(game) {
 	"use strict";
 	
@@ -214,6 +244,8 @@ MyGame.LoadingState.prototype = {
 			match_failed_sound = game.add.audio(game_details_data.audio_assignment.match_failed_sound);
 		if(doesSoundExist(game_details_data.audio_assignment.tile_select_sound))
 			tile_select_sound = game.add.audio(game_details_data.audio_assignment.tile_select_sound);
+		if(doesSoundExist(game_details_data.audio_assignment.tile_bounce_sound))
+			tile_bounce_sound = game.add.audio(game_details_data.audio_assignment.tile_bounce_sound);
 
 		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}, 

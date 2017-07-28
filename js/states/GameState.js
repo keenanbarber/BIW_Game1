@@ -1127,7 +1127,7 @@ MyGame.GameState.prototype = {
 					if(tempI < 0)
 						return;
 				}
-				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * 0.9, configuration.falling_tile_easing, true);
+				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time, configuration.falling_tile_easing, true);
 				this.tileArray[col][tempI].setArrayPosition(col, i);
 				this.tileArray[col][tempI].setFallingTween(tween);
 				tweenManager.addTween(tween);
@@ -1136,6 +1136,7 @@ MyGame.GameState.prototype = {
 				this.tileArray[col][tempI] = null;
 			}
 		}
+		playTileBounceSound(configuration.tile_fall_time);
 	}, 
 
 	updateBoard: function() {
@@ -1184,6 +1185,7 @@ MyGame.GameState.prototype = {
 				}
 			}
 		}
+		playTileBounceSound(configuration.new_tile_fall_time);
 	}, 
 
 	/*_______________________________________

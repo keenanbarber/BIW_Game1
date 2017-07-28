@@ -38,14 +38,16 @@
     },
     "audio_files": {
         "sound_1": ["assets/audio/Drop1.mp3", "assets/audio/Drop1.wav"], 
-        "sound_2": ["assets/audio/MiscSound2.mp3", "assets/audio/MiscSound2.wav"]
+        "sound_2": ["assets/audio/MiscSound2.mp3", "assets/audio/MiscSound2.wav"], 
+        "sound_3": ["assets/audio/Drop4.mp3", "assets/audio/Drop4.wav"]
     },
     "audio_assignment": { 
         "button_press_sound": "sound_1", 
         "tile_disappear_sound": "sound_2", 
         "match_success_sound": "sound_1", 
         "match_failed_sound": "sound_2", 
-        "tile_select_sound": "sound_1"
+        "tile_select_sound": "sound_1", 
+        "tile_bounce_sound": "sound_3"
     },
     "sprite_adjustment": {
         "menu_title_x_offset": 0, 
