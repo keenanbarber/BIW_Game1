@@ -8,6 +8,47 @@ LAST MODIFIED - 07/28/17
 	The goal was to make a game that can be reskinned that will also work on both mobile and desktop browsers. It was created with HTML and Javascript as well as the Javascript library Phaser. 
 
 
+--- THE GAME --------------------------------------------------
+	This game is supposed to play similar to Bejeweled. In a certain amount of time, the player is supposed to match as many tiles as they can by flipping two of them to get as large of a score as possible. If the player gets a score that is higher than the recorded high score, a special dialog box will appear. If not, the usual dialog box will appear. At the end of the game, and after being shown your score, the player is then awarded reward points. 
+
+	Gameplay
+
+	Upon entering the game state, where the board is shown and the player is told to start, the player is allowed to make two selections to flip those tiles. 
+
+		Input
+			To select two tiles, the player is able to click the target tiles with a left mouse button press. Alternatively, if the player clicks on their first tile, holds down the button, and drags the mouse in a direction, the tile that is next to the first selected tile in the direction of the mouse drag is chosen as the second selected tile. The two tiles are flipped at this point. The same should apply to mobile devices, except instead of a mouse, a stylus or touch is used. 
+
+		Tile Selection Details
+			o 	If the player selects a tile with no tiles currently selected, a sprite is places on top of the newly selected tile to indicate that it has been selected. 
+
+						[ _ ][ _ ][ _ ]  → Selects tile 2  →  [ _ ][ 1 ][ _ ] 
+
+			o 	If the player selects a second tile that is either on the left, right, top, or bottom side of the first selected tile, then these two selected tiles are flipped and the board is scanned for matches. 
+
+						[ _ ][ 1 ][ _ ]  → Selects tile 3  →  [ _ ][ 1 ][ 2 ]  →  Swap tiles  →  [ _ ][ 2 ][ 1 ]  →  Board scanned
+
+			o 	If the player selects a second tile that is NOT on the left, right, top, or bottom side of the first selected tile, the first selected tile gets deselected and the new tile that was selected becomes the first selected tile. 
+
+						[ 1 ][ _ ][ _ ]  → Selects tile 3  →  [ _ ][ _ ][ 1 ] 
+
+			o 	If the player selects a second tile that is the same as the first selected tile, the first selected tile is deselected and there will not be any tiles that are selected. 
+
+						[ _ ][ 1 ][ _ ]  → Selects tile 2  →  [ _ ][ _ ][ _ ]
+
+		After two tiles are selected and are swapped, the board is then scanned and the player's ability to interact with the board is taken away. Going through the board horizontally and vertically, groups of three (or whatever number is put into the json file) tiles are read and if all of the tiles in the group are the same, then this counts as a match and points are awarded. After the whole board is scanned and the found matches have disappeared with points being shown, the tiles above the found matches fall down to fill in the gaps made. Because of this, more gaps are made and these are filled by random tiles that fall from the top of the screen. 
+
+						[_][_][_][_][_][_]         [_][_][_][_][_][_]         [_][_]         [_]         [_][_][_][_][_][_]
+						[_][_][_][_][_][_]         [_][_][_][_][_][_]         [_][_][_][_][_][_]         [_][_][_][_][_][_]
+						[_][_][X][X][X][_]    →    [_][_]         [_]    →    [_][_][_][_][_][_]    →    [_][_][_][_][_][_]
+						[_][_][_][_][_][_]         [_][_][_][_][_][_]         [_][_][_][_][_][_]         [_][_][_][_][_][_]
+
+		After this, the board is scanned again for new potential matches. This will keep happening until there are no matches on the board and the player is allowed to interact with the board again. 
+
+		If there happens to be no available moves on the board, the whole board is cleared and the player is awarded points equal to the number of tiles that are on the board. The board is then refilled and the process continues. 
+
+		This process will keep happening as long as there is time on the timer. Once the time runs out, the game is over. 
+
+
 --- MODIFYING THE JSON FILE -----------------------------------
 	DO NOT modify any keys unless mentioned below
 
@@ -96,7 +137,31 @@ LAST MODIFIED - 07/28/17
 						"background_image": "assets/images/MyBackgroundImage.png" 
 
 	[ game_tiles ]
-			...
+			The game tiles section contains an array of the tiles. Each tile being made up of the "main_sprite_source" which is its default sprite and its "disappear_animation_frames" which is just an array of images to act as the frames of the animation. The animation is called when there is a match on the board during gameplay and the tiles disappear. 
+
+	[ dialog_box_settings ]
+			... Incomplete section ... 
+
+			The dialog boxes that appear in the game are built off of the data put in this section. There are some default settings that can be modified at the top of this section, but below those are the 7 dialog boxes that can be changed. Each one has a "max_width" and "max_height" to keep its width from getting too large if needed. 
+
+			There is a "text_components" section in each dialog box. This is an array of objects that contain information about a line of text that should be put into the dialog box. To insert a new line in the dialog box, put this into the array and modify it so that it is what you want: 
+
+						{   
+							"type": "DEFAULT",
+		                    "text": "This text is to test the dialog boxes.", 
+		                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+		                    "align": "center" 
+		                }
+
+		    If the "type" is set to "DEFAULT" then the text will be displayed normally. If it is set to "SCORE" then the score obtained while playing the game will be displayed in front of the text that put in "text". 
+
+		    "text" is the text that you want shown on the line. 
+
+		    "style" is the style of the text in "text". 
+
+		    "align" is the alignment of the text in "text". 
+
+		    Each dialog box also has buttons. The number of buttons and action of these can't be changed, but the text that shows up on these buttons can be changed. 
 
 
 
