@@ -83,7 +83,7 @@ LAST MODIFIED - 07/28/17
 
 
 	[ audio_assignment ]
-			Asign the sounds that you defined in [ audio_files ] to different parts of the game. 
+			Assign the sounds that you defined in [ audio_files ] to different parts of the game. 
 
 						"button_press_sound": "sound_1" 
 
