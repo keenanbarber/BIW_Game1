@@ -21,19 +21,19 @@ LAST MODIFIED - 07/28/17
 		Tile Selection Details
 			o 	If the player selects a tile with no tiles currently selected, a sprite is places on top of the newly selected tile to indicate that it has been selected. 
 
-						[ _ ][ _ ][ _ ]  → Selects tile 2  →  [ _ ][ 1 ][ _ ] 
+						[_][_][_]  → Selects tile 2  →  [_][1][_] 
 
 			o 	If the player selects a second tile that is either on the left, right, top, or bottom side of the first selected tile, then these two selected tiles are flipped and the board is scanned for matches. 
 
-						[ _ ][ 1 ][ _ ]  → Selects tile 3  →  [ _ ][ 1 ][ 2 ]  →  Swap tiles  →  [ _ ][ 2 ][ 1 ]  →  Board scanned
+						[_][1][_]  → Selects tile 3  →  [_][1][2]  →  Swap tiles  →  [_][2][1]  →  Board scanned
 
 			o 	If the player selects a second tile that is NOT on the left, right, top, or bottom side of the first selected tile, the first selected tile gets deselected and the new tile that was selected becomes the first selected tile. 
 
-						[ 1 ][ _ ][ _ ]  → Selects tile 3  →  [ _ ][ _ ][ 1 ] 
+						[1][_][_]  → Selects tile 3  →  [_][_][1] 
 
 			o 	If the player selects a second tile that is the same as the first selected tile, the first selected tile is deselected and there will not be any tiles that are selected. 
 
-						[ _ ][ 1 ][ _ ]  → Selects tile 2  →  [ _ ][ _ ][ _ ]
+						[_][1][_]  → Selects tile 2  →  [_][_][_]
 
 		After two tiles are selected and are swapped, the board is then scanned and the player's ability to interact with the board is taken away. Going through the board horizontally and vertically, groups of three (or whatever number is put into the json file) tiles are read and if all of the tiles in the group are the same, then this counts as a match and points are awarded. After the whole board is scanned and the found matches have disappeared with points being shown, the tiles above the found matches fall down to fill in the gaps made. Because of this, more gaps are made and these are filled by random tiles that fall from the top of the screen. 
 
