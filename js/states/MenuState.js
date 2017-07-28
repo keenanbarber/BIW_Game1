@@ -113,16 +113,6 @@ MyGame.MenuState.prototype = {
 
 		// let graphicsSprite = game.add.sprite(50, 50, graphicsTexture);
 		// // obj.graphicsSprite.anchor.setTo(0.5);	
-		// let blurX = game.add.filter('BlurX');
-		// let blurY = game.add.filter('BlurY');
-
-	 //    blurX.blur = 5;
-	 //    blurY.blur = 5;
-
-	 //    graphicsSprite.scale.x = 10; 
-	 //    graphicsSprite.scale.y = 10;
-
-		// graphicsSprite.filters = [blurX, blurY];
 
 
 

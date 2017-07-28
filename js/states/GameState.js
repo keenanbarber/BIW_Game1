@@ -1419,6 +1419,7 @@ MyGame.GameState.prototype = {
 
 	endGame: function() {
 		// console.log("GAME OVER");
+		playWinSound();
 		allowBoardInput = false;
 		this.hintTimer.destroy();
 		this.updateTimeText(0);

@@ -43,6 +43,13 @@ function playTileSelectSound() {
 		tile_select_sound.play();
 } 
 
+// WIN SOUND
+var win_sound;
+function playWinSound() {
+	if(doesSoundExist(win_sound))
+		win_sound.play();
+} 
+
 // TILE BOUNCE SOUND
 var tile_bounce_sound;
 function playTileBounceSound(tileFallTime) {
@@ -244,6 +251,8 @@ MyGame.LoadingState.prototype = {
 			match_failed_sound = game.add.audio(game_details_data.audio_assignment.match_failed_sound);
 		if(doesSoundExist(game_details_data.audio_assignment.tile_select_sound))
 			tile_select_sound = game.add.audio(game_details_data.audio_assignment.tile_select_sound);
+		if(doesSoundExist(game_details_data.audio_assignment.win_sound))
+			win_sound = game.add.audio(game_details_data.audio_assignment.win_sound);
 		if(doesSoundExist(game_details_data.audio_assignment.tile_bounce_sound))
 			tile_bounce_sound = game.add.audio(game_details_data.audio_assignment.tile_bounce_sound);
 
