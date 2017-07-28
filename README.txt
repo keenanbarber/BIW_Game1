@@ -2,7 +2,7 @@
 MARTIAN MATCH
 =======================
 
-LAST MODIFIED - 07/24/17
+LAST MODIFIED - 07/28/17
 
 --- README ----------------------------------------------------
 	The goal was to make a game that can be reskinned that will also work on both mobile and desktop browsers. It was created with HTML and Javascript as well as the Javascript library Phaser. 
@@ -44,11 +44,11 @@ LAST MODIFIED - 07/24/17
 						[ EXAMPLE ] - If this value was 3...
 
 							- Works 			---> [X][X][X]
-												---> [O][X][X][X][O]
+												---> [_][X][X][X][_]
 												---> [X][X][X][X]
 
-							- Doesn't Works		---> [X][O][X][X]
-												---> [X][O][O][X]
+							- Doesn't Works		---> [X][_][X][X]
+												---> [X][_][_][X]
 
 			o 	hint_delay
 					This is the amount of time before a hint is shown to the player. If the player doesn't get any points after this amount of time, a hint will be shown and the timer for showing a hint will be reset. Another hint will then be shown again after this amount of time. 
@@ -71,18 +71,31 @@ LAST MODIFIED - 07/24/17
 
 			The "font_1" can be changed to be whatever you would like it to be. The "source" and "format" keys must remain unchanged however with a value. You will use the names, like "font_1," throughout the json file when setting font styles. For example, in the section [ user_interface_settings ], when defining the "score_text_style," you can use font_1 now:
 
-						"score_text_style": { "font": "14px font_1", "fill": "#ffffff" },  
+						"score_text_style": { "font": "14px font_1", "fill": "#ffffff" } 
 
 
 	[ audio_files ]
 			Similar to how [ font_files ] works, this loads the audio clips. In this section, THE KEYS CAN BE CHANGED. 
 
-						"sound_1": ["assets/audio/Drop1.mp3", "assets/audio/Drop1.wav"], 
+						"sound_1": ["assets/audio/MySound.mp3", "assets/audio/MySound.wav"], 
 
-			The "sound_1" can be changed to whatever you would like. In the section [ audio_assignment ], you will be using these names to assign them to different parts of the game. 
+			The "sound_1" can be changed to whatever you would like. In the section [ audio_assignment ], you will be using these names to assign them to different parts of the game. Multiple audio formats of the desired audio clip can be put into the array in case one doesn't work with the browser. 
 
 
 	[ audio_assignment ]
+			Asign the sounds that you defined in [ audio_files ] to different parts of the game. 
+
+						"button_press_sound": "sound_1" 
+
+	[ sprite_adjustment ]
+			Modify these values to make small adjustments to the positioning of certain elements in the game. 
+
+	[ game_sprites ]
+			This is where you provide the paths to the sprites you want the game to be using. 
+
+						"background_image": "assets/images/MyBackgroundImage.png" 
+
+	[ game_tiles ]
 			...
 
 
