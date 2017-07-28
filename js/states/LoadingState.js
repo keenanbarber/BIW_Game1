@@ -80,6 +80,12 @@ function playTileBounceSound(tileFallTime) {
 	}
 }
 
+var music;
+function playBackgroundMusic() {
+	music.loopFull(0.6);
+    // bass.onLoop.add(callOnComplete, this);
+}
+
 MyGame.LoadingState = function(game) {
 	"use strict";
 	
@@ -255,6 +261,9 @@ MyGame.LoadingState.prototype = {
 			win_sound = game.add.audio(game_details_data.audio_assignment.win_sound);
 		if(doesSoundExist(game_details_data.audio_assignment.tile_bounce_sound))
 			tile_bounce_sound = game.add.audio(game_details_data.audio_assignment.tile_bounce_sound);
+
+
+		music = game.add.audio('background_music');
 
 		this.game.state.start("MenuState", true, false, null, "CENTER_TO_BOTTOM", "TOP_TO_CENTER");
 	}, 

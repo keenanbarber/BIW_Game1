@@ -56,6 +56,8 @@ MyGame.MenuState.prototype = {
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add(this.title);
 
+		playBackgroundMusic();
+
 		// this.alphaMaskTest();
 
 		// this.progBar.addBarOverlayImage();
