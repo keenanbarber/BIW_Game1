@@ -18,9 +18,9 @@ MyGame.GameOverState.prototype = {
 		// Add events to check for swipe and resize
 		this.game.input.onDown.add(this.start_swipe, this);
 		this.game.input.onUp.add(this.end_swipe, this);
-		window.removeEventListener('resize', currentState.resize );
+		window.removeEventListener('resize', currentState.resize);
 		currentState = this;
-		window.addEventListener('resize', currentState.resize );
+		window.addEventListener('resize', currentState.resize);
 
 		// State Specific Variables
 		this.MINIMUM_SWIPE_LENGTH = 40;
@@ -44,10 +44,8 @@ MyGame.GameOverState.prototype = {
 
 
 		// READ FROM JSON FILE
-		// ******************************
 		this.createScoreDialogBox(); // SCORE DIALOG BOX
 		this.createRewardDialogBox(); // REWARD DIALOG BOX
-		// ******************************
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, 1000, configuration.transition_easing));
