@@ -52,32 +52,9 @@ function playWinSound() {
 
 // TILE BOUNCE SOUND
 var tile_bounce_sound;
-function playTileBounceSound(tileFallTime) {
-	if(doesSoundExist(tile_select_sound)) {
-		let timerDuration = tileFallTime / 2.7;
-		let bounceSoundTimer = game.time.create();
-		bounceSoundTimer.add(timerDuration, function() {
-			timerDuration /= 1;
-			tile_bounce_sound.play();
-			bounceSoundTimer.add(timerDuration, function() {
-				timerDuration /= 2;
-				tile_bounce_sound.play();
-				bounceSoundTimer.add(timerDuration, function() {
-					timerDuration /= 1.75;
-					tile_bounce_sound.play();
-					bounceSoundTimer.add(timerDuration, function() {
-						tile_bounce_sound.play();
-						bounceSoundTimer.destroy();
-
-					}, this);
-
-				}, this);
-
-			}, this);
-
-		}, this);
-		bounceSoundTimer.start();
-	}
+function playTileBounceSound() {
+	if(doesSoundExist(tile_select_sound)) 
+		tile_bounce_sound.play();
 }
 
 var music;

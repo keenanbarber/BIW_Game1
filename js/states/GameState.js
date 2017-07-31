@@ -683,7 +683,7 @@ MyGame.GameState.prototype = {
 		obj.sprite = game.add.sprite(x, y, spriteKey);
 		obj.key = spriteKey;
 
-		obj.fallingTween = null;
+		obj.fallingTweens = [];
 		obj.animator = null;
 
 		obj.getSprite = function() {
@@ -703,11 +703,11 @@ MyGame.GameState.prototype = {
 			this.sprite.x = x; 
 			this.sprite.y = y;
 		};
-		obj.setFallingTween = function(val) {
-			this.fallingTween = val;
+		obj.addFallingTween = function(val) {
+			this.fallingTweens.push(val);
 		};
-		obj.getFallingTween = function() {
-			return this.fallingTween;
+		obj.getFallingTweens = function() {
+			return this.fallingTweens;
 		};
 		obj.getTag = function() {
 			return this.key;
@@ -805,19 +805,22 @@ MyGame.GameState.prototype = {
 					let theTween = this.tileArray[ x ][ y ].fallingTween; 
 					if(theTween && theTween != null) {
 
-						var tweenDatum = this.tileArray[ x ][ y ].getFallingTween().timeline[this.tileArray[ x ][ y ].getFallingTween().current];
-						var remaining = tweenDatum.duration - tweenDatum.dt;
+						let arr = this.tileArray[ x ][ y ].getFallingTweens();
+						for(let i = 0; i < arr.length; i++) {
+							var tweenDatum = arr[i].timeline[arr[i].current];
+							var remaining = tweenDatum.duration - tweenDatum.dt;
 
-						let tileX = x * this.calculatedTileSize;
-						let tileY = y * this.calculatedTileSize;
+							let tileX = x * this.calculatedTileSize;
+							let tileY = y * this.calculatedTileSize;
 
-						// this.tileArray[i][j].setPosition(tileX, tileY);
+							// this.tileArray[i][j].setPosition(tileX, tileY);
 
-						this.tileArray[ x ][ y ].getFallingTween().isPaused = false; 
-						this.tileArray[ x ][ y ].getFallingTween().isRunning = false;
-						this.tileArray[ x ][ y ].getFallingTween().timeline.length = 0;
-						this.tileArray[ x ][ y ].getFallingTween().to({ y: tileY });
-						this.tileArray[ x ][ y ].getFallingTween().start();
+							arr[i].isPaused = false; 
+							arr[i].isRunning = false;
+							arr[i].timeline.length = 0;
+							arr[i].to({ y: tileY });
+							arr[i].start();
+						}
 					}
 
 					
@@ -1127,16 +1130,50 @@ MyGame.GameState.prototype = {
 					if(tempI < 0)
 						return;
 				}
-				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time, configuration.falling_tile_easing, true);
+
+				let dist = Math.abs(this.tileArray[col][tempI].getSprite().y - tileY);
+
+				let tween = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * (4/10), Phaser.Easing.Quadratic.In, true);
+				tween.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+				let tween1 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY-dist/3 }, configuration.tile_fall_time * (2/10), Phaser.Easing.Quadratic.Out, false);
+				let tween2 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * (2/10), Phaser.Easing.Quadratic.In, false);
+				tween2.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+				let tween3 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY-dist/12 }, configuration.tile_fall_time * (1/10), Phaser.Easing.Quadratic.Out, false);
+				let tween4 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * (1/10), Phaser.Easing.Quadratic.In, false);
+				tween4.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+				let tween5 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY-dist/50 }, configuration.tile_fall_time * (1/20), Phaser.Easing.Quadratic.Out, false);
+				let tween6 = game.add.tween(this.tileArray[col][tempI].getSprite()).to({ y: tileY }, configuration.tile_fall_time * (1/20), Phaser.Easing.Quadratic.In, false);
+				tween6.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+
+				tween.chain(tween1);
+				tween1.chain(tween2);
+				tween2.chain(tween3);
+				tween3.chain(tween4);
+				tween4.chain(tween5);
+				tween5.chain(tween6);
+
 				this.tileArray[col][tempI].setArrayPosition(col, i);
-				this.tileArray[col][tempI].setFallingTween(tween);
+				
+				this.tileArray[col][tempI].addFallingTween(tween);
+				this.tileArray[col][tempI].addFallingTween(tween1);
+				this.tileArray[col][tempI].addFallingTween(tween2);
+				this.tileArray[col][tempI].addFallingTween(tween3);
+				this.tileArray[col][tempI].addFallingTween(tween4);
+				this.tileArray[col][tempI].addFallingTween(tween5);
+				this.tileArray[col][tempI].addFallingTween(tween6);
+
 				tweenManager.addTween(tween);
+				tweenManager.addTween(tween1);
+				tweenManager.addTween(tween2);
+				tweenManager.addTween(tween3);
+				tweenManager.addTween(tween4);
+				tweenManager.addTween(tween5);
+				tweenManager.addTween(tween6);
 
 				this.tileArray[col][i] = this.tileArray[col][tempI];
 				this.tileArray[col][tempI] = null;
 			}
 		}
-		playTileBounceSound(configuration.tile_fall_time);
 	}, 
 
 	updateBoard: function() {
@@ -1152,7 +1189,7 @@ MyGame.GameState.prototype = {
 
 			for(let i = 0; i < configuration.board_rows; i++) {
 				for(let j = 0; j < configuration.board_columns; j++) { 
-					currentState.tileArray[ i ][ j ].setFallingTween(null);
+					currentState.tileArray[ i ][ j ].addFallingTween(null);
 				}
 			}
 
@@ -1178,14 +1215,47 @@ MyGame.GameState.prototype = {
 
 					ScaleSprite(tile.getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 
-					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.new_tile_fall_time, configuration.falling_tile_easing, true);
-					tile.setFallingTween(tween);
+					let dist = Math.abs(this.tileArray[col][i].getSprite().y - tileY);
+
+					let tween = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.tile_fall_time * (4/10), Phaser.Easing.Quadratic.In, true);
+					tween.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+					let tween1 = game.add.tween(tile.getSprite()).to({ y: tileY-dist/3 }, configuration.tile_fall_time * (2/10), Phaser.Easing.Quadratic.Out, false);
+					let tween2 = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.tile_fall_time * (2/10), Phaser.Easing.Quadratic.In, false);
+					tween2.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+					let tween3 = game.add.tween(tile.getSprite()).to({ y: tileY-dist/12 }, configuration.tile_fall_time * (1/10), Phaser.Easing.Quadratic.Out, false);
+					let tween4 = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.tile_fall_time * (1/10), Phaser.Easing.Quadratic.In, false);
+					tween4.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+					let tween5 = game.add.tween(tile.getSprite()).to({ y: tileY-dist/50 }, configuration.tile_fall_time * (1/20), Phaser.Easing.Quadratic.Out, false);
+					let tween6 = game.add.tween(tile.getSprite()).to({ y: tileY }, configuration.tile_fall_time * (1/20), Phaser.Easing.Quadratic.In, false);
+					tween6.onComplete.addOnce(function() { playTileBounceSound(); }, this);
+
+					tween.chain(tween1);
+					tween1.chain(tween2);
+					tween2.chain(tween3);
+					tween3.chain(tween4);
+					tween4.chain(tween5);
+					tween5.chain(tween6);
+
+					tile.addFallingTween(tween);
+					tile.addFallingTween(tween1);
+					tile.addFallingTween(tween2);
+					tile.addFallingTween(tween3);
+					tile.addFallingTween(tween4);
+					tile.addFallingTween(tween5);
+					tile.addFallingTween(tween6);
+
 					tile.setArrayPosition(col, i);
+
 					tweenManager.addTween(tween);
+					tweenManager.addTween(tween1);
+					tweenManager.addTween(tween2);
+					tweenManager.addTween(tween3);
+					tweenManager.addTween(tween4);
+					tweenManager.addTween(tween5);
+					tweenManager.addTween(tween6);
 				}
 			}
 		}
-		playTileBounceSound(configuration.new_tile_fall_time);
 	}, 
 
 	/*_______________________________________
