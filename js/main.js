@@ -59,5 +59,69 @@ function updateGameWindow(theGame) {
 
 
 
+/*****************
+ * SORT TESTING
+ *****************/
+
+// function item (cost, foundOnRow, quality) {
+// 	let obj = {};
+// 	obj.cost = cost;
+// 	obj.foundOnRow = foundOnRow;
+// 	obj.quality = quality;
+// 	return obj;
+// };
+
+// var itemList = [
+// 	item(2.15, 1, 'used'), 
+// 	item(5.99, 3, 'good'), 
+// 	item(3.00, 1, 'used'), 
+// 	item(10.00, 2, 'good'), 
+// 	item(4.92, 2, 'good'), 
+// 	item(7.50, 3, 'poor'), 
+// 	item(1.06, 3, 'used'), 
+// 	item(12.57, 1, 'good'), 
+// 	item(7.50, 3, 'poor')
+// ];
+
+// var sortBy = 'asc';
+
+// function testAsc (x, y) {
+// 	return x < y ? -1 : x > y ? 1 : 0;
+// }
+// function testDesc (x, y) {
+// 	return x < y ? 1 : x > y ? -1 : 0;
+// }
+// const qualityToValue = (str) => {
+// 	if(str === 'good') 
+//         return 0;
+//     else if(str === 'used')  
+//         return 1;
+//     else if(str === 'poor') 
+//         return 2;
+//     else // Anything else...
+//         return 3; 
+// }
+
+// itemList.sort( ( a, b ) => {
+//     switch ( sortBy ) {
+//         case 'asc':
+//             return testAsc( a.foundOnRow, b.foundOnRow) || testAsc( qualityToValue(a.quality), qualityToValue(b.quality) ) || testAsc( a.cost, b.cost);
+//         case 'desc':
+//             return testDesc( a.foundOnRow, b.foundOnRow) || testAsc( qualityToValue(a.quality), qualityToValue(b.quality) ) || testAsc( a.cost, b.cost)
+//         default:
+//             console.error( 'Sort by value does not match "asc" or "desc"' );
+//             return;
+//     }
+// } );
+
+// // print out resulting list
+// for(let i = 0; i < itemList.length; i++) {
+// 	console.log("[" + i + "] Item - ROW: " + itemList[i].foundOnRow + ", " + itemList[i].quality);
+// 		//+ ", COST: $" + itemList[i].cost);
+// }
+
+
+
+
 
 

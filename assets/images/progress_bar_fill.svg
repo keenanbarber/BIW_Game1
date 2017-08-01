@@ -1,1 +1,26 @@
-<svg id="_ÎÓÈ_3" data-name="—ÎÓÈ_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765.83 52.67"><defs><style>.cls-1{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{fill:#18ccbd;}.cls-4{fill:#85e4dc;}.cls-5{fill:#098d85;}</style><clipPath id="clip-path" transform="translate(555.83 -1754.04)"><rect class="cls-1" x="-555.83" y="1734.38" width="765.83" height="92"/></clipPath></defs><title>progress_bar_fill</title><g class="cls-2"><path class="cls-3" d="M210,1784.73c0,12.68-12.32,22-27.51,22h-710.8c-15.2,0-27.52-9.31-27.52-22V1777c0-12.68,12.32-23,27.52-23h710.8c15.2,0,27.51,10.28,27.51,23Z" transform="translate(555.83 -1754.04)"/><path class="cls-4" d="M-185.3,1773c148,0,279.76-7.42,364.93-19H-527.65a33.78,33.78,0,0,0-10.32,1.6C-452.69,1766.29-326.33,1773-185.3,1773Z" transform="translate(555.83 -1754.04)"/><path class="cls-5" d="M-554.44,1791.83c3.62,8.9,13.95,14.89,26.13,14.89h710.8c12.18,0,22.5-6,26.13-14.89Z" transform="translate(555.83 -1754.04)"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="_ÎÓÈ_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 765.8 52.7" style="enable-background:new 0 0 765.8 52.7;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{fill:#18CCBD;}
+	.st2{fill:#85E4DC;}
+	.st3{fill:#098D85;}
+</style>
+<title>progress_bar_fill</title>
+<g>
+	<defs>
+		<rect id="SVGID_1_" y="-19.7" width="765.8" height="92"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st0">
+		<path class="st1" d="M765.8,30.7c0,12.7-12.3,22-27.5,22H27.5C12.3,52.7,0,43.4,0,30.7V23C0,10.3,12.3,0,27.5,0h710.8
+			c15.2,0,27.5,10.3,27.5,23V30.7z"/>
+		<path class="st2" d="M370.5,19c148,0,279.8-7.4,364.9-19H28.2c-3.5,0-7,0.5-10.3,1.6C103.1,12.2,229.5,19,370.5,19z"/>
+		<path class="st3" d="M1.4,37.8c3.6,8.9,14,14.9,26.1,14.9h710.8c12.2,0,22.5-6,26.1-14.9H1.4z"/>
+	</g>
+</g>
+</svg>
