@@ -1443,9 +1443,7 @@ function NewProgressBar4(x, y) {
 	obj.rightCap.anchor.setTo(0, 0.5);
 	obj.rightCap.x = obj.centerPiece.width/2;
 	obj.barGroup.add(obj.rightCap);
-
-	console.log("Making new progress bar...");
-
+	
 	obj.updateProgress = function(perc) {
 		
 	};
@@ -1453,16 +1451,14 @@ function NewProgressBar4(x, y) {
 		return obj.barGroup;
 	};
 	obj.setPosition = function(x, y) {
-		
+		obj.barGroup.x = x;
+		obj.barGroup.y = y;
 	};
 	obj.setWidth = function(availableWidth) {
 		let calculatedWidth = availableWidth - obj.leftCap.width - obj.rightCap.width;
 		obj.centerPiece.width = calculatedWidth; 
 		obj.leftCap.x = -calculatedWidth / 2;
 		obj.rightCap.x = calculatedWidth / 2;
-	};
-	obj.setAlignment = function(val) {
-		
 	};
 
 	return obj;
