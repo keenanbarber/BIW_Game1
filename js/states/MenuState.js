@@ -58,6 +58,9 @@ MyGame.MenuState.prototype = {
 
 		playBackgroundMusic();
 
+		this.myProgBar = NewProgressBar4(game.world.centerX, game.world.centerY);
+		this.myProgBar.setWidth(500);
+
 		// this.alphaMaskTest();
 
 		// this.progBar.addBarOverlayImage();

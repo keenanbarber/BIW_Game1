@@ -120,6 +120,7 @@ function updateGameWindow(theGame) {
 // 		//+ ", COST: $" + itemList[i].cost);
 // }
 
+        // console.log(a[ 0 ][ 'firstName' ] + " " + a[ 0 ][ 'lastName' ] + " status: " + a[ sortIndex ][ 'secondaryLabel' ] + ", value: " + a[ sortIndex ][ 'value' ]);
 
 
 

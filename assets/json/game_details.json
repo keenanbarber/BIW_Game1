@@ -1,4 +1,6 @@
-{   
+{   "test_1": "assets/images/timer_01.png",
+    "test_2": "assets/images/timer_02.png",
+    "test_3": "assets/images/timer_03.png",
     "game_details": {
         "name": "Keenan Barber", 
         "reward": 29,

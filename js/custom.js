@@ -1421,6 +1421,53 @@ function NewProgressBar3(timerBarBackgroundKey) {
 	return obj;
 }
 
+function NewProgressBar4(x, y) {
+	let obj = {};
+
+	obj.fillPercent = 0;
+
+	obj.barGroup = game.add.group();
+	obj.barGroup.x = x;
+	obj.barGroup.y = y;
+
+	obj.centerPiece = game.add.sprite(0, 0, 'test_2');
+	obj.centerPiece.anchor.setTo(0.5, 0.5);
+	obj.barGroup.add(obj.centerPiece);
+
+	obj.leftCap = game.add.sprite(0, 0, 'test_1');
+	obj.leftCap.anchor.setTo(1, 0.5);
+	obj.leftCap.x = -obj.centerPiece.width/2;
+	obj.barGroup.add(obj.leftCap);
+
+	obj.rightCap = game.add.sprite(0, 0, 'test_3');
+	obj.rightCap.anchor.setTo(0, 0.5);
+	obj.rightCap.x = obj.centerPiece.width/2;
+	obj.barGroup.add(obj.rightCap);
+
+	console.log("Making new progress bar...");
+
+	obj.updateProgress = function(perc) {
+		
+	};
+	obj.getGroup = function() {
+		return obj.barGroup;
+	};
+	obj.setPosition = function(x, y) {
+		
+	};
+	obj.setWidth = function(availableWidth) {
+		let calculatedWidth = availableWidth - obj.leftCap.width - obj.rightCap.width;
+		obj.centerPiece.width = calculatedWidth; 
+		obj.leftCap.x = -calculatedWidth / 2;
+		obj.rightCap.x = calculatedWidth / 2;
+	};
+	obj.setAlignment = function(val) {
+		
+	};
+
+	return obj;
+}
+
 function BoundNumber(num, min, max) {
 	// console.log(num + ", " + max + ", " + min);
 	return Math.min(
