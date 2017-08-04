@@ -1424,11 +1424,14 @@ function NewProgressBar3(timerBarBackgroundKey) {
 function NewProgressBar4(x, y) {
 	let obj = {};
 
-	obj.fillPercent = 0;
+	obj.fillPercent = 1;
+	obj.fillBarOffset_X_rightSide = 80;
+	obj.fillBarOffset_X_leftSide = 0;
+	obj.fillBarOffset_Y = -8;
 
 	obj.barGroup = game.add.group();
-	obj.barGroup.x = x;
-	obj.barGroup.y = y;
+	obj.barGroup.x = 0;
+	obj.barGroup.y = 0;
 
 	obj.centerPiece = game.add.sprite(0, 0, 'test_2');
 	obj.centerPiece.anchor.setTo(0.5, 0.5);
@@ -1443,29 +1446,78 @@ function NewProgressBar4(x, y) {
 	obj.rightCap.anchor.setTo(0, 0.5);
 	obj.rightCap.x = obj.centerPiece.width/2;
 	obj.barGroup.add(obj.rightCap);
-	
+
+	// Fill
+	// obj.defaultFillColor = game_details_data.user_interface_settings.default_timer_fill_color.replace('#', '0x');
+	// obj.defaultFillAlpha = game_details_data.user_interface_settings.default_timer_fill_alpha;
+	// obj.defaultOutlineColor = game_details_data.user_interface_settings.default_timer_outline_color.replace('#', '0x');
+	// obj.defaultOutlineSize = game_details_data.user_interface_settings.default_timer_outline_size;
+
+	// graphics = game.add.graphics(0,0);
+	// graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
+	// // graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
+	// graphics.drawRoundedRect(0, 0, obj.centerPiece.width, 50, 10);
+	// graphics.endFill();
+	// graphicsTexture = graphics.generateTexture();
+	// graphics.destroy();
+
+	// obj.progressBarFill = game.add.sprite(-obj.centerPiece.width/2, obj.fillBarOffset_Y, graphicsTexture);
+	// obj.progressBarFill.anchor.setTo(0, 0.5);
+	// obj.barGroup.add(obj.progressBarFill);
+
 	obj.updateProgress = function(perc) {
-		
+		obj.fillPercent = perc;
+
+		// obj.progressBarFill.x = -obj.centerPiece.width/2;
+		// graphics = game.add.graphics(0,0);
+		// graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
+		// // graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
+		// graphics.drawRoundedRect(0, 0, perc * (obj.centerPiece.width + obj.fillBarOffset_X_leftSide + obj.fillBarOffset_X_rightSide), 50, 10);
+		// graphics.endFill();
+		// graphicsTexture = graphics.generateTexture();
+		// graphics.destroy();
+
+		// obj.progressBarFill.loadTexture(graphicsTexture);
 	};
 	obj.getGroup = function() {
 		return obj.barGroup;
 	};
 	obj.setPosition = function(x, y) {
-		obj.barGroup.x = x;
-		obj.barGroup.y = y;
+		// obj.barGroup.x = x;
+		// obj.barGroup.y = y;
+
+		obj.centerPiece.x = x;
+		obj.centerPiece.y = y;
+
+		// obj.leftCap.x = -obj.centerPiece.width / 2;
+		obj.leftCap.y = y;
+
+		// obj.rightCap.x = obj.centerPiece.width / 2;
+		obj.rightCap.y = y;
 	};
 	obj.setWidth = function(availableWidth) {
 		let calculatedWidth = availableWidth - obj.leftCap.width - obj.rightCap.width;
 		obj.centerPiece.width = calculatedWidth; 
 		obj.leftCap.x = -calculatedWidth / 2;
 		obj.rightCap.x = calculatedWidth / 2;
+
+		// obj.progressBarFill.x = -obj.centerPiece.width/2;
+		// graphics = game.add.graphics(0,0);
+		// graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
+		// // graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
+		// graphics.drawRoundedRect(0, 0, obj.fillPercent * ( obj.centerPiece.width + obj.fillBarOffset_X_leftSide + obj.fillBarOffset_X_rightSide ), 50, 10);
+		// graphics.endFill();
+		// graphicsTexture = graphics.generateTexture();
+		// graphics.destroy();
+
+		// obj.progressBarFill.loadTexture(graphicsTexture);
 	};
 
 	return obj;
 }
 
 function BoundNumber(num, min, max) {
-	// console.log(num + ", " + max + ", " + min);
+	// console.log(num + ", " + max + ", " + min); 
 	return Math.min(
 		Math.max(min, num),
 		max

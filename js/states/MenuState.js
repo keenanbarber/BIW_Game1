@@ -60,6 +60,7 @@ MyGame.MenuState.prototype = {
 
 		this.myProgBar = NewProgressBar4(game.world.centerX, game.world.centerY);
 		this.myProgBar.setWidth(500);
+		this.myProgBar.updateProgress(0.5);
 
 		// this.alphaMaskTest();
 
@@ -171,6 +172,9 @@ MyGame.MenuState.prototype = {
 	}, 
 
 	positionComponents: function(width, height) {
+		this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
+		this.myProgBar.setWidth(width);
+
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
 			// Background
