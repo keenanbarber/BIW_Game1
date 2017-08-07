@@ -24,7 +24,7 @@ var configuration = {
 	'board_rows' : 6, 
 	'board_columns' : 6, 
 	
-	'tile_padding' : 6, 
+	'tile_padding' : 8, 
 	'min_tiles_required_for_match' : 3
 };
 

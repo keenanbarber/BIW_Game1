@@ -14,8 +14,8 @@
         "desktop_max_height": 1000, 
 
         "game_duration": 120,
-        "board_rows": 5, 
-        "board_columns": 5, 
+        "board_rows": 6, 
+        "board_columns": 6, 
         "min_tiles_required_for_match": 3,
         "hint_delay": 5
     },

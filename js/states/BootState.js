@@ -29,7 +29,7 @@ MyGame.BootState.prototype = {
 			game.scale.scaleMode = Phaser.ScaleManager.RESIZE; // Fills the screen
 		}
 
-		game.renderer.renderSession.roundPixels = true;
+		// game.renderer.renderSession.roundPixels = true;
 		game.scale.parentIsWindow = true;
 		game.stage.disableVisibilityChange = true;
 
