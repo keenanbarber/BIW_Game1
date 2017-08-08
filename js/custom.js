@@ -764,7 +764,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		obj.resize();
 	};
 
-	obj.addTextSegment = function(text, style, horizontalAlign) {
+	obj.addTextSegment = function(text, style, horizontalAlign, lineSpacingOffset) {
 		let horizontalTextAlign = horizontalAlign;
 		let verticalTextAlign = 'top';
 		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.contentsPadding;
@@ -780,7 +780,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		}
 		if(verticalTextAlign === 'center') {
 			textY = 0;
-			anchorY = 0.5;
+			// anchorY = 0.5;
 		}
 		else if(verticalTextAlign === 'top') {
 			textY = -obj.graphicsSprite.height/2 + obj.contentsPadding;
@@ -790,7 +790,16 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.contentsPadding);
 
 		let myText = game.add.text(textX, textY, text, myStyle);
-		myText.lineSpacing = -(myText.fontSize/3);
+		// myText.lineSpacing = -(myText.fontSize/3);
+		// let testNum = myText.height - (myText.fontSize * (4/3))/2;
+
+		// console.log("Point: " + myText.fontSize + ", Pixels: " + (myText.fontSize * (4/3)) );
+		// let result = -(myText.height - (myText.fontSize * (4/3)))/3;
+		// console.log("Line Height: " + myText.height + ", Result: " + result);
+		myText.lineSpacing = lineSpacingOffset;
+
+		// myText.height - myText.fontSize ???
+
 		// myText.fontSize *= devicePixelRatio;
 		myText.anchor.setTo(anchorX, anchorY);
 		myText.align = horizontalTextAlign;
@@ -1408,8 +1417,8 @@ function NewProgressBar3(timerBarBackgroundKey) {
 	obj.setAlignment = function(val) {
 		obj.align = val;
 	};
-	obj.resize = function(availableWidth, availableHeight, padding, scaleMultiplier) {
-		ScaleSprite(obj.progressBarFrame, availableWidth, availableHeight, padding, scaleMultiplier);
+	obj.resize = function(availableWidth, availableHeight) {
+		ScaleSprite(obj.progressBarFrame, availableWidth, availableHeight, 0, 1);
 		
 		obj.progressBarFill.x = obj.fillOffsetX_left * obj.progressBarFrame.scale.x;
 		obj.progressBarFill.y = obj.fillOffsetY * obj.progressBarFrame.scale.y;

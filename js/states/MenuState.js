@@ -62,8 +62,8 @@ MyGame.MenuState.prototype = {
 		// this.myProgBar.setWidth(500);
 		// this.myProgBar.updateProgress(0.5);
 
-		this.myBarThing = this.testBar();
-		this.sceneProps.add(this.myBarThing);
+		// this.myBarThing = this.testBar();
+		// this.sceneProps.add(this.myBarThing);
 
 		// this.alphaMaskTest();
 
@@ -134,13 +134,13 @@ MyGame.MenuState.prototype = {
 		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
 			let component = menuDialogBoxData.text_components[i];
 			if(component.type === "SCORE") {
-				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align);
+				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else if(component.type === "REWARD") {
-				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else {
-				this.myDialogBox1.addTextSegment(component.text, component.style, component.align);
+				this.myDialogBox1.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 			}
 		}
 		this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
@@ -398,7 +398,7 @@ MyGame.MenuState.prototype = {
 		this.boxProperties = new Phaser.Rectangle(0, 0, 400, 40);
 		var lineWidth = 5, 
 			cornerRadius = 10, 
-			shadowSize = 5, 
+			shadowSize = 0, 
 			x = this.boxProperties.x + lineWidth, 
 			y = this.boxProperties.y + lineWidth, 
 			width = this.boxProperties.width, 
@@ -406,10 +406,10 @@ MyGame.MenuState.prototype = {
 			bmd = new Phaser.BitmapData(this.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth )), 
 			grd = bmd.context.createLinearGradient(x, y, x, height);
 
-		grd.addColorStop(0, '#ffffff');
-		grd.addColorStop(0.25, '#18CCBD');
-		grd.addColorStop(0.75, '#18CCBD');
-		grd.addColorStop(1, '#0f8278');
+		grd.addColorStop(0, '#18CCBD');
+		// grd.addColorStop(0.25, '#18CCBD');
+		// grd.addColorStop(0.75, '#18CCBD');
+		// grd.addColorStop(1, '#0f8278');
 		bmd.context.beginPath();
 		bmd.context.moveTo(x + cornerRadius, y);
 		bmd.context.lineTo(x + width - cornerRadius, y);
@@ -426,13 +426,21 @@ MyGame.MenuState.prototype = {
 		bmd.context.strokeStyle = '#fff';
 		bmd.context.lineWidth = lineWidth;
 		bmd.context.stroke();
-		// var bmd2 = new Phaser.BitmapData(this.game, '', width + shadowSize + shadowSize, height + shadowSize  + shadowSize);
-		// bmd2.context.shadowBlur = shadowSize;
-		// bmd2.context.shadowColor = 'rgba(0, 0, 0, 1)';
-		// bmd2.context.drawImage(bmd.canvas, shadowSize, shadowSize);
 
-		console.log("Complete");
-		return new Phaser.Sprite(this.game, 50, 50, bmd);
+		var bmd2 = new Phaser.BitmapData(this.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth )); 
+		bmd2.context.beginPath();
+		bmd2.context.moveTo(x, y);
+		bmd2.context.lineTo(x + width, y);
+		bmd2.context.lineTo(x + width, y + height);
+		bmd2.context.lineTo(x, y + height);
+		bmd2.context.lineTo(x, y);
+		bmd2.context.fillStyle = '#444444';
+		bmd2.context.fill();
+
+		// let reflectionSprite = new Phaser.Sprite(this.game, 0, 0, bmd2);
+		let barSprite = new Phaser.Sprite(this.game, 0, 0, bmd);
+
+		return barSprite;
 	}
 
 };

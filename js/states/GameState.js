@@ -19,25 +19,25 @@ MyGame.GameState = function(game) {
 
 MyGame.GameState.prototype = {
 
-	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
+	init: function( previousStateProps, oldSceneTransition, newSceneTransition ) {
 		"use strict";
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
 		// Add events to check for swipe and resize
-		this.game.input.onDown.add(this.start_swipe, this);
-		this.game.input.onUp.add(this.end_swipe, this);
-		window.removeEventListener('resize', currentState.resize);
+		this.game.input.onDown.add( this.start_swipe, this );
+		this.game.input.onUp.add( this.end_swipe, this );
+		window.removeEventListener( 'resize', currentState.resize );
 		currentState = this;
-		window.addEventListener('resize', currentState.resize);
-		// game.scale.setResizeCallback(this.resize, this);
+		window.addEventListener( 'resize', currentState.resize );
+		// game.scale.setResizeCallback( this.resize, this );
 
 		// State Specific Variables
 		// this.gameTime = Phaser.Timer.SECOND * 30;
 		this.gameTimerRunning = false;
 
 		// Exit the previous scene/state...
-		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
+		if( previousStateProps ) { ExitPreviousScene( previousStateProps, TranslateTween( this.oldSceneTransition, configuration.transition_time, configuration.transition_easing ) ); }
 	},
 
 	preload: function() {
@@ -142,23 +142,23 @@ MyGame.GameState.prototype = {
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
-			var availableGridSpace = Math.min(width * 2/3, height);
+			var availableGridSpace = width;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
 			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
-			this.horizontalMargin = (width * (6/10)) - (configuration.board_columns * this.calculatedTileSize);
-			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
+			this.upperUIHeight = this.scoreDisplay.height + this.scoreText.height;
+			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
+			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
+
 
 
 			// Progress Bar
+			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
-			this.progressBar.setPosition(
-				this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.progressBar.getGroup().width + this.calculatedTileSize/2, 
-				this.verticalMargin + this.progressBar.getGroup().height
-			);
+			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
 
 			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
-			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
-			this.clock.y = this.verticalMargin + this.progressBar.getGroup().height;
+			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
+			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Dialog Boxes
 			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
@@ -172,16 +172,16 @@ MyGame.GameState.prototype = {
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
-			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2 + this.timeDisplay.width;
-			this.timeDisplay.y = this.verticalMargin + this.progressBar.getGroup().height + this.timeDisplay.height + this.progressBar.getGroup().height;
+			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
+			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Text
-			this.scoreText.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
-			this.scoreText.y = height/2;
+			this.scoreText.x = this.horizontalMargin;
+			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
 
 			// Score Display
-			this.scoreDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) + this.calculatedTileSize/2;
-			this.scoreDisplay.y = height/2 + this.scoreText.height;
+			this.scoreDisplay.x = this.horizontalMargin;
+			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -199,6 +199,7 @@ MyGame.GameState.prototype = {
 					}
 				}
 			}
+
 
 			// Board
 			this.boardSpriteGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -227,8 +228,7 @@ MyGame.GameState.prototype = {
 						let tileY = j * this.calculatedTileSize;
 
 						this.tileArray[i][j].setPosition(tileX, tileY);
-						if(this.tileArray[i][j].getSprite() != null)
-							ScaleSprite(this.tileArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
+						ScaleSprite(this.tileArray[i][j].getSprite(), this.calculatedTileSize, this.calculatedTileSize, configuration.tile_padding, 1);
 					}
 				}
 			}
@@ -252,13 +252,16 @@ MyGame.GameState.prototype = {
 			background.x = game.world.centerX;
 			background.y = height;
 
+
 		}
 		else {
 			var availableGridSpace = width;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
 			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
+			this.upperUIHeight = this.scoreDisplay.height + this.scoreText.height;
 			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
-			this.verticalMargin = (height - (configuration.board_rows * this.calculatedTileSize)) / 2;
+			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
+
 
 
 			// Progress Bar
@@ -1507,13 +1510,13 @@ MyGame.GameState.prototype = {
 		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = startGameDialogBoxData.text_components[i];
 			if(component.type === "SCORE") {
-				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
+				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else if(component.type === "REWARD") {
-				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else {
-				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align);
+				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 			}
 		}
 		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
@@ -1541,13 +1544,13 @@ MyGame.GameState.prototype = {
 		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = endGameDialogBoxData.text_components[i];
 			if(component.type === "SCORE") {
-				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align);
+				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else if(component.type === "REWARD") {
-				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else {
-				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align);
+				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 			}
 		}
 		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,

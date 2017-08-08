@@ -212,11 +212,11 @@ MyGame.GameOverState.prototype = {
 		for(let i = 0; i < scoreDialogBoxData.text_components.length; i++) { // Add text
 			let component = scoreDialogBoxData.text_components[i];
 			if(component.type === "SCORE") 
-				this.scoreDialogBox.addTextSegment(score + component.text, component.style, component.align);
+				this.scoreDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			else if(component.type === "REWARD") 
-				this.scoreDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+				this.scoreDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			else 
-				this.scoreDialogBox.addTextSegment(component.text, component.style, component.align);
+				this.scoreDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 		}
 		this.scoreDialogBox.addButton(scoreDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
@@ -247,11 +247,11 @@ MyGame.GameOverState.prototype = {
 		for(let i = 0; i < rewardDialogBoxData.text_components.length; i++) { // Add text
 			let component = rewardDialogBoxData.text_components[i];
 			if(component.type === "SCORE") 
-				this.rewardDialogBox.addTextSegment(score + component.text, component.style, component.align);
+				this.rewardDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			else if(component.type === "REWARD") 
-				this.rewardDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+				this.rewardDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			else 
-				this.rewardDialogBox.addTextSegment(component.text, component.style, component.align);
+				this.rewardDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 		}
 		this.rewardDialogBox.addButton(rewardDialogBoxData.continue_button_text, null,
 		 	function() { //On click...

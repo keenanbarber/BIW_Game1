@@ -13,7 +13,7 @@
         "desktop_max_width": 1000, 
         "desktop_max_height": 1000, 
 
-        "game_duration": 120,
+        "game_duration": 10,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
@@ -35,7 +35,7 @@
         "default_timer_outline_size": 5
     },
     "font_files": {
-        "font_1": {"source": "assets/fonts/brandon_light-webfont.woff", "format": "woff"}, 
+        "font_1": {"source": "assets/fonts/Brandon_thin.woff", "format": "woff"}, 
         "font_2": {"source": "assets/fonts/brandongrotesque-black-webfont.woff", "format": "woff"} 
     },
     "audio_files": {
@@ -167,8 +167,9 @@
                 {   
                     "type": "DEFAULT",
                     "text": "CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. READY, SET, GO!", 
-                    "style": { "font": "16px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "14px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0
                 }
             ], 
             "play_button_text": "PLAY"
@@ -181,7 +182,8 @@
                     "type": "DEFAULT",
                     "text": "MATCH AS MANY AS YOU CAN BEFORE THE TIME RUNS OUT!", 
                     "style": { "font": "18px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "align": "center", 
+                    "line_spacing_offset": 0
                 }
             ], 
             "start_button_text": "START", 
@@ -194,8 +196,9 @@
                 {   
                     "type": "DEFAULT",
                     "text": "TIME'S UP!", 
-                    "style": { "font": "22px font_2", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "24px font_2", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }
             ], 
             "finish_button_text": "CONTINUE"
@@ -207,20 +210,30 @@
                 {   
                     "type": "DEFAULT",
                     "text": "GREAT JOB!", 
-                    "style": { "font": "22px font_2", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "24px font_2", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }, 
                 {   
                     "type": "DEFAULT", 
-                    "text": "YOU GOT A SCORE OF", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "text": "YOU HAVE EARNED A SCORE OF", 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 },
                 {   
                     "type": "SCORE", 
-                    "text": " POINTS", 
-                    "style": { "font": "40px font_2", "fill": "#7ffff4" },
-                    "align": "center" 
+                    "text": "", 
+                    "style": { "font": "58px font_2", "fill": "#7ffff4" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
+                },
+                {   
+                    "type": "DEFAULT", 
+                    "text": "POINTS!", 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }
             ], 
             "continue_button_text": "ANY REWARD?"
@@ -232,26 +245,30 @@
                 {   
                     "type": "DEFAULT",
                     "text": "NEW HIGH SCORE!", 
-                    "style": { "font": "22px font_2", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "24px font_2", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }, 
                 {   
                     "type": "DEFAULT", 
                     "text": "YOU GOT A SCORE OF: ", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 },
                 {   
                     "type": "SCORE", 
                     "text": " POINTS", 
-                    "style": { "font": "30px font_2", "fill": "#18CCBD" },
-                    "align": "center" 
+                    "style": { "font": "58px font_2", "fill": "#18CCBD" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 },
                 {   
                     "type": "DEFAULT",
                     "text": "GREAT WORK!", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }
             ], 
             "continue_button_text": "ANY REWARD?"
@@ -263,20 +280,30 @@
                 {   
                     "type": "DEFAULT",
                     "text": "CONGRATULATIONS!", 
-                    "style": { "font": "22px font_2", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "24px font_2", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0  
                 }, 
                 {   
                     "type": "DEFAULT", 
                     "text": "THE FOLLOWING CREDITS HAVE BEEN ADDED TO YOUR ACCOUNT:", 
-                    "style": { "font": "14px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "style": { "font": "18px font_1", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0  
                 },
                 {   
                     "type": "REWARD", 
-                    "text": " CREDITS", 
-                    "style": { "font": "30px font_2", "fill": "#f4ce42" },
-                    "align": "center" 
+                    "text": "", 
+                    "style": { "font": "58px font_2", "fill": "#f4ce42" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
+                }, 
+                {   
+                    "type": "DEFAULT", 
+                    "text": "CREDITS", 
+                    "style": { "font": "18px font_2", "fill": "#ffffff" },
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }
             ], 
             "continue_button_text": "THANKS!"
@@ -289,13 +316,15 @@
                     "type": "DEFAULT",
                     "text": "NO REWARD", 
                     "style": { "font": "22px font_2", "fill": "#ffffff" },
-                    "align": "center" 
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 },
                 {   
                     "type": "DEFAULT",
                     "text": "BETTER LUCK NEXT TIME!", 
                     "style": { "font": "14px font_1", "fill": "#ffffff" },
-                    "align": "center" 
+                    "align": "center", 
+                    "line_spacing_offset": 0 
                 }
             ], 
             "continue_button_text": "MENU"
