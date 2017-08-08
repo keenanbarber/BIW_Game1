@@ -61,7 +61,7 @@
         "menu_popup_y_offset": 0 
     },
     "game_sprites": {
-        "dialog_box_background_sprite": "assets/images/DialogBoxBackground.svg",
+        "dialog_box_background_sprite": "assets/images/DialogBoxBackground.png",
 
         "background_image": "assets/images/background_0.png", 
         "title": "assets/images/title_MartianMatch.png",
@@ -83,13 +83,13 @@
         "selected_corner_lowerright": "assets/images/selected_corner_lowerright.png",
         "selected_corner_lowerleft": "assets/images/selected_corner_lowerleft.png",
 
-        "timer_bar_icon": "assets/images/clock.svg",
+        "timer_bar_icon": "assets/images/clock.png",
         "timer_bar_background": "assets/images/timer_bar.svg",
                 
         "end_game_image": "assets/images/UFO.png" 
     },
     "game_tiles": [
-        {   "main_sprite_source": "assets/images/martian_blue.svg", 
+        {   "main_sprite_source": "assets/images/martian_blue.png", 
             "disappear_animation_frames": [
                 "assets/images/animation/sprite_blue_01.svg", 
                 "assets/images/animation/sprite_blue_02.svg", 
@@ -101,7 +101,7 @@
                 "assets/images/animation/sprite_blue_08.svg"
             ]
         },
-        {   "main_sprite_source": "assets/images/martian_green.svg",
+        {   "main_sprite_source": "assets/images/martian_green.png",
             "disappear_animation_frames": [
                 "assets/images/animation/sprite_green_01.svg", 
                 "assets/images/animation/sprite_green_02.svg", 
@@ -113,7 +113,7 @@
                 "assets/images/animation/sprite_green_08.svg"
             ]
         },
-        {   "main_sprite_source": "assets/images/martian_pink.svg", 
+        {   "main_sprite_source": "assets/images/martian_pink.png", 
             "disappear_animation_frames": [
                 "assets/images/animation/sprite_pink_01.svg", 
                 "assets/images/animation/sprite_pink_02.svg", 
@@ -125,7 +125,7 @@
                 "assets/images/animation/sprite_pink_08.svg"
             ]
         },
-        {   "main_sprite_source": "assets/images/martian_purple.svg", 
+        {   "main_sprite_source": "assets/images/martian_purple.png", 
             "disappear_animation_frames": [
                 "assets/images/animation/sprite_purple_01.svg", 
                 "assets/images/animation/sprite_purple_02.svg", 
@@ -137,7 +137,7 @@
                 "assets/images/animation/sprite_purple_08.svg"
             ]
         },
-        {   "main_sprite_source": "assets/images/martian_red.svg", 
+        {   "main_sprite_source": "assets/images/martian_red.png", 
             "disappear_animation_frames": [
                 "assets/images/animation/sprite_red_01.svg", 
                 "assets/images/animation/sprite_red_02.svg", 

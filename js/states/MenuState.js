@@ -58,9 +58,12 @@ MyGame.MenuState.prototype = {
 
 		playBackgroundMusic();
 
-		this.myProgBar = NewProgressBar4(game.world.centerX, game.world.centerY);
-		this.myProgBar.setWidth(500);
-		this.myProgBar.updateProgress(0.5);
+		// this.myProgBar = NewProgressBar4(game.world.centerX, game.world.centerY);
+		// this.myProgBar.setWidth(500);
+		// this.myProgBar.updateProgress(0.5);
+
+		this.myBarThing = this.testBar();
+		this.sceneProps.add(this.myBarThing);
 
 		// this.alphaMaskTest();
 
@@ -172,8 +175,8 @@ MyGame.MenuState.prototype = {
 	}, 
 
 	positionComponents: function(width, height) {
-		this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
-		this.myProgBar.setAvailableSpace(width, 100);
+		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
+		// this.myProgBar.setAvailableSpace(width, 100);
 
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
@@ -389,6 +392,47 @@ MyGame.MenuState.prototype = {
 	 	// create our sillhouette from the original player image
 		// progBar = NewProgressBar2();
 		// progBar.setFillPercent(100);
+	}, 
+
+	testBar : function () {
+		this.boxProperties = new Phaser.Rectangle(0, 0, 400, 40);
+		var lineWidth = 5, 
+			cornerRadius = 10, 
+			shadowSize = 5, 
+			x = this.boxProperties.x + lineWidth, 
+			y = this.boxProperties.y + lineWidth, 
+			width = this.boxProperties.width, 
+			height = this.boxProperties.height, 
+			bmd = new Phaser.BitmapData(this.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth )), 
+			grd = bmd.context.createLinearGradient(x, y, x, height);
+
+		grd.addColorStop(0, '#ffffff');
+		grd.addColorStop(0.25, '#18CCBD');
+		grd.addColorStop(0.75, '#18CCBD');
+		grd.addColorStop(1, '#0f8278');
+		bmd.context.beginPath();
+		bmd.context.moveTo(x + cornerRadius, y);
+		bmd.context.lineTo(x + width - cornerRadius, y);
+		bmd.context.quadraticCurveTo(x + width, y, x + width, y + cornerRadius);
+		bmd.context.lineTo(x + width, y + height - cornerRadius);
+		bmd.context.quadraticCurveTo(x + width, y + height, x + width - cornerRadius, y + height);
+		bmd.context.lineTo(x + cornerRadius, y + height);
+		bmd.context.quadraticCurveTo(x, y + height, x, y + height - cornerRadius);
+		bmd.context.lineTo(x, y + cornerRadius);
+		bmd.context.quadraticCurveTo(x, y, x + cornerRadius, y);
+		bmd.context.closePath();
+		bmd.context.fillStyle = grd;
+		bmd.context.fill();
+		bmd.context.strokeStyle = '#fff';
+		bmd.context.lineWidth = lineWidth;
+		bmd.context.stroke();
+		// var bmd2 = new Phaser.BitmapData(this.game, '', width + shadowSize + shadowSize, height + shadowSize  + shadowSize);
+		// bmd2.context.shadowBlur = shadowSize;
+		// bmd2.context.shadowColor = 'rgba(0, 0, 0, 1)';
+		// bmd2.context.drawImage(bmd.canvas, shadowSize, shadowSize);
+
+		console.log("Complete");
+		return new Phaser.Sprite(this.game, 50, 50, bmd);
 	}
 
 };
