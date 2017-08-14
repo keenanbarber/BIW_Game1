@@ -126,43 +126,66 @@ MyGame.MenuState.prototype = {
 
 
 
-		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
-		}
-		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
-			let component = menuDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
-			}
-			else if(component.type === "REWARD") {
-				this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
-			}
-			else {
-				this.myDialogBox1.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
-			}
-		}
-		this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
+		// let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
+		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		// if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+		// 	this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
+		// }
+		// for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
+		// 	let component = menuDialogBoxData.text_components[i];
+		// 	if(component.type === "SCORE") {
+		// 		this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
+		// 	}
+		// 	else if(component.type === "REWARD") {
+		// 		this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
+		// 	}
+		// 	else {
+		// 		this.myDialogBox1.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
+		// 	}
+		// }
+		// this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
+		//  	function() { //On click...
+		// 		score = 0;
+		// 		playButtonPressSound();
+		// 		obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 	}
+		// );
+		// this.sceneProps.add(this.myDialogBox1.getGroup());
+
+
+
+
+		this.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400, 20, 10, 10 );	
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BjAUTIFUL TEXT Í.', 
+			{ "font": "20px font_2", "fill": "#ffffff" }, 
+			'center' );
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BjAUTIFUL TEXT Í.', 
+			{ "font": "20px font_2", "fill": "#ffffff" }, 
+			'center' );
+		this.myNewDialogBox1.addButton( 'PLAY', null,
 		 	function() { //On click...
-				score = 0;
 				playButtonPressSound();
-				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.sceneProps.add(this.myDialogBox1.getGroup());
-
-
-
-
-
+		this.myNewDialogBox1.addButton( 'QUIT', null,
+		 	function() { //On click...
+				playButtonPressSound();
+			}
+		);
+		this.myNewDialogBox1.addButton( 'PLAY', null,
+		 	function() { //On click...
+				playButtonPressSound();
+			}
+		);
+		this.myNewDialogBox1.show();
+		this.sceneProps.add( this.myNewDialogBox1.getGroup() );
 
 
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			obj.myDialogBox1.show();
+			// obj.myDialogBox1.show();
 		});
 		// this.positionComponents(game.width, game.height);
 		this.resize();
@@ -177,6 +200,10 @@ MyGame.MenuState.prototype = {
 	positionComponents: function(width, height) {
 		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
 		// this.myProgBar.setAvailableSpace(width, 100);
+
+		this.myNewDialogBox1.setPosition(
+				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
+				game.world.centerY + this.myNewDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
@@ -198,12 +225,12 @@ MyGame.MenuState.prototype = {
 			// this.attemptsText.x = width/2;
 
 			// Dialog Box
-			minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
-			currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
-			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
+			// minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
+			// maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
+			// currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
+			// this.myDialogBox1.setPosition(
+			// 	game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
+			// 	game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 		}
 		else {
 			// Background
@@ -224,12 +251,12 @@ MyGame.MenuState.prototype = {
 			// this.attemptsText.x = width/2;
 
 			// Dialog Box
-			minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
-			currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
-			this.myDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
-				game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
+			// minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
+			// maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
+			// currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
+			// this.myDialogBox1.setPosition(
+			// 	game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
+			// 	game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 		}
 		// console.log("[ " + this.progBar.getGroup().width + ", " + this.progBar.getGroup().height + " ]");
 	},

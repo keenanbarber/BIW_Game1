@@ -1028,6 +1028,283 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 
 
+function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding, buttonSpacing) {
+	let obj = {};
+
+	obj.useDefaultBackground = true;
+
+	obj.boxWidth = availableSpaceWidth;
+	obj.boxHeight = 150;
+	obj.boxX = x; 
+	obj.boxY = y;
+	obj.roundedCornerRadius = 8;
+	obj.contentsPadding = contentsPadding;
+	obj.buttonTextPadding = buttonTextPadding;
+	obj.buttonSpacing = buttonSpacing;
+
+	obj.defaultBackgroundColor = game_details_data.dialog_box_settings.default_dialog_box_background_color.replace('#', '0x');
+	obj.defaultBackgroundAlpha = game_details_data.dialog_box_settings.default_dialog_box_background_alpha;
+	obj.defaultOutlineColor = game_details_data.dialog_box_settings.default_dialog_box_outline_color.replace('#', '0x');
+	obj.defaultOutlineSize = game_details_data.dialog_box_settings.default_dialog_box_outline_size;
+
+	obj.buttons = [];
+	// obj.buttonText = game.add.group();
+	obj.canPressButtons = true;
+
+	let graphics = game.add.graphics(0, 0);
+	graphics.beginFill(obj.defaultBackgroundColor, obj.defaultBackgroundAlpha);
+	graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor, 1);
+	graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
+	graphics.endFill();
+
+	let graphicsTexture = graphics.generateTexture();
+	graphics.destroy();
+
+	obj.graphicsSprite = game.add.sprite(0, 0, graphicsTexture);
+	obj.graphicsSprite.anchor.setTo(0.5);	
+
+	obj.buttonGroup = game.add.group();
+	obj.textGroup = game.add.group();
+	obj.contentsGroup = game.add.group();
+	obj.contentsGroup.add(obj.buttonGroup);
+	// obj.contentsGroup.add(obj.buttonText);
+	obj.contentsGroup.add(obj.textGroup);
+
+	obj.dialogBoxGroup = game.add.group();
+	obj.dialogBoxGroup.add(obj.graphicsSprite);
+	obj.dialogBoxGroup.add(obj.contentsGroup);
+
+	obj.textHeight = 0;
+	obj.largestButtonTexture = null;
+	obj.myTimer = null;
+
+
+	obj.destroy = function() {
+		obj.contentsGroup.destroy();
+	};
+
+	obj.show = function() {
+		// When created, grow into the screen.
+		obj.dialogBoxGroup.visible = true;
+		obj.dialogBoxGroup.scale.x = 0;
+		obj.dialogBoxGroup.scale.y = 0;
+		obj.dialogBoxGroup.alpha = 0;
+		Tweenimate_ElasticScale(obj.dialogBoxGroup, 1, 1, 1200);
+		let tweenAppear = game.add.tween(obj.dialogBoxGroup).to({ alpha: 1 }, 1200, Phaser.Easing.Quartic.Out, true);
+	};
+
+	obj.hide = function() {
+		let tweenShrink = game.add.tween(obj.dialogBoxGroup.scale).to({ x: 0, y: 0 }, 300, Phaser.Easing.Quartic.In, true);
+		let tweenDisappear = game.add.tween(obj.dialogBoxGroup).to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, true);
+		let thisObj = obj;
+		tweenShrink.onComplete.addOnce(function() {
+			thisObj.dialogBoxGroup.visible = false;
+		}, this);
+	};
+
+	obj.setLifetime = function(time, funcToCallOnComplete) {
+		let myFunc = function() {
+			if(funcToCallOnComplete)
+				funcToCallOnComplete();
+			obj.hide
+		};
+		obj.myTimer = game.time.create(false);
+		obj.myTimer.add(time, myFunc, this);
+		obj.myTimer.start(0);
+	};
+
+	obj.setBackgroundSprite = function(spriteKey) {
+		obj.useDefaultBackground = false;
+
+		obj.graphicsSprite.loadTexture(spriteKey);
+		obj.graphicsSprite.width = obj.boxWidth;
+		obj.graphicsSprite.height = obj.boxHeight;
+
+		obj.resize();
+	};
+
+	obj.addTextSegment = function(text, style, horizontalAlign) {
+		let horizontalTextAlign = horizontalAlign;
+		let textX = obj.graphicsSprite.x - obj.graphicsSprite.width/2 + obj.contentsPadding;
+		let textY = obj.graphicsSprite.y - obj.graphicsSprite.height/2 + obj.contentsPadding;
+		let anchorX = 0;
+		let anchorY = 0;
+		if(horizontalTextAlign === 'center') {
+			textX = 0;
+			anchorX = 0.5;
+		}
+		else if(horizontalTextAlign === 'left') {
+			textX = -obj.graphicsSprite.width/2 + obj.contentsPadding;
+		}
+		textY = -obj.graphicsSprite.height/2 + obj.contentsPadding;
+
+		let myStyle = style;
+		myStyle.wordWrap = true;
+		myStyle.wordWrapWidth = obj.boxWidth - (2 * obj.contentsPadding);
+
+		let myText = game.add.text(textX, textY, text, myStyle);
+
+		myText.anchor.setTo(anchorX, anchorY);
+		myText.align = horizontalTextAlign;
+		// myText.padding.set(4, 4);
+
+		obj.textGroup.add(myText)
+
+		obj.resize();
+	};
+
+	obj.addButton = function(text, desiredSpriteKey, clickFunc) {
+		// Text on button
+		let buttonTextStyle = game_details_data.dialog_box_settings.button_text_style; // #68588C
+		let buttonText = game.add.text(0, 0, text, buttonTextStyle);
+		// buttonText.fontSize *= devicePixelRatio;
+		buttonText.anchor.setTo(0.5, 0.4);
+		buttonText.align = 'center';
+
+
+		// The button
+		let button = game.add.group();
+
+		let buttonGraphic; 
+		if(desiredSpriteKey === null) {
+			graphics = game.add.graphics(0, 0);
+			graphics.beginFill(0xffffff, 1.0);
+			// graphics.lineStyle(1, 0x68588C, 1);
+			graphics.drawRoundedRect(0, 0, buttonText.width + (2 * obj.buttonTextPadding), buttonText.height, obj.roundedCornerRadius); 
+			graphics.endFill();
+
+			let buttonTexture = graphics.generateTexture();
+			graphics.destroy();
+			buttonGraphic = SpriteButton(0, 0, buttonTexture);
+
+			if(obj.largestButtonTexture == null) {
+				obj.largestButtonTexture = buttonTexture;
+			}
+			else if(buttonTexture.width > obj.largestButtonTexture.width) {
+				obj.largestButtonTexture = buttonTexture;
+			}
+		}
+		else {
+			buttonGraphic = SpriteButton(0, 0, desiredSpriteKey);
+		}
+		
+		buttonGraphic.setBehaviors(
+			function() { //On mouse over...
+				let newScale = (this.getSprite().width + obj.contentsPadding) / this.getSprite().width;
+				Tweenimate_ElasticScale(this.getSprite(), newScale, this.getIntendedScale().y, 1000);
+				game.canvas.style.cursor = "pointer";
+			}, 
+			function() { //On mouse off...
+				Tweenimate_ElasticScale(this.getSprite(), this.getIntendedScale().x, this.getIntendedScale().y, 1000);
+				game.canvas.style.cursor = "default";
+			},
+			function() { //On mouse down...
+			}, 
+			function() { //On mouse up...
+			}
+		);
+		buttonGraphic.setClickBehavior(function() {
+			if(obj.canPressButtons) {
+				clickFunc();
+				obj.canPressButtons = false;
+			}
+		});
+		button.add(buttonGraphic.getSprite());
+		button.add(buttonText);
+
+		// obj.buttonText.add(buttonText);
+		obj.buttonGroup.add(button);
+
+		obj.resize();
+	};
+
+	obj.updateButtonSizes = function() {
+		for (let i = 0; i < obj.buttons.length; i++) {
+			obj.buttons[i].getSprite().loadTexture(obj.largestButtonTexture);
+		}
+	};
+
+	obj.resize = function() { 
+		let expectedButtonHeight = ( obj.buttonGroup.length > 0 ) ? ( ( obj.buttonGroup.getAt(0).getAt(0).height + obj.buttonSpacing ) * obj.buttonGroup.length ) - obj.buttonSpacing : 0;
+		obj.boxHeight = obj.textGroup.height + expectedButtonHeight + ( obj.contentsPadding * 2 ) + 2; // +2 for the couple extra pixels at the end?
+
+		// Update the alignment of left aligned text.
+		for (let i = 0; i < obj.textGroup.children.length; i++) { 
+			if(obj.textGroup.getAt(i).align !== 'center') {
+				obj.textGroup.getAt(i).x = -obj.boxWidth/2 + obj.contentsPadding;
+			}
+		}
+
+		// Update the text group's position.
+		let tempTextHeight = 0;
+		for (let i = 0; i < obj.textGroup.children.length; i++) {
+			// console.log(obj.textGroup[i]);
+			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight;
+			tempTextHeight += obj.textGroup.getAt(i).height;
+		}
+		// Update the position of the buttons.
+		if(obj.buttonGroup.length > 0) {
+			let tempButtonHeight = 0;
+			for (let i = 0; i < obj.buttonGroup.length; i++) {
+				obj.buttonGroup.getAt(i).y = -obj.boxHeight/2 + obj.buttonGroup.getAt(i).height/2 + tempTextHeight + tempButtonHeight + obj.contentsPadding;
+				tempButtonHeight += obj.buttonGroup.getAt(i).getAt(0).height + obj.buttonSpacing;
+			}
+		}
+		obj.updateButtonSizes();
+
+		if(obj.useDefaultBackground) {
+			// Update the background dialog box sprite size
+			let graphics = game.add.graphics(0, 0);
+			graphics.beginFill(obj.defaultBackgroundColor, obj.defaultBackgroundAlpha);
+			graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor, 1);
+			graphics.drawRoundedRect(0, 0, obj.boxWidth, obj.boxHeight, obj.roundedCornerRadius); 
+			graphics.endFill();
+			let graphicsTexture = graphics.generateTexture();
+			graphics.destroy();
+			this.graphicsSprite.loadTexture(graphicsTexture);
+		}
+		else {
+			obj.graphicsSprite.width = obj.boxWidth;
+			obj.graphicsSprite.height = obj.boxHeight;
+		}
+	};
+
+	obj.setWidth = function(availableWidth, minWidth, maxWidth, padding) {
+		let desiredWidth = Math.max(
+			Math.min(maxWidth - 2*padding, availableWidth - 2*padding), 
+			minWidth
+		); 
+
+		obj.boxWidth = desiredWidth;
+		for(let i = 0; i < obj.textGroup.children.length; i++) {
+			obj.textGroup.getAt(i).wordWrap = true;
+			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.contentsPadding));
+		}
+		obj.resize();
+	};
+
+	obj.setPosition = function(x, y) {
+		obj.dialogBoxGroup.x = x;
+		obj.dialogBoxGroup.y = y;
+	};
+
+	obj.getHeight = function() {
+		return obj.boxHeight;
+	};
+
+	obj.getWidth = function() {
+		return obj.boxWidth;
+	};
+
+	obj.getGroup = function() {
+		return obj.dialogBoxGroup;
+	};
+
+	obj.dialogBoxGroup.visible = false;
+	return obj;
+}
+
+
 function ProgressBar(width, height) {
 	let obj = {};
 	let graphics;
