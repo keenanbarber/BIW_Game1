@@ -1028,7 +1028,7 @@ function DialogBox(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding
 
 
 
-function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPadding, buttonSpacing) {
+function DialogBox2(x, y, availableSpaceWidth) {
 	let obj = {};
 
 	obj.useDefaultBackground = true;
@@ -1038,9 +1038,7 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 	obj.boxX = x; 
 	obj.boxY = y;
 	obj.roundedCornerRadius = 8;
-	obj.contentsPadding = contentsPadding;
-	obj.buttonTextPadding = buttonTextPadding;
-	obj.buttonSpacing = buttonSpacing;
+	
 
 	obj.defaultBackgroundColor = game_details_data.dialog_box_settings.default_dialog_box_background_color.replace('#', '0x');
 	obj.defaultBackgroundAlpha = game_details_data.dialog_box_settings.default_dialog_box_background_alpha;
@@ -1062,12 +1060,12 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 
 	obj.graphicsSprite = game.add.sprite(0, 0, graphicsTexture);
 	obj.graphicsSprite.anchor.setTo(0.5);	
+	obj.originalBackgroundWidth = obj.graphicsSprite.width;
 
 	obj.buttonGroup = game.add.group();
 	obj.textGroup = game.add.group();
 	obj.contentsGroup = game.add.group();
 	obj.contentsGroup.add(obj.buttonGroup);
-	// obj.contentsGroup.add(obj.buttonText);
 	obj.contentsGroup.add(obj.textGroup);
 
 	obj.dialogBoxGroup = game.add.group();
@@ -1078,6 +1076,39 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 	obj.largestButtonTexture = null;
 	obj.myTimer = null;
 
+	// Spacing
+	obj.textButtonSpacing = 10; 
+	obj.contentsPadding = 10;
+	obj.buttonTextPadding = 10;
+	obj.buttonSpacing = 10;
+	obj.buttonOffsets = [
+		new Phaser.Point(10, 0), 
+		new Phaser.Point(-10, 0), 
+		new Phaser.Point(10, 0)
+	];
+	obj.textYOffsets = [
+		0, 
+		-10, 
+		-10, 
+		-10
+	];
+
+	obj.setSpacing = function(contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing) {
+		obj.contentsPadding = contentsPadding;
+		obj.buttonTextPadding = buttonTextWidthPadding;
+		obj.textButtonSpacing = textButtonSpacing; 
+		obj.buttonSpacing = buttonSpacing;
+
+		for(let i = 0; i < obj.textGroup.children.length; i++) {
+			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * contentsPadding));
+		}
+
+		obj.resize();
+	};
+
+	obj.setOffsets = function() {
+
+	};
 
 	obj.destroy = function() {
 		obj.contentsGroup.destroy();
@@ -1119,6 +1150,10 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 		obj.graphicsSprite.loadTexture(spriteKey);
 		obj.graphicsSprite.width = obj.boxWidth;
 		obj.graphicsSprite.height = obj.boxHeight;
+
+		let tempSprite = game.add.sprite(0, 0, spriteKey);
+		obj.originalBackgroundWidth = tempSprite.width;
+		tempSprite.destroy();
 
 		obj.resize();
 	};
@@ -1226,7 +1261,7 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 
 	obj.resize = function() { 
 		let expectedButtonHeight = ( obj.buttonGroup.length > 0 ) ? ( ( obj.buttonGroup.getAt(0).getAt(0).height + obj.buttonSpacing ) * obj.buttonGroup.length ) - obj.buttonSpacing : 0;
-		obj.boxHeight = obj.textGroup.height + expectedButtonHeight + ( obj.contentsPadding * 2 ) + 2; // +2 for the couple extra pixels at the end?
+		obj.boxHeight = obj.textGroup.height + obj.textButtonSpacing + expectedButtonHeight + ( obj.contentsPadding * 2 ) + 2; // +2 for the couple extra pixels at the end?
 
 		// Update the alignment of left aligned text.
 		for (let i = 0; i < obj.textGroup.children.length; i++) { 
@@ -1239,14 +1274,18 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 		let tempTextHeight = 0;
 		for (let i = 0; i < obj.textGroup.children.length; i++) {
 			// console.log(obj.textGroup[i]);
-			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight;
-			tempTextHeight += obj.textGroup.getAt(i).height;
+			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight + obj.textYOffsets[i];
+			tempTextHeight += obj.textGroup.getAt(i).height + obj.textYOffsets[i];
 		}
+		tempTextHeight += obj.textButtonSpacing;
+
 		// Update the position of the buttons.
 		if(obj.buttonGroup.length > 0) {
 			let tempButtonHeight = 0;
 			for (let i = 0; i < obj.buttonGroup.length; i++) {
-				obj.buttonGroup.getAt(i).y = -obj.boxHeight/2 + obj.buttonGroup.getAt(i).height/2 + tempTextHeight + tempButtonHeight + obj.contentsPadding;
+				let buttonOffset = ( obj.buttonOffsets[i] != null ) ? obj.buttonOffsets[i] : Phaser.Point(0, 0);
+				obj.buttonGroup.getAt(i).x = buttonOffset.x;
+				obj.buttonGroup.getAt(i).y = -obj.boxHeight/2 + obj.buttonGroup.getAt(i).height/2 + tempTextHeight + tempButtonHeight + obj.contentsPadding + buttonOffset.y;
 				tempButtonHeight += obj.buttonGroup.getAt(i).getAt(0).height + obj.buttonSpacing;
 			}
 		}
@@ -1264,22 +1303,22 @@ function DialogBox2(x, y, availableSpaceWidth, contentsPadding, buttonTextPaddin
 			this.graphicsSprite.loadTexture(graphicsTexture);
 		}
 		else {
-			obj.graphicsSprite.width = obj.boxWidth;
-			obj.graphicsSprite.height = obj.boxHeight;
+			// obj.graphicsSprite.width = obj.boxWidth;
+			// obj.graphicsSprite.height = obj.boxHeight;
+
+			obj.graphicsSprite.scale.setTo( 1 / ( obj.originalBackgroundWidth / obj.boxWidth ) );
 		}
 	};
 
-	obj.setWidth = function(availableWidth, minWidth, maxWidth, padding) {
-		let desiredWidth = Math.max(
-			Math.min(maxWidth - 2*padding, availableWidth - 2*padding), 
-			minWidth
-		); 
+	obj.setWidth = function(availableWidth, maxWidth, minWidth, padding) {
+		let desiredWidth = BoundNumber(availableWidth - 2*padding, minWidth, maxWidth - 2*padding); 
 
 		obj.boxWidth = desiredWidth;
 		for(let i = 0; i < obj.textGroup.children.length; i++) {
-			obj.textGroup.getAt(i).wordWrap = true;
 			obj.textGroup.getAt(i).wordWrapWidth = (obj.boxWidth - (2 * obj.contentsPadding));
 		}
+
+		obj.resize();
 		obj.resize();
 	};
 

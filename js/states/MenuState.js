@@ -155,12 +155,20 @@ MyGame.MenuState.prototype = {
 
 
 
-		this.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400, 20, 10, 10 );	
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BjAUTIFUL TEXT Í.', 
-			{ "font": "20px font_2", "fill": "#ffffff" }, 
+		this.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
+		this.myNewDialogBox1.setBackgroundSprite('dialog_box_background_sprite');	
+		this.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
+			{ "font": "18px font_2", "fill": "#ffffff" }, 
 			'center' );
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BjAUTIFUL TEXT Í.', 
-			{ "font": "20px font_2", "fill": "#ffffff" }, 
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
+			{ "font": "18px font_2", "fill": "#ffffff" }, 
+			'center' );
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
+			{ "font": "18px font_2", "fill": "#ffffff" }, 
+			'center' );
+		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
+			{ "font": "18px font_2", "fill": "#ffffff" }, 
 			'center' );
 		this.myNewDialogBox1.addButton( 'PLAY', null,
 		 	function() { //On click...
@@ -177,8 +185,7 @@ MyGame.MenuState.prototype = {
 				playButtonPressSound();
 			}
 		);
-		this.myNewDialogBox1.show();
-		this.sceneProps.add( this.myNewDialogBox1.getGroup() );
+		
 
 
 
@@ -186,6 +193,7 @@ MyGame.MenuState.prototype = {
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
 			// obj.myDialogBox1.show();
+			currentState.myNewDialogBox1.show();
 		});
 		// this.positionComponents(game.width, game.height);
 		this.resize();
@@ -204,6 +212,7 @@ MyGame.MenuState.prototype = {
 		this.myNewDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myNewDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
+		this.myNewDialogBox1.setWidth(width, width, width/2, 0);
 
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
