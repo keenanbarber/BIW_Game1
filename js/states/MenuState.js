@@ -185,9 +185,6 @@ MyGame.MenuState.prototype = {
 				playButtonPressSound();
 			}
 		);
-		
-
-
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
@@ -212,7 +209,7 @@ MyGame.MenuState.prototype = {
 		this.myNewDialogBox1.setPosition(
 				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 				game.world.centerY + this.myNewDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
-		this.myNewDialogBox1.setWidth(width, width, width/2, 0);
+		// this.myNewDialogBox1.setWidth(width, width, width/2, 0);
 
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
