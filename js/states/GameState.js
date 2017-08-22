@@ -141,13 +141,16 @@ MyGame.GameState.prototype = {
 
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
+		console.log( 'isLandscape=' + isLandscape );
 		if(isLandscape) {
-			var availableGridSpace = width;
+			let percentage = ( 5 / 6 );
+			let boardScaleAdjustment = 0.8;
+			var availableGridSpace = height * percentage;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
-			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
+			this.calculatedTileSize = (availableGridSpace * boardScaleAdjustment) / chosenSideLength;
 			this.upperUIHeight = this.scoreDisplay.height + this.scoreText.height;
 			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
-			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
+			this.verticalMargin = height - ( height * percentage ) + ( availableGridSpace - ( ( availableGridSpace * boardScaleAdjustment ) / 2 ) );
 
 
 

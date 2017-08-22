@@ -1088,9 +1088,8 @@ function DialogBox2(x, y, availableSpaceWidth) {
 	];
 	obj.textYOffsets = [
 		0, 
-		-10, 
-		-10, 
-		-10
+		-0, 
+		-0
 	];
 
 	obj.setSpacing = function(contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing) {
@@ -1115,6 +1114,7 @@ function DialogBox2(x, y, availableSpaceWidth) {
 	};
 
 	obj.show = function() {
+		console.log( 'Showing: ' + obj.textGroup.length );
 		// When created, grow into the screen.
 		obj.dialogBoxGroup.visible = true;
 		obj.dialogBoxGroup.scale.x = 0;
@@ -1274,8 +1274,9 @@ function DialogBox2(x, y, availableSpaceWidth) {
 		let tempTextHeight = 0;
 		for (let i = 0; i < obj.textGroup.children.length; i++) {
 			// console.log(obj.textGroup[i]);
-			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight + obj.textYOffsets[i];
-			tempTextHeight += obj.textGroup.getAt(i).height + obj.textYOffsets[i];
+			let textYOffset = ( i < obj.textYOffsets.length ) ? obj.textYOffsets[i] : 0;
+			obj.textGroup.getAt(i).y = -obj.boxHeight/2 + obj.contentsPadding + tempTextHeight + textYOffset;
+			tempTextHeight += obj.textGroup.getAt(i).height + textYOffset;
 		}
 		tempTextHeight += obj.textButtonSpacing;
 
@@ -1283,7 +1284,7 @@ function DialogBox2(x, y, availableSpaceWidth) {
 		if(obj.buttonGroup.length > 0) {
 			let tempButtonHeight = 0;
 			for (let i = 0; i < obj.buttonGroup.length; i++) {
-				let buttonOffset = ( obj.buttonOffsets[i] != null ) ? obj.buttonOffsets[i] : Phaser.Point(0, 0);
+				let buttonOffset = ( i < obj.buttonOffsets.length ) ? obj.buttonOffsets[i] : new Phaser.Point(0, 0);
 				obj.buttonGroup.getAt(i).x = buttonOffset.x;
 				obj.buttonGroup.getAt(i).y = -obj.boxHeight/2 + obj.buttonGroup.getAt(i).height/2 + tempTextHeight + tempButtonHeight + obj.contentsPadding + buttonOffset.y;
 				tempButtonHeight += obj.buttonGroup.getAt(i).getAt(0).height + obj.buttonSpacing;
@@ -1913,14 +1914,6 @@ _________________________________________*/
 
 
 */
-
-
-
-
-
-
-
-
 
 
 

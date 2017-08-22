@@ -154,37 +154,31 @@ MyGame.MenuState.prototype = {
 
 
 
-
+		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
 		this.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
 		this.myNewDialogBox1.setBackgroundSprite('dialog_box_background_sprite');	
 		this.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
-			{ "font": "18px font_2", "fill": "#ffffff" }, 
-			'center' );
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
-			{ "font": "18px font_2", "fill": "#ffffff" }, 
-			'center' );
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
-			{ "font": "18px font_2", "fill": "#ffffff" }, 
-			'center' );
-		this.myNewDialogBox1.addTextSegment( 'LOOK AT THIS BEAUTÍFUL TEXT.', 
-			{ "font": "18px font_2", "fill": "#ffffff" }, 
-			'center' );
-		this.myNewDialogBox1.addButton( 'PLAY', null,
+		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
+			let component = menuDialogBoxData.text_components[i];
+			if(component.type === "SCORE") {
+				this.myNewDialogBox1.addTextSegment(score + component.text, component.style, component.align);
+			}
+			else if(component.type === "REWARD") {
+				this.myNewDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			}
+			else {
+				console.log("TEST");
+				this.myNewDialogBox1.addTextSegment(component.text, component.style, component.align);
+			}
+		}
+		this.myNewDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
 		 	function() { //On click...
+				score = 0;
 				playButtonPressSound();
+				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
 			}
 		);
-		this.myNewDialogBox1.addButton( 'QUIT', null,
-		 	function() { //On click...
-				playButtonPressSound();
-			}
-		);
-		this.myNewDialogBox1.addButton( 'PLAY', null,
-		 	function() { //On click...
-				playButtonPressSound();
-			}
-		);
+		this.sceneProps.add(this.myNewDialogBox1.getGroup());
 
 		// Enter this new scene
 		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
