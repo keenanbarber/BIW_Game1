@@ -15,23 +15,21 @@ MyGame.MenuState = function() {
 };
 
 MyGame.MenuState.prototype = {
-	init: function(previousStateProps, oldSceneTransition, newSceneTransition) {
+	init: function( previousStateProps, oldSceneTransition, newSceneTransition ) {
 		"use strict";
 
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
 		// Add events to check for swipe and resize
-		this.game.input.onDown.add(this.start_swipe, this);
-		this.game.input.onUp.add(this.end_swipe, this);
-		window.removeEventListener('resize', currentState.resize);
+		this.game.input.onDown.add( this.start_swipe, this );
+		this.game.input.onUp.add( this.end_swipe, this );
+		window.removeEventListener( 'resize', currentState.resize );
 		currentState = this;
-		window.addEventListener('resize', currentState.resize);
+		window.addEventListener( 'resize', currentState.resize );
 		
-		// game.scale.setResizeCallback(this.resize, this);
-
 		// Exit the previous scene/state...
-		if(previousStateProps) { ExitPreviousScene(previousStateProps, TranslateTween(this.oldSceneTransition, configuration.transition_time, configuration.transition_easing)); }
+		if( previousStateProps ) { ExitPreviousScene( previousStateProps, TranslateTween( this.oldSceneTransition, configuration.transition_time, configuration.transition_easing ) ); }
 	},
 	
 	preload: function() {
@@ -40,21 +38,20 @@ MyGame.MenuState.prototype = {
 
 	create: function() {
 		"use strict"; 
-		let obj = this;
-		this.sceneProps = game.add.group();
+		currentState.sceneProps = game.add.group();
 
 		// Add background if it doesn't already exist
-		if(background == null) {
-			background = game.add.sprite(game.world.centerX, game.world.centerY, 'background_image');
-			background.anchor.setTo(0.5, 1);
-			// this.sceneProps.add(this.background);
-			game.world.sendToBack(background);
+		if( background == null ) {
+			background = game.add.sprite( game.world.centerX, game.world.centerY, 'background_image' );
+			background.anchor.setTo( 0.5, 1 );
+			// currentState.sceneProps.add(currentState.background);
+			game.world.sendToBack( background );
 		}
 
 		// Title
-		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'title');
-		this.title.anchor.setTo(0.5);
-		this.sceneProps.add(this.title);
+		currentState.title = game.add.sprite( game.world.centerX, game.world.centerY/2, 'title' );
+		currentState.title.anchor.setTo( 0.5 );
+		currentState.sceneProps.add( currentState.title );
 
 		playBackgroundMusic();
 
@@ -155,39 +152,39 @@ MyGame.MenuState.prototype = {
 
 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		this.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
-		this.myNewDialogBox1.setBackgroundSprite('dialog_box_background_sprite');	
-		this.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
+		currentState.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
+		currentState.myNewDialogBox1.setBackgroundSprite( 'dialog_box_background_sprite' );	
+		currentState.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		for( let i = 0; i < menuDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = menuDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.myNewDialogBox1.addTextSegment(score + component.text, component.style, component.align);
+			if( component.type === 'SCORE' ) {
+				currentState.myNewDialogBox1.addTextSegment( score + component.text, component.style, component.align );
 			}
-			else if(component.type === "REWARD") {
-				this.myNewDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align);
+			else if( component.type === 'REWARD' ) {
+				currentState.myNewDialogBox1.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align );
 			}
 			else {
-				console.log("TEST");
-				this.myNewDialogBox1.addTextSegment(component.text, component.style, component.align);
+				console.log( 'TEST' );
+				currentState.myNewDialogBox1.addTextSegment( component.text, component.style, component.align );
 			}
 		}
-		this.myNewDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
+		currentState.myNewDialogBox1.addButton( menuDialogBoxData.play_button_text, null,
 		 	function() { //On click...
 				score = 0;
 				playButtonPressSound();
-				obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+				currentState.game.state.start( 'GameState', false, false, currentState.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER' );
 			}
 		);
-		this.sceneProps.add(this.myNewDialogBox1.getGroup());
+		currentState.sceneProps.add( currentState.myNewDialogBox1.getGroup() );
 
 		// Enter this new scene
-		EnterNewScene(this.sceneProps, TranslateTween(this.newSceneTransition, configuration.transition_time, configuration.transition_easing));
-		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			// obj.myDialogBox1.show();
+		EnterNewScene( currentState.sceneProps, TranslateTween( currentState.newSceneTransition, configuration.transition_time, configuration.transition_easing ) );
+		tweenManager.callOnComplete( function() { 
+			// currentState.myDialogBox1.show();
 			currentState.myNewDialogBox1.show();
-		});
+		} );
 		// this.positionComponents(game.width, game.height);
-		this.resize();
+		currentState.resize();
 	},
 
 	update: function() {
@@ -196,29 +193,29 @@ MyGame.MenuState.prototype = {
 
 	}, 
 
-	positionComponents: function(width, height) {
+	positionComponents: function( width, height ) {
 		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
 		// this.myProgBar.setAvailableSpace(width, 100);
 
-		this.myNewDialogBox1.setPosition(
-				game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
-				game.world.centerY + this.myNewDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
+		currentState.myNewDialogBox1.setPosition( 
+				game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 
+				game.world.centerY + currentState.myNewDialogBox1.getHeight() * ( 1 / 2 )  + ( game_details_data.sprite_adjustment.menu_popup_y_offset ) );
 		// this.myNewDialogBox1.setWidth(width, width, width/2, 0);
 
-		let isLandscape = (game.height / game.width < 1.2) ? true : false;
-		if(isLandscape) {
+		let isLandscape = ( game.height / game.width < 1.2 ) ? true : false;
+		if( isLandscape ) {
 			// Background
-			ScaleSprite(background, width, null, 0, 1);
-			if(background.height < height) {
-				ScaleSprite(background, null, height, 0, 1);
+			ScaleSprite( background, width, null, 0, 1 );
+			if( background.height < height ) {
+				ScaleSprite( background, null, height, 0, 1 );
 			}
 			background.x = game.world.centerX;
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset), 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
+			ScaleSprite( currentState.title, width, ( height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset ), 10, 1 );
+			currentState.title.x = ( width / 2 ) + ( game_details_data.sprite_adjustment.menu_title_x_offset );
+			currentState.title.y = ( height/2 - currentState.title.height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset );
 
 			// Attempts Text
 			// this.attemptsText.y = height - 50;
@@ -234,17 +231,17 @@ MyGame.MenuState.prototype = {
 		}
 		else {
 			// Background
-			ScaleSprite(background, width, null, 0, 1);
+			ScaleSprite( background, width, null, 0, 1 );
 			if(background.height < height) {
-				ScaleSprite(background, null, height, 0, 1);
+				ScaleSprite( background, null, height, 0, 1 );
 			}
 			background.x = game.world.centerX;
 			background.y = height;
 
 			// Title
-			ScaleSprite(this.title, width, (height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset), 10, 1);
-			this.title.x = (width / 2) + (game_details_data.sprite_adjustment.menu_title_x_offset);
-			this.title.y = (height/2 - this.title.height/2) + (game_details_data.sprite_adjustment.menu_title_y_offset);
+			ScaleSprite( currentState.title, width, ( height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset ), 10, 1 );
+			currentState.title.x = ( width / 2 ) + ( game_details_data.sprite_adjustment.menu_title_x_offset );
+			currentState.title.y = ( height/2 - currentState.title.height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset );
 
 			// Attempts Text
 			// this.attemptsText.y = height - 50;
@@ -263,7 +260,7 @@ MyGame.MenuState.prototype = {
 
 	resize: function() {
 		"use strict";
-		updateGameWindow(game);
+		updateGameWindow( game );
 
 
 
@@ -271,77 +268,68 @@ MyGame.MenuState.prototype = {
 		let width = scaleManager.width; 
 		let height = scaleManager.height;
 
-		currentState.positionComponents(width, height);
-
-		// console.log("GAME [" + width + ", " + height + "]");
-		// console.log("WINDOW [" + window.innerWidth + ", " + window.innerHeight + "]");
+		currentState.positionComponents( width, height );
 	},
 
-	start_swipe: function(pointer) {
+	start_swipe: function( pointer ) {
 		"use strict";
-	    //console.log("Press down.");
-	    //this.exitTransition();
-	    
-	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
-	    // this.game.state.start("GameState", false, false, this.game_details_data, this);
+	    //console.log("Press down.");	    
+	    currentState.start_swipe_point = new Phaser.Point( pointer.x, pointer.y );
 	},
 
-	end_swipe: function(pointer) {
+	end_swipe: function( pointer ) {
 		"use strict";	
 	    //console.log("Press up.");
-	    if(this.start_swipe_point != null && this.end_swipe_point == null) {
-
-		    var swipe_length
-		    this.end_swipe_point = new Phaser.Point(pointer.x, pointer.y);
-		    swipe_length = Phaser.Point.distance(this.end_swipe_point, this.start_swipe_point);
+	    if( currentState.start_swipe_point != null && currentState.end_swipe_point == null ) {
+		    var swipe_length; 
+		    currentState.end_swipe_point = new Phaser.Point( pointer.x, pointer.y );
+		    swipe_length = Phaser.Point.distance( currentState.end_swipe_point, currentState.start_swipe_point );
 
 		    //console.log(swipe_length);
 		    // if the swipe length is greater than the minimum, a swipe is detected
-		    if (swipe_length >= configuration.min_swipe_length) {
-		        let calculatedSwipeDirectionVector = new Phaser.Point(this.end_swipe_point.x - this.start_swipe_point.x, this.end_swipe_point.y - this.start_swipe_point.y).normalize();
-			    
-			    this.findDirectionOfSwipe(calculatedSwipeDirectionVector);
+		    if ( swipe_length >= configuration.min_swipe_length ) {
+		        let calculatedSwipeDirectionVector = new Phaser.Point( currentState.end_swipe_point.x - currentState.start_swipe_point.x, currentState.end_swipe_point.y - currentState.start_swipe_point.y ).normalize();
+			    currentState.findDirectionOfSwipe( calculatedSwipeDirectionVector );
 		    }
 		}
 
-	    this.end_swipe_point = null;
-	    this.start_swipe_point = null;
+	    currentState.end_swipe_point = null;
+	    currentState.start_swipe_point = null;
 	},
 
-	findDirectionOfSwipe: function(d) {
+	findDirectionOfSwipe: function( d ) {
 		/* Could be made more efficient, but it works for now. */
-
 		let bestVector = null;
 		let bestDist = 0;
 		let currentVector = null;
 		let dist = 0;
 
-		currentVector = new Phaser.Point(-1, 0);
-		bestDist = d.distance(currentVector);
-		bestVector = "LEFT";
+		currentVector = new Phaser.Point( -1, 0 );
+		bestDist = d.distance( currentVector );
+		bestVector = 'LEFT';
 
-		currentVector = new Phaser.Point(1, 0);
-		dist = d.distance(currentVector);
-		if(dist < bestDist) {
+		currentVector = new Phaser.Point( 1, 0 );
+		dist = d.distance( currentVector );
+		if( dist < bestDist ) {
 			bestDist = dist;
-			bestVector = "RIGHT";
+			bestVector = 'RIGHT';
 		}
 
-		currentVector = new Phaser.Point(0, -1);
-		dist = d.distance(currentVector);
-		if(dist < bestDist) {
+		currentVector = new Phaser.Point( 0, -1 );
+		dist = d.distance( currentVector );
+		if( dist < bestDist ) {
 			bestDist = dist;
-			bestVector = "UP";
+			bestVector = 'UP';
 		}
 
-		currentVector = new Phaser.Point(0, 1);
-		dist = d.distance(currentVector);
-		if(dist < bestDist) {
+		currentVector = new Phaser.Point( 0, 1 );
+		dist = d.distance( currentVector );
+		if( dist < bestDist ) {
 			bestDist = dist;
-			bestVector = "DOWN";
+			bestVector = 'DOWN';
 		}
 
-		console.log("Swipe: " + bestVector);
+		console.log( 'Swipe: ' + bestVector );
 		return bestVector;
 	}, 
 
@@ -422,31 +410,31 @@ MyGame.MenuState.prototype = {
 	}, 
 
 	testBar : function () {
-		this.boxProperties = new Phaser.Rectangle(0, 0, 400, 40);
+		currentState.boxProperties = new Phaser.Rectangle( 0, 0, 400, 40 );
 		var lineWidth = 5, 
 			cornerRadius = 10, 
 			shadowSize = 0, 
-			x = this.boxProperties.x + lineWidth, 
-			y = this.boxProperties.y + lineWidth, 
-			width = this.boxProperties.width, 
-			height = this.boxProperties.height, 
-			bmd = new Phaser.BitmapData(this.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth )), 
-			grd = bmd.context.createLinearGradient(x, y, x, height);
+			x = currentState.boxProperties.x + lineWidth, 
+			y = currentState.boxProperties.y + lineWidth, 
+			width = currentState.boxProperties.width, 
+			height = currentState.boxProperties.height, 
+			bmd = new Phaser.BitmapData( currentState.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth ) ), 
+			grd = bmd.context.createLinearGradient( x, y, x, height );
 
-		grd.addColorStop(0, '#18CCBD');
+		grd.addColorStop( 0, '#18CCBD' );
 		// grd.addColorStop(0.25, '#18CCBD');
 		// grd.addColorStop(0.75, '#18CCBD');
 		// grd.addColorStop(1, '#0f8278');
 		bmd.context.beginPath();
-		bmd.context.moveTo(x + cornerRadius, y);
-		bmd.context.lineTo(x + width - cornerRadius, y);
-		bmd.context.quadraticCurveTo(x + width, y, x + width, y + cornerRadius);
-		bmd.context.lineTo(x + width, y + height - cornerRadius);
-		bmd.context.quadraticCurveTo(x + width, y + height, x + width - cornerRadius, y + height);
-		bmd.context.lineTo(x + cornerRadius, y + height);
-		bmd.context.quadraticCurveTo(x, y + height, x, y + height - cornerRadius);
-		bmd.context.lineTo(x, y + cornerRadius);
-		bmd.context.quadraticCurveTo(x, y, x + cornerRadius, y);
+		bmd.context.moveTo( x + cornerRadius, y );
+		bmd.context.lineTo( x + width - cornerRadius, y );
+		bmd.context.quadraticCurveTo( x + width, y, x + width, y + cornerRadius );
+		bmd.context.lineTo( x + width, y + height - cornerRadius );
+		bmd.context.quadraticCurveTo( x + width, y + height, x + width - cornerRadius, y + height );
+		bmd.context.lineTo( x + cornerRadius, y + height );
+		bmd.context.quadraticCurveTo( x, y + height, x, y + height - cornerRadius );
+		bmd.context.lineTo( x, y + cornerRadius );
+		bmd.context.quadraticCurveTo( x, y, x + cornerRadius, y );
 		bmd.context.closePath();
 		bmd.context.fillStyle = grd;
 		bmd.context.fill();
@@ -454,18 +442,18 @@ MyGame.MenuState.prototype = {
 		bmd.context.lineWidth = lineWidth;
 		bmd.context.stroke();
 
-		var bmd2 = new Phaser.BitmapData(this.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth )); 
+		var bmd2 = new Phaser.BitmapData( currentState.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth ) ); 
 		bmd2.context.beginPath();
-		bmd2.context.moveTo(x, y);
-		bmd2.context.lineTo(x + width, y);
-		bmd2.context.lineTo(x + width, y + height);
-		bmd2.context.lineTo(x, y + height);
-		bmd2.context.lineTo(x, y);
+		bmd2.context.moveTo( x, y );
+		bmd2.context.lineTo( x + width, y );
+		bmd2.context.lineTo( x + width, y + height );
+		bmd2.context.lineTo( x, y + height 
+		bmd2.context.lineTo( x, y );
 		bmd2.context.fillStyle = '#444444';
 		bmd2.context.fill();
 
-		// let reflectionSprite = new Phaser.Sprite(this.game, 0, 0, bmd2);
-		let barSprite = new Phaser.Sprite(this.game, 0, 0, bmd);
+		// let reflectionSprite = new Phaser.Sprite(currentState.game, 0, 0, bmd2);
+		let barSprite = new Phaser.Sprite( currentState.game, 0, 0, bmd );
 
 		return barSprite;
 	}

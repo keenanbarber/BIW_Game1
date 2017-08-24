@@ -33,7 +33,6 @@ MyGame.GameState.prototype = {
 		// game.scale.setResizeCallback( this.resize, this );
 
 		// State Specific Variables
-		// this.gameTime = Phaser.Timer.SECOND * 30;
 		this.gameTimerRunning = false;
 
 		// Exit the previous scene/state...
