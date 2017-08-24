@@ -1854,7 +1854,6 @@ function NewProgressBar4 () {
 		obj.leftCap.scale.setTo( scaleValue );
 		obj.rightCap.scale.setTo( scaleValue );
 
-		console.log( 'test' + scaleValue );
 		obj.progressBarFill.x = 200;
 		obj.progressBarFill.y = obj.fillBarOffset_Y * scaleValue;
 
