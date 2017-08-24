@@ -1114,7 +1114,6 @@ function DialogBox2(x, y, availableSpaceWidth) {
 	};
 
 	obj.show = function() {
-		console.log( 'Showing: ' + obj.textGroup.length );
 		// When created, grow into the screen.
 		obj.dialogBoxGroup.visible = true;
 		obj.dialogBoxGroup.scale.x = 0;

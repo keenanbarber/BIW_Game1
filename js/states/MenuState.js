@@ -164,7 +164,6 @@ MyGame.MenuState.prototype = {
 				currentState.myNewDialogBox1.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align );
 			}
 			else {
-				console.log( 'TEST' );
 				currentState.myNewDialogBox1.addTextSegment( component.text, component.style, component.align );
 			}
 		}
@@ -447,7 +446,7 @@ MyGame.MenuState.prototype = {
 		bmd2.context.moveTo( x, y );
 		bmd2.context.lineTo( x + width, y );
 		bmd2.context.lineTo( x + width, y + height );
-		bmd2.context.lineTo( x, y + height 
+		bmd2.context.lineTo( x, y + height );
 		bmd2.context.lineTo( x, y );
 		bmd2.context.fillStyle = '#444444';
 		bmd2.context.fill();
