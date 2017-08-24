@@ -52,7 +52,7 @@ MyGame.GameState.prototype = {
 		let timeDisplayMessage = Math.ceil(configuration.game_duration / 1000) + game_details_data.user_interface_settings.remaining_time_text_extension;
 		let timeDisplayStyle = game_details_data.user_interface_settings.remaining_time_style;
 		this.timeDisplay = game.add.text(0, 0, timeDisplayMessage, timeDisplayStyle);
-		this.timeDisplay.anchor.setTo(1, 1);
+		this.timeDisplay.anchor.setTo(1, 0);
 		this.timeDisplay.align = 'right';
 		// this.timeDisplay.fontSize = this.timeDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.timeDisplay);
@@ -61,7 +61,7 @@ MyGame.GameState.prototype = {
 		let scoreTextMessage = game_details_data.user_interface_settings.score_text_text;
 		let scoreTextStyle = game_details_data.user_interface_settings.score_text_style;
 		this.scoreText = game.add.text(0, 0, scoreTextMessage, scoreTextStyle);
-		this.scoreText.anchor.setTo(0, 1);
+		this.scoreText.anchor.setTo(0, 0);
 		this.scoreText.align = 'left';
 		// this.scoreText.fontSize = this.scoreText.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreText);
@@ -70,7 +70,7 @@ MyGame.GameState.prototype = {
 		let scoreDisplayMessage = score;
 		let scoreDisplayStyle = { font: "30px font_2", fill: '#ffffff' };
 		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
-		this.scoreDisplay.anchor.setTo(0, 0.5);
+		this.scoreDisplay.anchor.setTo(0, 1);
 		this.scoreDisplay.align = 'left';
 		// this.scoreDisplay.fontSize = this.scoreDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreDisplay);
@@ -87,10 +87,12 @@ MyGame.GameState.prototype = {
 		this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
 
 		// Progress Bar
-		this.progressBar = NewProgressBar3('timer_bar_background');
-		this.sceneProps.add(this.progressBar.getGroup());
+		this.progressBar = NewProgressBar4();
 		this.progressBar.updateProgress(1);
-		this.progressBar.setAlignment('right');
+		this.progressBar.setHeight( 60 );
+		this.progressBar.setAlignment( 'right' );
+		// this.progressBar.setAlignment('right');
+		this.sceneProps.add(this.progressBar.getGroup());
 
 		// Progress Bar Icon
 		this.clock = game.add.sprite(0, 0, 'timer_bar_icon');
@@ -140,23 +142,28 @@ MyGame.GameState.prototype = {
 
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
-		console.log( 'isLandscape=' + isLandscape );
 		if(isLandscape) {
+			let board_UI_padding = 15;
+
+
+			this.upperUIHeight = this.progressBar.getGroup().height + this.timeDisplay.height + board_UI_padding;
 			let percentage = ( 5 / 6 );
-			let boardScaleAdjustment = 0.8;
-			var availableGridSpace = height * percentage;
+			let boardScaleAdjustment = 1;
+			var availableGridSpace = height - this.upperUIHeight;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
 			this.calculatedTileSize = (availableGridSpace * boardScaleAdjustment) / chosenSideLength;
-			this.upperUIHeight = this.scoreDisplay.height + this.scoreText.height;
 			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
-			this.verticalMargin = height - ( height * percentage ) + ( availableGridSpace - ( ( availableGridSpace * boardScaleAdjustment ) / 2 ) );
+			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
 
 
 
 			// Progress Bar
 			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
+			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (2/4));
+			this.progressBar.setPosition(
+				this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), 
+				this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding
+			);
 
 			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
 			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
@@ -175,15 +182,15 @@ MyGame.GameState.prototype = {
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
-			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height - this.timeDisplay.height - board_UI_padding;
 
 			// Score Text
 			this.scoreText.x = this.horizontalMargin;
-			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height - this.timeDisplay.height - board_UI_padding;
 
 			// Score Display
 			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.scoreDisplay.y = this.verticalMargin - board_UI_padding
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
@@ -268,7 +275,7 @@ MyGame.GameState.prototype = {
 
 			// Progress Bar
 			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
-			this.progressBar.resize((this.calculatedTileSize * configuration.board_columns) * (2/4), null, 0, 1);
+			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (2/4));
 			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
 
 			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);

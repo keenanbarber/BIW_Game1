@@ -55,9 +55,10 @@ MyGame.MenuState.prototype = {
 
 		playBackgroundMusic();
 
-		// this.myProgBar = NewProgressBar4(game.world.centerX, game.world.centerY);
-		// this.myProgBar.setWidth(500);
-		// this.myProgBar.updateProgress(0.5);
+		// this.myProgBar = NewProgressBar4( game.world.centerX, game.world.centerY );
+		// this.myProgBar.setHeight( 100 );
+		// this.myProgBar.setWidth( game.world.centerX * 2 );
+		// this.myProgBar.updateProgress( 1 );
 
 		// this.myBarThing = this.testBar();
 		// this.sceneProps.add(this.myBarThing);
@@ -189,7 +190,7 @@ MyGame.MenuState.prototype = {
 	update: function() {
 		"use strict"; 
 		//console.log("Update");
-
+		// this.myProgBar.updateProgress( this.myProgBar.getPercentage() - 1 );
 	}, 
 
 	positionComponents: function( width, height ) {

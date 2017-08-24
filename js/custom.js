@@ -1745,17 +1745,19 @@ function NewProgressBar3(timerBarBackgroundKey) {
 	return obj;
 }
 
-function NewProgressBar4 ( x, y ) {
+function NewProgressBar4 () {
 	let obj = {};
 
 	obj.fillPercent = 1;
 	obj.fillBarOffset_X_rightSide = 80;
-	obj.fillBarOffset_X_leftSide = 0;
-	obj.fillBarOffset_Y = -8;
+	obj.fillBarOffset_X_leftSide = -80;
+	obj.fillBarOffset_Y = -10;
+	obj.fillBarHeight = 50;
 
 	obj.barGroup = game.add.group();
 	obj.barGroup.x = 0;
 	obj.barGroup.y = 0;
+	obj.align = 'center';
 
 	obj.centerPiece = game.add.sprite(0, 0, 'test_2');
 	obj.centerPiece.anchor.setTo(0.5, 0.5);
@@ -1771,6 +1773,8 @@ function NewProgressBar4 ( x, y ) {
 	obj.rightCap.x = obj.centerPiece.width/2;
 	obj.barGroup.add(obj.rightCap);
 
+	obj.roundedCornerRadius = 30;
+	obj.scaleValue = 1;
 
 	// Fill
 	obj.defaultFillColor = game_details_data.user_interface_settings.default_timer_fill_color.replace('#', '0x');
@@ -1794,26 +1798,46 @@ function NewProgressBar4 ( x, y ) {
 	obj.updateProgress = function ( perc ) {
 		obj.fillPercent = perc;
 
-		obj.progressBarFill.x = -obj.centerPiece.width/2;
+		obj.progressBarFill.x = -obj.centerPiece.width/2 + ( obj.fillBarOffset_X_leftSide * obj.scaleValue );
 		graphics = game.add.graphics(0,0);
 		graphics.beginFill(obj.defaultFillColor, obj.defaultFillAlpha);
 		// graphics.lineStyle(obj.defaultOutlineSize, obj.defaultOutlineColor);
-		graphics.drawRoundedRect(0, 0, perc * (obj.centerPiece.width + obj.fillBarOffset_X_leftSide + obj.fillBarOffset_X_rightSide), 50, 10);
+		graphics.drawRoundedRect(0, 0, perc * (obj.centerPiece.width - ( obj.fillBarOffset_X_leftSide * obj.scaleValue ) + ( obj.fillBarOffset_X_rightSide * obj.scaleValue ) ), obj.fillBarHeight * obj.scaleValue, obj.roundedCornerRadius);
 		graphics.endFill();
 		graphicsTexture = graphics.generateTexture();
 		graphics.destroy();
 
 		obj.progressBarFill.loadTexture(graphicsTexture);
 	};
+	obj.getPercentage = function () {
+		return obj.fillPercent;
+	};
 	obj.getGroup = function () {
 		return obj.barGroup;
 	};
 	obj.setPosition = function ( x, y ) {
-		obj.barGroup.x = x;
-		obj.barGroup.y = y;
+		if(obj.align === 'left') {
+			obj.barGroup.x = x + (obj.barGroup.width/2);
+			obj.barGroup.y = y;
+		}
+		else if(obj.align === 'center') {
+			obj.barGroup.x = x;
+			obj.barGroup.y = y;
+		}
+		else if(obj.align === 'right') {
+			obj.barGroup.x = x - (obj.barGroup.width/2);
+			obj.barGroup.y = y;
+		}
+		else {
+			obj.barGroup.x = x;
+			obj.barGroup.y = y;
+		}
 
 		obj.leftCap.x = ( -obj.centerPiece.width / 2 );
 		obj.rightCap.x = ( obj.centerPiece.width / 2 );
+	};
+	obj.setAlignment = function(val) {
+		obj.align = val;
 	};
 	obj.setWidth = function ( availableWidth ) {
 		let calculatedWidth = availableWidth - obj.leftCap.width - obj.rightCap.width;
@@ -1823,18 +1847,22 @@ function NewProgressBar4 ( x, y ) {
 
 		this.updateProgress( obj.fillPercent );
 	};
-	obj.setAvailableSpace = function ( width, height ) {
-		let val = height / ( obj.centerPiece.height * ( 1 / obj.centerPiece.scale.y ) );
+	obj.setHeight = function ( height ) {
+		let scaleValue = height / ( obj.centerPiece.height * ( 1 / obj.centerPiece.scale.y ) );
+		obj.scaleValue = scaleValue;
 
-		obj.leftCap.scale.setTo( val );
-		obj.rightCap.scale.setTo( val );
+		obj.leftCap.scale.setTo( scaleValue );
+		obj.rightCap.scale.setTo( scaleValue );
+
+		console.log( 'test' + scaleValue );
+		obj.progressBarFill.x = 200;
+		obj.progressBarFill.y = obj.fillBarOffset_Y * scaleValue;
 
 		obj.centerPiece.height = height;
 
-		// obj.progressBarFill.scale.y = val;
-
-		this.setWidth( width );
+		// this.updateProgress( obj.fillPercent );
 	};
+
 
 	return obj;
 }
