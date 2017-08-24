@@ -148,7 +148,7 @@ MyGame.GameState.prototype = {
 
 			this.upperUIHeight = this.progressBar.getGroup().height + this.timeDisplay.height + board_UI_padding;
 			let percentage = ( 5 / 6 );
-			let boardScaleAdjustment = 1;
+			let boardScaleAdjustment = 0.8;
 			var availableGridSpace = height - this.upperUIHeight;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
 			this.calculatedTileSize = (availableGridSpace * boardScaleAdjustment) / chosenSideLength;
