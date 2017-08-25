@@ -160,11 +160,11 @@ MyGame.MenuState.prototype = {
 				game.sound.mute = true;
 			}
 		);
-		// currentState.sceneProps.add( currentState.audioToggle.getGroup() );
+		currentState.sceneProps.add( currentState.audioToggle.getGroup() );
 
 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		currentState.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
+		currentState.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, menuDialogBoxData.width );
 		currentState.myNewDialogBox1.setBackgroundSprite( 'dialog_box_background_sprite' );	
 		currentState.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
 		for( let i = 0; i < menuDialogBoxData.text_components.length; i++ ) { // Add text
@@ -208,7 +208,7 @@ MyGame.MenuState.prototype = {
 		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
 		// this.myProgBar.setAvailableSpace(width, 100);
 
-		currentState.audioToggle.setPosition( width - 80, height - 80 );
+		currentState.audioToggle.setPosition( width - 50, 50 );
 
 		currentState.myNewDialogBox1.setPosition( 
 				game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 

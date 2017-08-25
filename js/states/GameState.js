@@ -14,13 +14,13 @@ var score = 0;
 var scoreMultiplier = 1;
 
 MyGame.GameState = function(game) {
-	"use strict"; 
+	'use strict'; 
 };
 
 MyGame.GameState.prototype = {
 
 	init: function( previousStateProps, oldSceneTransition, newSceneTransition ) {
-		"use strict";
+		'use strict';
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
@@ -44,7 +44,7 @@ MyGame.GameState.prototype = {
 	},
 
 	create: function() {
-		"use strict"; 
+		'use strict'; 
 		let obj = this;
 		this.sceneProps = game.add.group();
 
@@ -68,7 +68,7 @@ MyGame.GameState.prototype = {
 
 		// Score Display
 		let scoreDisplayMessage = score;
-		let scoreDisplayStyle = { font: "30px font_2", fill: '#ffffff' };
+		let scoreDisplayStyle = { font: '30px font_2', fill: '#ffffff' };
 		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
 		this.scoreDisplay.anchor.setTo(0, 1);
 		this.scoreDisplay.align = 'left';
@@ -132,8 +132,8 @@ MyGame.GameState.prototype = {
 	},
 
 	update: function() {
-		"use strict"; 
-		// console.log("Update: " + this.timer.duration);
+		'use strict'; 
+		// console.log('Update: ' + this.timer.duration);
 		if(this.gameTimerRunning) {
 			this.progressBar.updateProgress( (this.gameTimer.duration)/configuration.game_duration );
 			this.updateTimeText( Math.ceil(this.gameTimer.duration / 1000));
@@ -168,12 +168,10 @@ MyGame.GameState.prototype = {
 			// Dialog Boxes
 			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
 			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_start_dialog_box.max_width, 0, game.width); 
-			currentState.startGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			minWidth = game_details_data.dialog_box_settings.game_end_dialog_box.min_width; 
 			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_end_dialog_box.max_width, 0, game.width); 
-			currentState.endGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -378,7 +376,7 @@ MyGame.GameState.prototype = {
 	},
 
 	resize: function() {
-		"use strict";
+		'use strict';
 		updateGameWindow(game);
 
 		let scaleManager = game.scale;
@@ -391,10 +389,10 @@ MyGame.GameState.prototype = {
 	},
 
 	start_swipe: function(pointer) {
-		"use strict";
-	    //console.log("Press down.");
+		'use strict';
+	    //console.log('Press down.');
 	    //this.exitTransition();
-	    //this.game.state.start("GameState", false, false, this.game_details_data, this);
+	    //this.game.state.start('GameState', false, false, this.game_details_data, this);
 	    this.start_swipe_point = new Phaser.Point(pointer.x, pointer.y);
 
 	    // this.restartHintTimer();
@@ -406,8 +404,8 @@ MyGame.GameState.prototype = {
 	},
 
 	end_swipe: function(pointer) {
-		"use strict";	
-	    //console.log("Press up.");
+		'use strict';	
+	    //console.log('Press up.');
 	    if(this.start_swipe_point != null && this.end_swipe_point == null) {
 
 		    var swipe_length
@@ -472,7 +470,7 @@ MyGame.GameState.prototype = {
 			bestVector = currentVector;
 		}
 
-		// console.log("Swipe: " + bestVector);
+		// console.log('Swipe: ' + bestVector);
 		return bestVector;
 	}, 
 
@@ -611,20 +609,20 @@ MyGame.GameState.prototype = {
 				let state = this;
 				newTile.getSprite().events.onInputOver.add(function() { // On Input Over
 					if(allowBoardInput) {
-						game.canvas.style.cursor = "pointer";
+						game.canvas.style.cursor = 'pointer';
 					}
 				}, this);
 				newTile.getSprite().events.onInputOut.add(function() { // On Input Out
 					if(allowBoardInput) {
-						game.canvas.style.cursor = "default";
+						game.canvas.style.cursor = 'default';
 					}
 				}, this);
 				newTile.getSprite().events.onInputDown.add(function() { // On Input Down
 					if(allowBoardInput) {
-						// console.log("You clicked at array position " + newTile.getArrayPosition());
+						// console.log('You clicked at array position ' + newTile.getArrayPosition());
 
 						if(tweenManager.getSize() == 0 && (selectedTile1 == null || selectedTile2 == null)) {
-							// console.log("Down");
+							// console.log('Down');
 							playTileSelectSound();
 
 							if(selectedTile1 == null) { // If there is no selected tile, save this in selectedTile1.
@@ -801,7 +799,7 @@ MyGame.GameState.prototype = {
 		
 		let obj = this;
 		tweenManager.callOnComplete(function() { // When the tiles are finished swapping...
-			// console.log("All tweens completed.");
+			// console.log('All tweens completed.');
 			obj.hideSelectedSprites();
 			if(scanOnComplete)
 				obj.scanBoard();
@@ -939,7 +937,7 @@ MyGame.GameState.prototype = {
 				if(ignoreTile2) {
 					if(x != ignoreTile2.getArrayPosition().x || y != ignoreTile2.getArrayPosition().y) {
 						if(this.tileArray[ x ][ y ].getTag() === tileType) {
-							// console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+							// console.log('Tile [' + x + ', ' + y + '] could be put at tile [' + possibleTileToReplace.getArrayPosition().x + ', ' + possibleTileToReplace.getArrayPosition().y + ']. ');
 							let moveObj = {};
 							moveObj.tileToMove = this.tileArray[ x ][ y ];
 							moveObj.placementLocation = possibleTileToReplace;
@@ -949,7 +947,7 @@ MyGame.GameState.prototype = {
 				}
 				else {
 					if(this.tileArray[ x ][ y ].getTag() === tileType) {
-						// console.log("Tile [" + x + ", " + y + "] could be put at tile [" + possibleTileToReplace.getArrayPosition().x + ", " + possibleTileToReplace.getArrayPosition().y + "]. ");
+						// console.log('Tile [' + x + ', ' + y + '] could be put at tile [' + possibleTileToReplace.getArrayPosition().x + ', ' + possibleTileToReplace.getArrayPosition().y + ']. ');
 						let moveObj = {};
 						moveObj.tileToMove = this.tileArray[ x ][ y ];
 						moveObj.placementLocation = possibleTileToReplace;
@@ -975,12 +973,12 @@ MyGame.GameState.prototype = {
 			score multiplier too.
 	________________________________________*/
 	scanBoard: function() {
-		let lastTileType = "";
-		let currentTileType = "";
+		let lastTileType = '';
+		let currentTileType = '';
 		let foundAnything = false;
 		let repeatedTiles = [];
 
-		// console.log("Scanning...");
+		// console.log('Scanning...');
 		for(let i = 0; i < configuration.board_columns; i++) { // For each column...
 			for(let j = 0; j < configuration.board_rows; j++) { // Go down the column...
 				if(this.tileArray[i][j] != null) {
@@ -999,17 +997,17 @@ MyGame.GameState.prototype = {
 					}
 				}
 				else { // If null...
-					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
+					repeatedTiles = []; lastTileType = ''; currentTileType = ''; // Reset
 				}
 			}
 			if(repeatedTiles.length >= configuration.min_tiles_required_for_match) { // Check to see if the remaining tiles in the column are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}
-			repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
+			repeatedTiles = []; lastTileType = ''; currentTileType = ''; // Reset
 		}
 
-		repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
+		repeatedTiles = []; lastTileType = ''; currentTileType = ''; // Reset
 
 		for(let i = 0; i < configuration.board_rows; i++) { // For each row...
 			for(let j = 0; j < configuration.board_columns; j++) { // Go across the row...
@@ -1029,14 +1027,14 @@ MyGame.GameState.prototype = {
 					}
 				}
 				else { // If null...
-					repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
+					repeatedTiles = []; lastTileType = ''; currentTileType = ''; // Reset
 				}
 			}
 			if(repeatedTiles.length >= configuration.min_tiles_required_for_match) { // Check to see if the remaining tiles in the row are worth anything...
 				this.removeTiles(repeatedTiles);	
 				foundAnything = true;							
 			}
-			repeatedTiles = []; lastTileType = ""; currentTileType = ""; // Reset
+			repeatedTiles = []; lastTileType = ''; currentTileType = ''; // Reset
 		}
 
 		if(!foundAnything) {
@@ -1048,7 +1046,7 @@ MyGame.GameState.prototype = {
 			selectedTile1 = null; 
 			selectedTile2 = null;
 			scoreMultiplier = 1;
-			// console.log("--- Multiplier Reset ---");
+			// console.log('--- Multiplier Reset ---');
 
 			if(this.gameTimer.duration <= 0) {
 				this.endGame();
@@ -1066,7 +1064,7 @@ MyGame.GameState.prototype = {
 	}, 
 
 	removeTiles: function(arr) {
-		let str = ("SCORE: " + score + " + (" + arr.length + " * " + scoreMultiplier + ") = ");
+		let str = ('SCORE: ' + score + ' + (' + arr.length + ' * ' + scoreMultiplier + ') = ');
 		// score += (arr.length * scoreMultiplier);
 		this.addToScore(arr.length * scoreMultiplier);
 		str += score;
@@ -1086,7 +1084,7 @@ MyGame.GameState.prototype = {
 
 		let lastTileArrayPosition = arr[arr.length-1];
 		let lastTilePosition = this.tileArray[lastTileArrayPosition.x][lastTileArrayPosition.y].getPosition();
-		this.showPoints(centerX + this.tileGroup.x, centerY + this.tileGroup.y, "+" + (arr.length * scoreMultiplier));
+		this.showPoints(centerX + this.tileGroup.x, centerY + this.tileGroup.y, '+' + (arr.length * scoreMultiplier));
 
 		for(let i = 0; i < arr.length; i++) {
 			this.removeTile(arr[i].x, arr[i].y);
@@ -1096,7 +1094,7 @@ MyGame.GameState.prototype = {
 
 		let obj = this;
 		tweenManager.callOnComplete(function() {
-			// console.log("All tweens completed.");
+			// console.log('All tweens completed.');
 			obj.updateBoard();
 		});
 	},
@@ -1196,7 +1194,7 @@ MyGame.GameState.prototype = {
 
 		let obj = this;
 		tweenManager.callOnComplete(function() {
-			// console.log("All tweens completed.");
+			// console.log('All tweens completed.');
 			// obj.printBoard();
 
 			for(let i = 0; i < configuration.board_rows; i++) {
@@ -1210,7 +1208,7 @@ MyGame.GameState.prototype = {
 	}, 
 
 	refillBoard: function() {
-		// console.log("Refilling...");
+		// console.log('Refilling...');
 		for(let col = 0; col < configuration.board_columns; col++) { // For each column...
 			let row = 0;
 			while(this.tileArray[col][row] == null && row < configuration.board_rows) { // Counts null tiles.
@@ -1277,36 +1275,36 @@ MyGame.GameState.prototype = {
 			looks like in the console window. 
 	________________________________________*/
 	printBoard: function() {
-		let str = "";
+		let str = '';
 		for(let i = 0; i < configuration.board_rows; i++) {
 			for(let j = 0; j < configuration.board_columns; j++) { 
 				if(this.tileArray[j][i] == null) {
-					str += "[_]";
+					str += '[_]';
 				}
 				else {
 					switch (this.tileArray[j][i].getTag()) {
-						case "TYPE_0": 
-							str += "[0]";
+						case 'TYPE_0': 
+							str += '[0]';
 							break;
-						case "TYPE_1": 
-							str += "[1]";
+						case 'TYPE_1': 
+							str += '[1]';
 							break;
-						case "TYPE_2": 
-							str += "[2]";
+						case 'TYPE_2': 
+							str += '[2]';
 							break;
-						case "TYPE_3": 
-							str += "[3]";
+						case 'TYPE_3': 
+							str += '[3]';
 							break;
-						case "TYPE_4": 
-							str += "[4]";
+						case 'TYPE_4': 
+							str += '[4]';
 							break;
 						default: 
-							str += "[?]";
+							str += '[?]';
 							break;
 					}
 				}
 			}
-			str += "\n";
+			str += '\n';
 		}
 		console.log(str);
 	}, 
@@ -1319,11 +1317,11 @@ MyGame.GameState.prototype = {
 				}
 			}
 			this.addToScore(configuration.board_columns * configuration.board_rows);
-			this.showPoints(this.horizontalMargin + ((configuration.board_columns * this.calculatedTileSize) / 2), this.verticalMargin + ((configuration.board_rows * this.calculatedTileSize) / 2), "NO REMAINING \nMOVES! \n+" + (configuration.board_columns * configuration.board_rows));
+			this.showPoints(this.horizontalMargin + ((configuration.board_columns * this.calculatedTileSize) / 2), this.verticalMargin + ((configuration.board_rows * this.calculatedTileSize) / 2), 'NO REMAINING \nMOVES! \n+' + (configuration.board_columns * configuration.board_rows));
 
 			let obj = this;
 			tweenManager.callOnComplete(function() {
-				// console.log("All tweens completed.");
+				// console.log('All tweens completed.');
 				obj.updateBoard();
 			});
 		}
@@ -1335,7 +1333,7 @@ MyGame.GameState.prototype = {
 		let moves = this.checkMoves();
 
 		if(moves.length == 0) {
-			console.log("No moves available!");
+			console.log('No moves available!');
 			return;
 		}
 
@@ -1455,7 +1453,7 @@ MyGame.GameState.prototype = {
 		let strVal = val.toString();
 
     	let message = val;
-		let myStyle = { font: "" + (50) + "px font_2", fill: '#ffffff' };
+		let myStyle = { font: '' + (50) + 'px font_2', fill: '#ffffff' };
 		let myText = game.add.text(x, y, message, myStyle);
 		// myText.stroke = '#000000';
   //   	myText.strokeThickness = 20;
@@ -1500,7 +1498,7 @@ MyGame.GameState.prototype = {
 	},
 
 	endGame: function() {
-		// console.log("GAME OVER");
+		// console.log('GAME OVER');
 		playWinSound();
 		allowBoardInput = false;
 		this.hintTimer.destroy();
@@ -1512,63 +1510,66 @@ MyGame.GameState.prototype = {
 
 	createStartGameDialogBox: function() {
 		let startGameDialogBoxData = game_details_data.dialog_box_settings.game_start_dialog_box;
-		this.startGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, startGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		currentState.startGameDialogBox = DialogBox2( game.world.centerX, game.world.centerY, startGameDialogBoxData.width );	
+		currentState.startGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
 		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			this.startGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+			currentState.startGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
 		}
 		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = startGameDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
+			if(component.type === 'SCORE') {
+				currentState.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			}
-			else if(component.type === "REWARD") {
-				this.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
+			else if(component.type === 'REWARD') {
+				currentState.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else {
-				this.startGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.startGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 			}
 		}
-		this.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
+		currentState.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
 		 	function() { //On click...
 		 		playButtonPressSound();
 		 		currentState.startGameDialogBox.hide();
 				currentState.goText();
 			}
 		);
-		this.startGameDialogBox.addButton(startGameDialogBoxData.back_button_text, null,
+		currentState.startGameDialogBox.addButton(startGameDialogBoxData.back_button_text, null,
 		 	function() { //On click...
 		 		playButtonPressSound();
-		 		currentState.game.state.start("MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER");
+		 		currentState.game.state.start('MenuState', false, false, currentState.sceneProps, 'CENTER_TO_RIGHT', 'LEFT_TO_CENTER');
 			}
 		);
-		this.sceneProps.add(this.startGameDialogBox.getGroup());
+		currentState.sceneProps.add(currentState.startGameDialogBox.getGroup());
 	}, 
 
 	createEndGameDialogBox: function() {
 		let endGameDialogBoxData = game_details_data.dialog_box_settings.game_end_dialog_box;
-		this.endGameDialogBox = DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
+		currentState.endGameDialogBox = DialogBox2( game.world.centerX, game.world.centerY, endGameDialogBoxData.width );
+		currentState.endGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		//DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
 		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			this.endGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+			currentState.endGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
 		}
 		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = endGameDialogBoxData.text_components[i];
-			if(component.type === "SCORE") {
-				this.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
+			if(component.type === 'SCORE') {
+				currentState.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 			}
-			else if(component.type === "REWARD") {
-				this.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
+			else if(component.type === 'REWARD') {
+				currentState.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 			}
 			else {
-				this.endGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.endGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
 			}
 		}
-		this.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
+		currentState.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,
 		 	function() { //On click...
 		 		playButtonPressSound();
-		 		currentState.game.state.start("GameOverState", false, false, currentState.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		 		currentState.game.state.start('GameOverState', false, false, currentState.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
 			}
 		);
-		this.sceneProps.add(this.endGameDialogBox.getGroup());
+		currentState.sceneProps.add(currentState.endGameDialogBox.getGroup());
 	}
 
 
