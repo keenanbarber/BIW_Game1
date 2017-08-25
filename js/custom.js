@@ -1081,15 +1081,11 @@ function DialogBox2(x, y, availableSpaceWidth) {
 	obj.contentsPadding = 10;
 	obj.buttonTextPadding = 10;
 	obj.buttonSpacing = 10;
-	obj.buttonOffsets = [
-		new Phaser.Point(10, 0), 
-		new Phaser.Point(-10, 0), 
-		new Phaser.Point(10, 0)
+	obj.buttonOffsets = [ // Point for each button
+		new Phaser.Point(0, 0)
 	];
-	obj.textYOffsets = [
-		0, 
-		-0, 
-		-0
+	obj.textYOffsets = [ // Value for each text segment
+		0
 	];
 
 	obj.setSpacing = function(contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing) {
