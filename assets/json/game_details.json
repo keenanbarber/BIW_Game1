@@ -13,7 +13,7 @@
         "desktop_max_width": 1000, 
         "desktop_max_height": 1000, 
 
-        "game_duration": 1,
+        "game_duration": 30,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
