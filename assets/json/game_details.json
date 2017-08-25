@@ -13,7 +13,7 @@
         "desktop_max_width": 1000, 
         "desktop_max_height": 1000, 
 
-        "game_duration": 10,
+        "game_duration": 60,
         "board_rows": 6, 
         "board_columns": 6, 
         "min_tiles_required_for_match": 3,
@@ -32,7 +32,9 @@
         "default_timer_fill_color": "#18CCBD", 
         "default_timer_fill_alpha": 0.8, 
         "default_timer_outline_color": "#ffffff",
-        "default_timer_outline_size": 5
+        "default_timer_outline_size": 5, 
+
+        "board_UI_padding": 15
     },
     "font_files": {
         "font_1": {"source": "assets/fonts/Brandon_thin.woff", "format": "woff"}, 
@@ -66,6 +68,9 @@
         "background_image": "assets/images/background_0.png", 
         "title": "assets/images/title_MartianMatch.png",
 
+        "audio_on_sprite": "assets/images/sound_on.png", 
+        "audio_off_sprite": "assets/images/sound_off.png", 
+
         "board_tile": "assets/images/full.png", 
         "corner_upperright": "assets/images/corner_upperright.png", 
         "corner_upperleft": "assets/images/corner_upperleft.png", 
@@ -91,62 +96,62 @@
     "game_tiles": [
         {   "main_sprite_source": "assets/images/martian_blue.png", 
             "disappear_animation_frames": [
-                "assets/images/animation/sprite_blue_01.svg", 
-                "assets/images/animation/sprite_blue_02.svg", 
-                "assets/images/animation/sprite_blue_03.svg", 
-                "assets/images/animation/sprite_blue_04.svg", 
-                "assets/images/animation/sprite_blue_05.svg", 
-                "assets/images/animation/sprite_blue_06.svg", 
-                "assets/images/animation/sprite_blue_07.svg", 
-                "assets/images/animation/sprite_blue_08.svg"
+                "assets/images/animation/sprite_blue_01.png", 
+                "assets/images/animation/sprite_blue_02.png", 
+                "assets/images/animation/sprite_blue_03.png", 
+                "assets/images/animation/sprite_blue_04.png", 
+                "assets/images/animation/sprite_blue_05.png", 
+                "assets/images/animation/sprite_blue_06.png", 
+                "assets/images/animation/sprite_blue_07.png", 
+                "assets/images/animation/sprite_blue_08.png"
             ]
         },
         {   "main_sprite_source": "assets/images/martian_green.png",
             "disappear_animation_frames": [
-                "assets/images/animation/sprite_green_01.svg", 
-                "assets/images/animation/sprite_green_02.svg", 
-                "assets/images/animation/sprite_green_03.svg", 
-                "assets/images/animation/sprite_green_04.svg", 
-                "assets/images/animation/sprite_green_05.svg", 
-                "assets/images/animation/sprite_green_06.svg", 
-                "assets/images/animation/sprite_green_07.svg", 
-                "assets/images/animation/sprite_green_08.svg"
+                "assets/images/animation/sprite_green_01.png", 
+                "assets/images/animation/sprite_green_02.png", 
+                "assets/images/animation/sprite_green_03.png", 
+                "assets/images/animation/sprite_green_04.png", 
+                "assets/images/animation/sprite_green_05.png", 
+                "assets/images/animation/sprite_green_06.png", 
+                "assets/images/animation/sprite_green_07.png", 
+                "assets/images/animation/sprite_green_08.png"
             ]
         },
         {   "main_sprite_source": "assets/images/martian_pink.png", 
             "disappear_animation_frames": [
-                "assets/images/animation/sprite_pink_01.svg", 
-                "assets/images/animation/sprite_pink_02.svg", 
-                "assets/images/animation/sprite_pink_03.svg", 
-                "assets/images/animation/sprite_pink_04.svg", 
-                "assets/images/animation/sprite_pink_05.svg", 
-                "assets/images/animation/sprite_pink_06.svg", 
-                "assets/images/animation/sprite_pink_07.svg", 
-                "assets/images/animation/sprite_pink_08.svg"
+                "assets/images/animation/sprite_pink_01.png", 
+                "assets/images/animation/sprite_pink_02.png", 
+                "assets/images/animation/sprite_pink_03.png", 
+                "assets/images/animation/sprite_pink_04.png", 
+                "assets/images/animation/sprite_pink_05.png", 
+                "assets/images/animation/sprite_pink_06.png", 
+                "assets/images/animation/sprite_pink_07.png", 
+                "assets/images/animation/sprite_pink_08.png"
             ]
         },
         {   "main_sprite_source": "assets/images/martian_purple.png", 
             "disappear_animation_frames": [
-                "assets/images/animation/sprite_purple_01.svg", 
-                "assets/images/animation/sprite_purple_02.svg", 
-                "assets/images/animation/sprite_purple_03.svg", 
-                "assets/images/animation/sprite_purple_04.svg", 
-                "assets/images/animation/sprite_purple_05.svg", 
-                "assets/images/animation/sprite_purple_06.svg", 
-                "assets/images/animation/sprite_purple_07.svg", 
-                "assets/images/animation/sprite_purple_08.svg"
+                "assets/images/animation/sprite_purple_01.png", 
+                "assets/images/animation/sprite_purple_02.png", 
+                "assets/images/animation/sprite_purple_03.png", 
+                "assets/images/animation/sprite_purple_04.png", 
+                "assets/images/animation/sprite_purple_05.png", 
+                "assets/images/animation/sprite_purple_06.png", 
+                "assets/images/animation/sprite_purple_07.png", 
+                "assets/images/animation/sprite_purple_08.png"
             ]
         },
         {   "main_sprite_source": "assets/images/martian_red.png", 
             "disappear_animation_frames": [
-                "assets/images/animation/sprite_red_01.svg", 
-                "assets/images/animation/sprite_red_02.svg", 
-                "assets/images/animation/sprite_red_03.svg", 
-                "assets/images/animation/sprite_red_04.svg", 
-                "assets/images/animation/sprite_red_05.svg", 
-                "assets/images/animation/sprite_red_06.svg", 
-                "assets/images/animation/sprite_red_07.svg", 
-                "assets/images/animation/sprite_red_08.svg"
+                "assets/images/animation/sprite_red_01.png", 
+                "assets/images/animation/sprite_red_02.png", 
+                "assets/images/animation/sprite_red_03.png", 
+                "assets/images/animation/sprite_red_04.png", 
+                "assets/images/animation/sprite_red_05.png", 
+                "assets/images/animation/sprite_red_06.png", 
+                "assets/images/animation/sprite_red_07.png", 
+                "assets/images/animation/sprite_red_08.png"
             ]
         }
     ],

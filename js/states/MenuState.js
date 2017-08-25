@@ -151,6 +151,17 @@ MyGame.MenuState.prototype = {
 		// this.sceneProps.add(this.myDialogBox1.getGroup());
 
 
+		currentState.audioToggle = ToggleButton( 100, 100, 80, 80, 'audio_on_sprite', 'audio_off_sprite' );
+		currentState.audioToggle.setBehaviors(
+			function() { // Toggle On
+				game.sound.mute = false;
+			}, 
+			function() { // Toggle Off
+				game.sound.mute = true;
+			}
+		);
+		// currentState.sceneProps.add( currentState.audioToggle.getGroup() );
+
 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
 		currentState.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, 400 );
@@ -196,6 +207,8 @@ MyGame.MenuState.prototype = {
 	positionComponents: function( width, height ) {
 		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
 		// this.myProgBar.setAvailableSpace(width, 100);
+
+		currentState.audioToggle.setPosition( width - 80, height - 80 );
 
 		currentState.myNewDialogBox1.setPosition( 
 				game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 

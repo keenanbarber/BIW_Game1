@@ -1245,8 +1245,6 @@ function DialogBox2(x, y, availableSpaceWidth) {
 		});
 		button.add(buttonGraphic.getSprite());
 		button.add(buttonText);
-
-		// obj.buttonText.add(buttonText);
 		obj.buttonGroup.add(button);
 
 		obj.resize();
@@ -1340,6 +1338,84 @@ function DialogBox2(x, y, availableSpaceWidth) {
 	};
 
 	obj.dialogBoxGroup.visible = false;
+	return obj;
+}
+
+function ToggleButton( x, y, width, height, onSprite, offSprite ) {
+	let obj = {};
+
+	obj.toggleState = true;
+	obj.canPressButton = true;
+
+	obj.toggleOnFunc; 
+	obj.toggleOffFunc;
+
+	// The button
+	obj.buttonGroup = game.add.group();
+	obj.buttonImage = game.add.sprite( 0, 0, onSprite ); 
+	obj.buttonImage.anchor.setTo( 0.5, 0.5 );
+	obj.buttonGraphic; 
+
+	obj.graphics = game.add.graphics( 0, 0 );
+	obj.graphics.beginFill( 0xffffff, 0.0 );
+	// graphics.lineStyle(1, 0x68588C, 1);
+	obj.graphics.drawRect( 0, 0, width, height ); 
+	obj.graphics.endFill();
+
+	let buttonTexture = obj.graphics.generateTexture();
+	obj.graphics.destroy();
+	obj.buttonGraphic = SpriteButton( 0, 0, buttonTexture );
+	
+	obj.buttonGraphic.setBehaviors(
+		function() { //On mouse over...
+			// Tweenimate_ElasticScale(obj.buttonImage, 1.2, 1.2, 1000);
+			game.canvas.style.cursor = "pointer";
+		}, 
+		function() { //On mouse off...
+			// Tweenimate_ElasticScale(obj.buttonImage, 1, 1, 1000);
+			game.canvas.style.cursor = "default";
+		},
+		function() { //On mouse down...
+		}, 
+		function() { //On mouse up...
+		}
+	);
+	obj.buttonGraphic.setClickBehavior( function() {
+		if( obj.canPressButton ) {
+			obj.toggleState = !obj.toggleState;
+			obj.setState( obj.toggleState );
+
+			if( obj.toggleState && obj.toggleOnFunc ) {
+				obj.toggleOnFunc();
+			} 
+			else if( !obj.toggleState && obj.toggleOffFunc ) {
+				obj.toggleOffFunc();
+			}
+		}
+	} );
+	obj.buttonGroup.add( obj.buttonGraphic.getSprite() );
+	obj.buttonGroup.add( obj.buttonImage );
+
+	obj.setBehaviors = function( toggleOnFunc, toggleOffFunc ) {
+		obj.toggleOnFunc = toggleOnFunc; 
+		obj.toggleOffFunc = toggleOffFunc;
+	};
+	obj.setState = function( stateBool ) {
+		if( stateBool ) {
+			obj.buttonImage.loadTexture( onSprite );
+		}
+		else {
+			obj.buttonImage.loadTexture( offSprite )
+		}
+	};
+	obj.setPosition = function( x, y ) {
+		obj.buttonGroup.x = x;
+		obj.buttonGroup.y = y;
+	};
+	obj.getGroup = function() {
+		return obj.buttonGroup;
+	};
+
 	return obj;
 }
 

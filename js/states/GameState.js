@@ -89,7 +89,7 @@ MyGame.GameState.prototype = {
 		// Progress Bar
 		this.progressBar = NewProgressBar4();
 		this.progressBar.updateProgress(1);
-		this.progressBar.setHeight( 60 );
+		this.progressBar.setHeight( 50 );
 		this.progressBar.setAlignment( 'right' );
 		// this.progressBar.setAlignment('right');
 		this.sceneProps.add(this.progressBar.getGroup());
@@ -143,9 +143,7 @@ MyGame.GameState.prototype = {
 	positionComponents: function(width, height) {
 		let isLandscape = (game.height / game.width < 1.2) ? true : false;
 		if(isLandscape) {
-			let board_UI_padding = 15;
-
-
+			let board_UI_padding = game_details_data.user_interface_settings.board_UI_padding;
 			this.upperUIHeight = this.progressBar.getGroup().height + this.timeDisplay.height + board_UI_padding;
 			let percentage = ( 5 / 6 );
 			let boardScaleAdjustment = 0.8;
@@ -155,8 +153,6 @@ MyGame.GameState.prototype = {
 			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
 			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
 
-
-
 			// Progress Bar
 			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (2/4));
@@ -165,9 +161,9 @@ MyGame.GameState.prototype = {
 				this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding
 			);
 
-			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
+			ScaleSprite(this.clock, this.progressBar.getGroup().height, this.progressBar.getGroup().height, 0, 1);
 			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
-			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.clock.y = this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding;
 
 			// Dialog Boxes
 			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
@@ -264,23 +260,27 @@ MyGame.GameState.prototype = {
 
 		}
 		else {
+			let board_UI_padding = game_details_data.user_interface_settings.board_UI_padding;
+			this.upperUIHeight = this.progressBar.getGroup().height + this.timeDisplay.height + board_UI_padding;
+			let percentage = ( 5 / 6 );
+			let boardScaleAdjustment = 0.8;
 			var availableGridSpace = width;
 			let chosenSideLength = Math.max(configuration.board_columns, configuration.board_rows);
-			this.calculatedTileSize = (availableGridSpace * 0.8) / chosenSideLength;
-			this.upperUIHeight = this.scoreDisplay.height + this.scoreText.height;
+			this.calculatedTileSize = (availableGridSpace * boardScaleAdjustment) / chosenSideLength;
 			this.horizontalMargin = (width - (configuration.board_columns * this.calculatedTileSize)) / 2;
 			this.verticalMargin = ((height - (configuration.board_rows * this.calculatedTileSize)) / 2) + this.upperUIHeight/2;
-
-
 
 			// Progress Bar
 			// this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (3/4));
 			this.progressBar.setWidth((this.calculatedTileSize * configuration.board_columns) * (2/4));
-			this.progressBar.setPosition(this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), this.verticalMargin - this.progressBar.getGroup().height);
+			this.progressBar.setPosition(
+				this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns), 
+				this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding
+			);
 
-			ScaleSprite(this.clock, this.calculatedTileSize/2, this.calculatedTileSize/2, 0, 1);
+			ScaleSprite(this.clock, this.progressBar.getGroup().height, this.progressBar.getGroup().height, 0, 1);
 			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
-			this.clock.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.clock.y = this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding;
 
 			// Dialog Boxes
 			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
@@ -295,15 +295,15 @@ MyGame.GameState.prototype = {
 
 			// Time Display
 			this.timeDisplay.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns);
-			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.timeDisplay.y = this.verticalMargin - this.progressBar.getGroup().height - this.timeDisplay.height - board_UI_padding;
 
 			// Score Text
 			this.scoreText.x = this.horizontalMargin;
-			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height * 2;
+			this.scoreText.y = this.verticalMargin - this.progressBar.getGroup().height - this.timeDisplay.height - board_UI_padding;
 
 			// Score Display
 			this.scoreDisplay.x = this.horizontalMargin;
-			this.scoreDisplay.y = this.verticalMargin - this.progressBar.getGroup().height;
+			this.scoreDisplay.y = this.verticalMargin - board_UI_padding
 
 			// Board Selection Squares
 			this.boardSelectionGroup.x = this.horizontalMargin + this.calculatedTileSize/2;
