@@ -6,12 +6,12 @@ var text_test;
 var text_test_style;
 
 MyGame.GameOverState = function() {
-	"use strict"; 
+	'use strict'; 
 };
 
 MyGame.GameOverState.prototype = {
 	init: function( previousStateProps, oldSceneTransition, newSceneTransition ) {
-		"use strict";
+		'use strict';
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
 
@@ -34,7 +34,7 @@ MyGame.GameOverState.prototype = {
 	},
 
 	create: function() {
-		"use strict"; 
+		'use strict'; 
 		this.sceneProps = game.add.group();
 
 		// Title
@@ -56,8 +56,8 @@ MyGame.GameOverState.prototype = {
 	},
 
 	update: function() {
-		"use strict"; 
-		//console.log("Update");
+		'use strict'; 
+		//console.log('Update');
 	}, 
 
 	positionComponents: function( width, height ) {
@@ -117,7 +117,7 @@ MyGame.GameOverState.prototype = {
 	},
 
 	resize: function( state ) {
-		"use strict";
+		'use strict';
 		updateGameWindow( game );
 
 		let scaleManager = game.scale;
@@ -128,14 +128,14 @@ MyGame.GameOverState.prototype = {
 	},
 
 	start_swipe: function( pointer ) {
-		"use strict";
-	    //console.log("Press down.");	    
+		'use strict';
+	    //console.log('Press down.');	    
 	    currentState.start_swipe_point = new Phaser.Point( pointer.x, pointer.y );
 	},
 
 	end_swipe: function( pointer ) {
-		"use strict";	
-	    //console.log("Press up.");
+		'use strict';	
+	    //console.log('Press up.');
 	    if( currentState.start_swipe_point != null && currentState.end_swipe_point == null ) {
 		    var swipe_length; 
 		    currentState.end_swipe_point = new Phaser.Point( pointer.x, pointer.y );
@@ -204,9 +204,9 @@ MyGame.GameOverState.prototype = {
 		}
 		for( let i = 0; i < scoreDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = scoreDialogBoxData.text_components[ i ];
-			if( component.type === "SCORE" ) 
+			if( component.type === 'SCORE' ) 
 				this.scoreDialogBox.addTextSegment( score + component.text, component.style, component.align, component.line_spacing_offset );
-			else if( component.type === "REWARD" ) 
+			else if( component.type === 'REWARD' ) 
 				this.scoreDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset );
 			else 
 				this.scoreDialogBox.addTextSegment( component.text, component.style, component.align, component.line_spacing_offset );
@@ -241,9 +241,9 @@ MyGame.GameOverState.prototype = {
 		}
 		for( let i = 0; i < rewardDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = rewardDialogBoxData.text_components[ i ];
-			if( component.type === "SCORE" ) 
+			if( component.type === 'SCORE' ) 
 				this.rewardDialogBox.addTextSegment( score + component.text, component.style, component.align, component.line_spacing_offset );
-			else if( component.type === "REWARD" ) 
+			else if( component.type === 'REWARD' ) 
 				this.rewardDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset );
 			else 
 				this.rewardDialogBox.addTextSegment( component.text, component.style, component.align, component.line_spacing_offset );
@@ -251,7 +251,7 @@ MyGame.GameOverState.prototype = {
 		this.rewardDialogBox.addButton( rewardDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
 		 		playButtonPressSound();
-		 		currentState.game.state.start( "MenuState", false, false, currentState.sceneProps, "CENTER_TO_RIGHT", "LEFT_TO_CENTER" );
+		 		currentState.game.state.start( 'MenuState', false, false, currentState.sceneProps, 'CENTER_TO_RIGHT', 'LEFT_TO_CENTER' );
 			} 
 		);
 		this.sceneProps.add( this.rewardDialogBox.getGroup() );

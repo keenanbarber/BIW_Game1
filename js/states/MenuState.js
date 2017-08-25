@@ -11,12 +11,12 @@ var	progBar;
 
 
 MyGame.MenuState = function() {
-	"use strict"; 
+	'use strict'; 
 };
 
 MyGame.MenuState.prototype = {
 	init: function( previousStateProps, oldSceneTransition, newSceneTransition ) {
-		"use strict";
+		'use strict';
 
 		this.oldSceneTransition = oldSceneTransition;
 		this.newSceneTransition = newSceneTransition;
@@ -37,7 +37,7 @@ MyGame.MenuState.prototype = {
 	},
 
 	create: function() {
-		"use strict"; 
+		'use strict'; 
 		currentState.sceneProps = game.add.group();
 
 		// Add background if it doesn't already exist
@@ -77,7 +77,7 @@ MyGame.MenuState.prototype = {
 		// this.testGroup.add(this.groupObj1);
 
 		// Attempts Text
-		// let attemptsTextMessage = "ATTEMPTS REMAINING: " + game_details_data.game_details.attempts_remaining;
+		// let attemptsTextMessage = 'ATTEMPTS REMAINING: ' + game_details_data.game_details.attempts_remaining;
 		// let attemptsTextStyle = game_details_data.user_interface_settings.score_text_style;
 		// this.attemptsText = game.add.text(0, 0, attemptsTextMessage, attemptsTextStyle);
 		// this.attemptsText.anchor.setTo(0.5);
@@ -89,21 +89,21 @@ MyGame.MenuState.prototype = {
 		// Menu Dialog Box
 		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 400);	 
 		// this.myDialogBox1.setBackgroundSprite('popup_background');
-		// this.myDialogBox1.addTextSegment("INSTRUCTIONS",
-		// 	{ font: "16px font_2", fill: '#ffffff' }, 'center');
-		// this.myDialogBox1.addTextSegment("CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!",
-		// 	{ font: "12px font_1", fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addTextSegment('INSTRUCTIONS',
+		// 	{ font: '16px font_2', fill: '#ffffff' }, 'center');
+		// this.myDialogBox1.addTextSegment('CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!',
+		// 	{ font: '12px font_1', fill: '#ffffff' }, 'center');
 		// this.myDialogBox1.addButton('PLAY', null,
 		//  	function() { //On click...
 		// 		// obj.myDialogBox1.hide();
 		// 		// button_press_sound.play();
 		// 		score = 0;
-		// 		obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 		obj.game.state.start('GameState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
 		// 	}
 		// );
 		// this.myDialogBox1.addButton('BACK TO ARCADE', null,
 		//  	function() { //On click...
-		// 		obj.game.state.start("GameOverState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 		obj.game.state.start('GameOverState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
 		// 	}
 		// );
 		// this.sceneProps.add(this.myDialogBox1.getGroup());
@@ -131,10 +131,10 @@ MyGame.MenuState.prototype = {
 		// }
 		// for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
 		// 	let component = menuDialogBoxData.text_components[i];
-		// 	if(component.type === "SCORE") {
+		// 	if(component.type === 'SCORE') {
 		// 		this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
 		// 	}
-		// 	else if(component.type === "REWARD") {
+		// 	else if(component.type === 'REWARD') {
 		// 		this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
 		// 	}
 		// 	else {
@@ -145,7 +145,7 @@ MyGame.MenuState.prototype = {
 		//  	function() { //On click...
 		// 		score = 0;
 		// 		playButtonPressSound();
-		// 		obj.game.state.start("GameState", false, false, obj.sceneProps, "CENTER_TO_LEFT", "RIGHT_TO_CENTER");
+		// 		obj.game.state.start('GameState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
 		// 	}
 		// );
 		// this.sceneProps.add(this.myDialogBox1.getGroup());
@@ -199,14 +199,14 @@ MyGame.MenuState.prototype = {
 	},
 
 	update: function() {
-		"use strict"; 
-		//console.log("Update");
+		'use strict'; 
+		//console.log( 'Update' );
 		// this.myProgBar.updateProgress( this.myProgBar.getPercentage() - 1 );
 	}, 
 
 	positionComponents: function( width, height ) {
-		// this.myProgBar.setPosition(game.world.centerX, game.world.centerY);
-		// this.myProgBar.setAvailableSpace(width, 100);
+		// this.myProgBar.setPosition( game.world.centerX, game.world.centerY );
+		// this.myProgBar.setAvailableSpace( width, 100 );
 
 		currentState.audioToggle.setPosition( width - 50, 50 );
 
@@ -268,11 +268,11 @@ MyGame.MenuState.prototype = {
 			// 	game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
 			// 	game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 		}
-		// console.log("[ " + this.progBar.getGroup().width + ", " + this.progBar.getGroup().height + " ]");
+		// console.log('[ ' + this.progBar.getGroup().width + ', ' + this.progBar.getGroup().height + ' ]');
 	},
 
 	resize: function() {
-		"use strict";
+		'use strict';
 		updateGameWindow( game );
 
 
@@ -285,20 +285,20 @@ MyGame.MenuState.prototype = {
 	},
 
 	start_swipe: function( pointer ) {
-		"use strict";
-	    //console.log("Press down.");	    
+		'use strict';
+	    //console.log( 'Press down.' );	    
 	    currentState.start_swipe_point = new Phaser.Point( pointer.x, pointer.y );
 	},
 
 	end_swipe: function( pointer ) {
-		"use strict";	
-	    //console.log("Press up.");
+		'use strict';	
+	    //console.log( 'Press up.' );
 	    if( currentState.start_swipe_point != null && currentState.end_swipe_point == null ) {
 		    var swipe_length; 
 		    currentState.end_swipe_point = new Phaser.Point( pointer.x, pointer.y );
 		    swipe_length = Phaser.Point.distance( currentState.end_swipe_point, currentState.start_swipe_point );
 
-		    //console.log(swipe_length);
+		    // console.log( swipe_length );
 		    // if the swipe length is greater than the minimum, a swipe is detected
 		    if ( swipe_length >= configuration.min_swipe_length ) {
 		        let calculatedSwipeDirectionVector = new Phaser.Point( currentState.end_swipe_point.x - currentState.start_swipe_point.x, currentState.end_swipe_point.y - currentState.start_swipe_point.y ).normalize();
