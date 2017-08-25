@@ -37,15 +37,14 @@ MyGame.GameOverState.prototype = {
 		'use strict'; 
 		this.sceneProps = game.add.group();
 
+		// READ FROM JSON FILE
+		this.createScoreDialogBox(); // SCORE DIALOG BOX
+		this.createRewardDialogBox(); // REWARD DIALOG BOX
+
 		// Title
 		this.title = game.add.sprite(game.world.centerX, game.world.centerY/2, 'end_game_image');
 		this.title.anchor.setTo(0.5);
 		this.sceneProps.add( this.title );
-
-
-		// READ FROM JSON FILE
-		this.createScoreDialogBox(); // SCORE DIALOG BOX
-		this.createRewardDialogBox(); // REWARD DIALOG BOX
 
 		// Enter this new scene
 		EnterNewScene( this.sceneProps, TranslateTween( this.newSceneTransition, 1000, configuration.transition_easing ) );
@@ -104,13 +103,11 @@ MyGame.GameOverState.prototype = {
 			// Dialog Box
 			minWidth = game_details_data.dialog_box_settings.default_score_dialog_box.min_width; 
 			maxWidth = BoundNumber( game_details_data.dialog_box_settings.default_score_dialog_box.max_width, 0, game.width ); 
-			currentState.scoreDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.scoreDialogBox.setPosition( game.world.centerX, game.world.centerY + this.scoreDialogBox.getHeight() * ( 1 / 3 ) );
 
 
 			minWidth = game_details_data.dialog_box_settings.reward_dialog_box.min_width; 
 			maxWidth = BoundNumber( game_details_data.dialog_box_settings.reward_dialog_box.max_width, 0, game.width ); 
-			currentState.rewardDialogBox.setWidth( game.width, minWidth, maxWidth, 20 );
 			this.rewardDialogBox.setPosition( game.world.centerX, game.world.centerY + this.rewardDialogBox.getHeight() * ( 1 / 3 ) );
 
 		}
@@ -189,7 +186,7 @@ MyGame.GameOverState.prototype = {
 		return bestVector;
 	}, 
 
-	createScoreDialogBox: function() {
+	createScoreDialogBox: function() { // Creates DialogBox based on JSON file data. 
 		let scoreDialogBoxData;
 		if( score > game_details_data.game_details.high_score && game_details_data.game_details.high_score != null && game_details_data.game_details.high_score )
 			scoreDialogBoxData = game_details_data.dialog_box_settings.beat_high_score_dialog_box;
@@ -197,19 +194,19 @@ MyGame.GameOverState.prototype = {
 			scoreDialogBoxData = game_details_data.dialog_box_settings.default_score_dialog_box;
 
 
-		this.scoreDialogBox = DialogBox2( game.world.centerX, game.world.centerY, scoreDialogBoxData.width );
-		currentState.scoreDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		if( game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite ) {
-			this.scoreDialogBox.setBackgroundSprite( 'dialog_box_background_sprite' );
-		}
+		this.scoreDialogBox = DialogBox( game.world.centerX, game.world.centerY, scoreDialogBoxData.width );
+		currentState.scoreDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, game_details_data.dialog_box_settings.body_button_padding, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		// if( game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite ) {
+		// 	currentState.scoreDialogBox.setBackgroundSprite( 'dialog_box_background_sprite' );
+		// }
 		for( let i = 0; i < scoreDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = scoreDialogBoxData.text_components[ i ];
 			if( component.type === 'SCORE' ) 
-				this.scoreDialogBox.addTextSegment( score + component.text, component.style, component.align, component.line_spacing_offset );
+				this.scoreDialogBox.addTextSegment( score + component.text, component.style, component.align, component.y_pos_offset );
 			else if( component.type === 'REWARD' ) 
-				this.scoreDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset );
+				this.scoreDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.y_pos_offset );
 			else 
-				this.scoreDialogBox.addTextSegment( component.text, component.style, component.align, component.line_spacing_offset );
+				this.scoreDialogBox.addTextSegment( component.text, component.style, component.align, component.y_pos_offset );
 		}
 		this.scoreDialogBox.addButton( scoreDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
@@ -219,13 +216,9 @@ MyGame.GameOverState.prototype = {
 			} 
 		);
 		this.sceneProps.add( this.scoreDialogBox.getGroup() );
-
-		minWidth = game_details_data.dialog_box_settings.default_score_dialog_box.min_width; 
-		maxWidth = BoundNumber( game_details_data.dialog_box_settings.default_score_dialog_box.max_width, 0, game.width ); 
-		this.scoreDialogBox.setWidth( game.width, minWidth, maxWidth, 50 );
 	}, 
 
-	createRewardDialogBox: function() {
+	createRewardDialogBox: function() { // Creates DialogBox based on JSON file data. 
 		let rewardDialogBoxData;
 		if( game_details_data.game_details.reward != 0 && game_details_data.game_details.reward != null && game_details_data.game_details.reward ) {
 			rewardDialogBoxData = game_details_data.dialog_box_settings.reward_dialog_box;
@@ -234,19 +227,19 @@ MyGame.GameOverState.prototype = {
 			rewardDialogBoxData = game_details_data.dialog_box_settings.no_reward_dialog_box;
 		}
 
-		this.rewardDialogBox = DialogBox2( game.world.centerX, game.world.centerY, rewardDialogBoxData.width );
-		currentState.rewardDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		if( game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite ) {
-			this.rewardDialogBox.setBackgroundSprite( 'dialog_box_background_sprite' );
-		}
+		this.rewardDialogBox = DialogBox( game.world.centerX, game.world.centerY, rewardDialogBoxData.width );
+		currentState.rewardDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, game_details_data.dialog_box_settings.body_button_padding, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		// if( game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite ) {
+		// 	currentState.rewardDialogBox.setBackgroundSprite( 'dialog_box_background_sprite' );
+		// }
 		for( let i = 0; i < rewardDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = rewardDialogBoxData.text_components[ i ];
 			if( component.type === 'SCORE' ) 
-				this.rewardDialogBox.addTextSegment( score + component.text, component.style, component.align, component.line_spacing_offset );
+				this.rewardDialogBox.addTextSegment( score + component.text, component.style, component.align, component.y_pos_offset );
 			else if( component.type === 'REWARD' ) 
-				this.rewardDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset );
+				this.rewardDialogBox.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.y_pos_offset );
 			else 
-				this.rewardDialogBox.addTextSegment( component.text, component.style, component.align, component.line_spacing_offset );
+				this.rewardDialogBox.addTextSegment( component.text, component.style, component.align, component.y_pos_offset );
 		}
 		this.rewardDialogBox.addButton( rewardDialogBoxData.continue_button_text, null,
 		 	function() { //On click...
@@ -255,10 +248,6 @@ MyGame.GameOverState.prototype = {
 			} 
 		);
 		this.sceneProps.add( this.rewardDialogBox.getGroup() );
-
-		minWidth = game_details_data.dialog_box_settings.reward_dialog_box.min_width; 
-		maxWidth = BoundNumber( game_details_data.dialog_box_settings.reward_dialog_box.max_width, 0, game.width ); 
-		this.rewardDialogBox.setWidth( game.width, minWidth, maxWidth, 50 );
 	}
 
 

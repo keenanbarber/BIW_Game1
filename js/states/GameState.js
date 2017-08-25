@@ -2,6 +2,7 @@
 
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
+var allowBoardInput = false;
 
 var mouseOverObj; 
 var mouseOffObj;
@@ -68,11 +69,10 @@ MyGame.GameState.prototype = {
 
 		// Score Display
 		let scoreDisplayMessage = score;
-		let scoreDisplayStyle = { font: '30px font_2', fill: '#ffffff' };
+		let scoreDisplayStyle = game_details_data.user_interface_settings.score_number_style;
 		this.scoreDisplay = game.add.text(0, 0, scoreDisplayMessage, scoreDisplayStyle);
 		this.scoreDisplay.anchor.setTo(0, 1);
 		this.scoreDisplay.align = 'left';
-		// this.scoreDisplay.fontSize = this.scoreDisplay.fontSize * devicePixelRatio;
 		this.sceneProps.add(this.scoreDisplay);
 
 		// Game Timer
@@ -87,15 +87,15 @@ MyGame.GameState.prototype = {
 		this.hintTimer.loop(game_details_data.game_details.hint_delay * 1000, this.hintCallOnComplete, this);
 
 		// Progress Bar
-		this.progressBar = NewProgressBar4();
+		this.progressBar = ProgressBar();
 		this.progressBar.updateProgress(1);
-		this.progressBar.setHeight( 50 );
+		this.progressBar.setHeight( game_details_data.user_interface_settings.timer_bar_height );
 		this.progressBar.setAlignment( 'right' );
-		// this.progressBar.setAlignment('right');
 		this.sceneProps.add(this.progressBar.getGroup());
 
 		// Progress Bar Icon
 		this.clock = game.add.sprite(0, 0, 'timer_bar_icon');
+		this.clock.scale.setTo( game_details_data.user_interface_settings.timer_bar_icon_height / this.clock.height );
 		this.clock.anchor.setTo(0.5);
 		this.sceneProps.add(this.clock);
 
@@ -161,17 +161,11 @@ MyGame.GameState.prototype = {
 				this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding
 			);
 
-			ScaleSprite(this.clock, this.progressBar.getGroup().height, this.progressBar.getGroup().height, 0, 1);
-			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width;
-			this.clock.y = this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding;
+			this.clock.x = this.horizontalMargin + (this.calculatedTileSize * configuration.board_columns) - this.progressBar.getGroup().width + game_details_data.user_interface_settings.timer_bar_icon_offset_x;
+			this.clock.y = this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding + game_details_data.user_interface_settings.timer_bar_icon_offset_y;
 
 			// Dialog Boxes
-			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_start_dialog_box.max_width, 0, game.width); 
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-
-			minWidth = game_details_data.dialog_box_settings.game_end_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_end_dialog_box.max_width, 0, game.width); 
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -281,14 +275,7 @@ MyGame.GameState.prototype = {
 			this.clock.y = this.verticalMargin - ( this.progressBar.getGroup().height / 2 ) - board_UI_padding;
 
 			// Dialog Boxes
-			minWidth = game_details_data.dialog_box_settings.game_start_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_start_dialog_box.max_width, 0, game.width); 
-			currentState.startGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.startGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
-
-			minWidth = game_details_data.dialog_box_settings.game_end_dialog_box.min_width; 
-			maxWidth = BoundNumber(game_details_data.dialog_box_settings.game_end_dialog_box.max_width, 0, game.width); 
-			currentState.endGameDialogBox.setWidth(game.width, minWidth, maxWidth, 20);
 			this.endGameDialogBox.setPosition(game.world.centerX, game.world.centerY);
 
 			// Time Display
@@ -1508,23 +1495,23 @@ MyGame.GameState.prototype = {
 		this.endGameDialogBox.show();
 	}, 
 
-	createStartGameDialogBox: function() {
+	createStartGameDialogBox: function() { // Creates DialogBox based on JSON file data. 
 		let startGameDialogBoxData = game_details_data.dialog_box_settings.game_start_dialog_box;
-		currentState.startGameDialogBox = DialogBox2( game.world.centerX, game.world.centerY, startGameDialogBoxData.width );	
-		currentState.startGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			currentState.startGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
-		}
+		currentState.startGameDialogBox = DialogBox( game.world.centerX, game.world.centerY, startGameDialogBoxData.width );	
+		currentState.startGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, game_details_data.dialog_box_settings.body_button_padding, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		// if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+		// 	currentState.startGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		// }
 		for(let i = 0; i < startGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = startGameDialogBoxData.text_components[i];
 			if(component.type === 'SCORE') {
-				currentState.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.startGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.y_pos_offset);
 			}
 			else if(component.type === 'REWARD') {
-				currentState.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.startGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.y_pos_offset);
 			}
 			else {
-				currentState.startGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.startGameDialogBox.addTextSegment(component.text, component.style, component.align, component.y_pos_offset);
 			}
 		}
 		currentState.startGameDialogBox.addButton(startGameDialogBoxData.start_button_text, null,
@@ -1543,24 +1530,23 @@ MyGame.GameState.prototype = {
 		currentState.sceneProps.add(currentState.startGameDialogBox.getGroup());
 	}, 
 
-	createEndGameDialogBox: function() {
+	createEndGameDialogBox: function() { // Creates DialogBox based on JSON file data. 
 		let endGameDialogBoxData = game_details_data.dialog_box_settings.game_end_dialog_box;
-		currentState.endGameDialogBox = DialogBox2( game.world.centerX, game.world.centerY, endGameDialogBoxData.width );
-		currentState.endGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
-		//DialogBox(game.world.centerX, game.world.centerY, endGameDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-			currentState.endGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
-		}
+		currentState.endGameDialogBox = DialogBox( game.world.centerX, game.world.centerY, endGameDialogBoxData.width );
+		currentState.endGameDialogBox.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, game_details_data.dialog_box_settings.body_button_padding, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		// if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
+		// 	currentState.endGameDialogBox.setBackgroundSprite('dialog_box_background_sprite');
+		// }
 		for(let i = 0; i < endGameDialogBoxData.text_components.length; i++) { // Add text
 			let component = endGameDialogBoxData.text_components[i];
 			if(component.type === 'SCORE') {
-				currentState.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.endGameDialogBox.addTextSegment(score + component.text, component.style, component.align, component.y_pos_offset);
 			}
 			else if(component.type === 'REWARD') {
-				currentState.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.endGameDialogBox.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.y_pos_offset);
 			}
 			else {
-				currentState.endGameDialogBox.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
+				currentState.endGameDialogBox.addTextSegment(component.text, component.style, component.align, component.y_pos_offset);
 			}
 		}
 		currentState.endGameDialogBox.addButton(endGameDialogBoxData.finish_button_text, null,

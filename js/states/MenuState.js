@@ -3,11 +3,6 @@
 var MyGame = MyGame || {}; // Creates namespace if haven't already. 
 
 var background = null;
-var allowBoardInput = false;
-// var button_press_sound;
-
-var	progBar;
-
 
 
 MyGame.MenuState = function() {
@@ -44,114 +39,13 @@ MyGame.MenuState.prototype = {
 		if( background == null ) {
 			background = game.add.sprite( game.world.centerX, game.world.centerY, 'background_image' );
 			background.anchor.setTo( 0.5, 1 );
-			// currentState.sceneProps.add(currentState.background);
 			game.world.sendToBack( background );
 		}
 
-		// Title
-		currentState.title = game.add.sprite( game.world.centerX, game.world.centerY/2, 'title' );
-		currentState.title.anchor.setTo( 0.5 );
-		currentState.sceneProps.add( currentState.title );
-
 		playBackgroundMusic();
 
-		// this.myProgBar = NewProgressBar4( game.world.centerX, game.world.centerY );
-		// this.myProgBar.setHeight( 100 );
-		// this.myProgBar.setWidth( game.world.centerX * 2 );
-		// this.myProgBar.updateProgress( 1 );
-
-		// this.myBarThing = this.testBar();
-		// this.sceneProps.add(this.myBarThing);
-
-		// this.alphaMaskTest();
-
-		// this.progBar.addBarOverlayImage();
-
-
-		// this.testGroup = game.add.group();
-		// this.testGroup.x = game.world.centerX;
-		// this.testGroup.y = game.world.centerY;
-
-		// this.groupObj1 = game.add.sprite(0, 0, 'title');
-		// this.groupObj1.anchor.setTo(0.5);
-		// this.testGroup.add(this.groupObj1);
-
-		// Attempts Text
-		// let attemptsTextMessage = 'ATTEMPTS REMAINING: ' + game_details_data.game_details.attempts_remaining;
-		// let attemptsTextStyle = game_details_data.user_interface_settings.score_text_style;
-		// this.attemptsText = game.add.text(0, 0, attemptsTextMessage, attemptsTextStyle);
-		// this.attemptsText.anchor.setTo(0.5);
-		// this.attemptsText.align = 'center';
-		// this.attemptsText.fontSize = this.attemptsText.fontSize * devicePixelRatio;
-		// this.sceneProps.add(this.attemptsText);
-
-
-		// Menu Dialog Box
-		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, 400);	 
-		// this.myDialogBox1.setBackgroundSprite('popup_background');
-		// this.myDialogBox1.addTextSegment('INSTRUCTIONS',
-		// 	{ font: '16px font_2', fill: '#ffffff' }, 'center');
-		// this.myDialogBox1.addTextSegment('CREATE A SEQUENCE OF 3 OR MORE MARTIANS, VERTICALLY OR HORIZONTALLY. MATCH AS MANY AS YOU CAN IN 30 SECONDS. \nREADY, SET, GO!',
-		// 	{ font: '12px font_1', fill: '#ffffff' }, 'center');
-		// this.myDialogBox1.addButton('PLAY', null,
-		//  	function() { //On click...
-		// 		// obj.myDialogBox1.hide();
-		// 		// button_press_sound.play();
-		// 		score = 0;
-		// 		obj.game.state.start('GameState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
-		// 	}
-		// );
-		// this.myDialogBox1.addButton('BACK TO ARCADE', null,
-		//  	function() { //On click...
-		// 		obj.game.state.start('GameOverState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
-		// 	}
-		// );
-		// this.sceneProps.add(this.myDialogBox1.getGroup());
-
-
-		// let graphics = game.add.graphics(0, 0);
-		// graphics.beginFill(0x68588C, 0.6);
-		// graphics.lineStyle(1, 0x7ffff4, 1);
-		// graphics.drawRoundedRect(0, 0, 50, 50, 5); 
-		// graphics.endFill();
-
-		// let graphicsTexture = graphics.generateTexture();
-		// graphics.destroy();
-
-		// let graphicsSprite = game.add.sprite(50, 50, graphicsTexture);
-		// // obj.graphicsSprite.anchor.setTo(0.5);	
-
-
-
-
-		// let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		// this.myDialogBox1 = DialogBox(game.world.centerX, game.world.centerY, menuDialogBoxData.width, game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding);	
-		// if(game_details_data.game_sprites.dialog_box_background_sprite != null && game_details_data.game_sprites.dialog_box_background_sprite) {
-		// 	this.myDialogBox1.setBackgroundSprite('dialog_box_background_sprite');
-		// }
-		// for(let i = 0; i < menuDialogBoxData.text_components.length; i++) { // Add text
-		// 	let component = menuDialogBoxData.text_components[i];
-		// 	if(component.type === 'SCORE') {
-		// 		this.myDialogBox1.addTextSegment(score + component.text, component.style, component.align, component.line_spacing_offset);
-		// 	}
-		// 	else if(component.type === 'REWARD') {
-		// 		this.myDialogBox1.addTextSegment(game_details_data.game_details.reward + component.text, component.style, component.align, component.line_spacing_offset);
-		// 	}
-		// 	else {
-		// 		this.myDialogBox1.addTextSegment(component.text, component.style, component.align, component.line_spacing_offset);
-		// 	}
-		// }
-		// this.myDialogBox1.addButton(menuDialogBoxData.play_button_text, null,
-		//  	function() { //On click...
-		// 		score = 0;
-		// 		playButtonPressSound();
-		// 		obj.game.state.start('GameState', false, false, obj.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER');
-		// 	}
-		// );
-		// this.sceneProps.add(this.myDialogBox1.getGroup());
-
-
-		currentState.audioToggle = ToggleButton( 100, 100, 80, 80, 'audio_on_sprite', 'audio_off_sprite' );
+		// Audio Toggle Button
+		currentState.audioToggle = ToggleButton( 50, 50, 80, 80, 'audio_on_sprite', 'audio_off_sprite' );
 		currentState.audioToggle.setBehaviors(
 			function() { // Toggle On
 				game.sound.mute = false;
@@ -163,57 +57,53 @@ MyGame.MenuState.prototype = {
 		currentState.sceneProps.add( currentState.audioToggle.getGroup() );
 
 
+		// Creates DialogBox based on JSON file data. 
 		let menuDialogBoxData = game_details_data.dialog_box_settings.menu_dialog_box;
-		currentState.myNewDialogBox1 = DialogBox2( game.world.centerX, game.world.centerY, menuDialogBoxData.width );
-		currentState.myNewDialogBox1.setBackgroundSprite( 'dialog_box_background_sprite' );	
-		currentState.myNewDialogBox1.setSpacing( 20, 20, 0, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
+		currentState.myDialogBox1 = DialogBox( game.world.centerX, game.world.centerY, menuDialogBoxData.width );
+		// currentState.myDialogBox1.setBackgroundSprite( 'dialog_box_background_sprite' );	
+		currentState.myDialogBox1.setSpacing( game_details_data.dialog_box_settings.contents_padding, game_details_data.dialog_box_settings.button_text_padding, game_details_data.dialog_box_settings.body_button_padding, 10 ); // contentsPadding, buttonTextWidthPadding, textButtonSpacing, buttonSpacing
 		for( let i = 0; i < menuDialogBoxData.text_components.length; i++ ) { // Add text
 			let component = menuDialogBoxData.text_components[i];
 			if( component.type === 'SCORE' ) {
-				currentState.myNewDialogBox1.addTextSegment( score + component.text, component.style, component.align );
+				currentState.myDialogBox1.addTextSegment( score + component.text, component.style, component.align, component.y_pos_offset );
 			}
 			else if( component.type === 'REWARD' ) {
-				currentState.myNewDialogBox1.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align );
+				currentState.myDialogBox1.addTextSegment( game_details_data.game_details.reward + component.text, component.style, component.align, component.y_pos_offset );
 			}
 			else {
-				currentState.myNewDialogBox1.addTextSegment( component.text, component.style, component.align );
+				currentState.myDialogBox1.addTextSegment( component.text, component.style, component.align, component.y_pos_offset );
 			}
 		}
-		currentState.myNewDialogBox1.addButton( menuDialogBoxData.play_button_text, null,
+		currentState.myDialogBox1.addButton( menuDialogBoxData.play_button_text, null,
 		 	function() { //On click...
 				score = 0;
 				playButtonPressSound();
 				currentState.game.state.start( 'GameState', false, false, currentState.sceneProps, 'CENTER_TO_LEFT', 'RIGHT_TO_CENTER' );
 			}
 		);
-		currentState.sceneProps.add( currentState.myNewDialogBox1.getGroup() );
+		currentState.sceneProps.add( currentState.myDialogBox1.getGroup() );
+
+		// Title
+		currentState.title = game.add.sprite( game.world.centerX, game.world.centerY/2, 'title' );
+		currentState.title.anchor.setTo( 0.5 );
+		currentState.sceneProps.add( currentState.title );
+
 
 		// Enter this new scene
 		EnterNewScene( currentState.sceneProps, TranslateTween( currentState.newSceneTransition, configuration.transition_time, configuration.transition_easing ) );
 		tweenManager.callOnComplete( function() { 
-			// currentState.myDialogBox1.show();
-			currentState.myNewDialogBox1.show();
+			currentState.myDialogBox1.show();
 		} );
-		// this.positionComponents(game.width, game.height);
 		currentState.resize();
 	},
 
 	update: function() {
 		'use strict'; 
 		//console.log( 'Update' );
-		// this.myProgBar.updateProgress( this.myProgBar.getPercentage() - 1 );
 	}, 
 
 	positionComponents: function( width, height ) {
-		// this.myProgBar.setPosition( game.world.centerX, game.world.centerY );
-		// this.myProgBar.setAvailableSpace( width, 100 );
-
-		currentState.audioToggle.setPosition( width - 50, 50 );
-
-		currentState.myNewDialogBox1.setPosition( 
-				game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 
-				game.world.centerY + currentState.myNewDialogBox1.getHeight() * ( 1 / 2 )  + ( game_details_data.sprite_adjustment.menu_popup_y_offset ) );
-		// this.myNewDialogBox1.setWidth(width, width, width/2, 0);
+		
 
 		let isLandscape = ( game.height / game.width < 1.2 ) ? true : false;
 		if( isLandscape ) {
@@ -225,22 +115,18 @@ MyGame.MenuState.prototype = {
 			background.x = game.world.centerX;
 			background.y = height;
 
+			// Audio Toggle Button
+			currentState.audioToggle.setPosition( 50, 50 );
+
+			// Dialog Box
+			currentState.myDialogBox1.setPosition( 
+			game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 
+			game.world.centerY + currentState.myDialogBox1.getHeight() * ( 1 / 2 )  + ( game_details_data.sprite_adjustment.menu_popup_y_offset ) );
+
 			// Title
 			ScaleSprite( currentState.title, width, ( height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset ), 10, 1 );
 			currentState.title.x = ( width / 2 ) + ( game_details_data.sprite_adjustment.menu_title_x_offset );
 			currentState.title.y = ( height/2 - currentState.title.height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset );
-
-			// Attempts Text
-			// this.attemptsText.y = height - 50;
-			// this.attemptsText.x = width/2;
-
-			// Dialog Box
-			// minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
-			// maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
-			// currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
-			// this.myDialogBox1.setPosition(
-			// 	game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
-			// 	game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 		}
 		else {
 			// Background
@@ -251,31 +137,24 @@ MyGame.MenuState.prototype = {
 			background.x = game.world.centerX;
 			background.y = height;
 
+			// Audio Toggle Button
+			currentState.audioToggle.setPosition( 50, 50 );
+
+			// Dialog Box
+			currentState.myDialogBox1.setPosition( 
+			game.world.centerX + ( game_details_data.sprite_adjustment.menu_popup_x_offset ), 
+			game.world.centerY + currentState.myDialogBox1.getHeight() * ( 1 / 2 )  + ( game_details_data.sprite_adjustment.menu_popup_y_offset ) );
+
 			// Title
 			ScaleSprite( currentState.title, width, ( height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset ), 10, 1 );
 			currentState.title.x = ( width / 2 ) + ( game_details_data.sprite_adjustment.menu_title_x_offset );
 			currentState.title.y = ( height/2 - currentState.title.height/2 ) + ( game_details_data.sprite_adjustment.menu_title_y_offset );
-
-			// Attempts Text
-			// this.attemptsText.y = height - 50;
-			// this.attemptsText.x = width/2;
-
-			// Dialog Box
-			// minWidth = game_details_data.dialog_box_settings.menu_dialog_box.min_width; 
-			// maxWidth = BoundNumber(game_details_data.dialog_box_settings.menu_dialog_box.max_width, 0, game.width); 
-			// currentState.myDialogBox1.setWidth(game.width, minWidth, maxWidth, 20);
-			// this.myDialogBox1.setPosition(
-			// 	game.world.centerX + (game_details_data.sprite_adjustment.menu_popup_x_offset), 
-			// 	game.world.centerY + this.myDialogBox1.getHeight() * (1/2)  + (game_details_data.sprite_adjustment.menu_popup_y_offset));
 		}
-		// console.log('[ ' + this.progBar.getGroup().width + ', ' + this.progBar.getGroup().height + ' ]');
 	},
 
 	resize: function() {
 		'use strict';
 		updateGameWindow( game );
-
-
 
 		let scaleManager = game.scale;
 		let width = scaleManager.width; 
@@ -344,139 +223,9 @@ MyGame.MenuState.prototype = {
 
 		console.log( 'Swipe: ' + bestVector );
 		return bestVector;
-	}, 
-
-	alphaMaskTest: function() {
-		// graphics = game.add.graphics(0,0);
-		// graphics.beginFill('#ffffff', 1);
-		// graphics.drawRoundedRect(0, 0, 100, 30, 10);
-		// graphics.endFill();
-		// graphicsTexture = graphics.generateTexture();
-		// graphics.destroy();
-
-		// let mask = game.add.sprite(0, 0, 'test');
-
-		// let toBeMasked = game.add.sprite(300, 300, 'background_image');
-
-
-		// //	Create a new bitmap data the same size as our picture
-		// var bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
-
-		// //	And create an alpha mask image by combining pic and mask from the cache
-		// bmd.alphaMask('background_image', 'test');
-
-		// game.add.image(100, 100, bmd);
-		// mask.destroy();
-		// toBeMasked.destroy();
-
-		// let pixels = [];
-
-		// ***********************
-
-		// let mask_bmd = game.make.bitmapData();
-	 //    mask_bmd.load(gameTileDetails[0].key);
-	 //    mask_bmd.addToWorld(game.world.centerX, game.world.centerY, 0.5, 0.5);
-	 //    mask_bmd.processPixelRGB(this.forEachPixel, this);
-	 //    game.cache.addBitmapData('new_mask', mask_bmd);
-
-	 //    let toBeMasked = game.add.sprite(0, 0, 'title');
-
-	 //    let bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
-	 //    bmd.alphaMask('title', game.cache.getBitmapData('new_mask'));
-	 //    game.add.image(0, 0, bmd);
-	 //    toBeMasked.destroy();
-
-	 	// ***********************
-
-	 	// this.tileSprite = game.add.tileSprite(0, 0, 300, 300, 'background_image');
-	 	// this.tileSprite.tilePosition.x = 0;
-	 	// this.tileSprite.tilePosition.y = 0;
-
-	 	// ***********************
-
-		// let mask_bmd = game.make.bitmapData();
-		// mask_bmd.load('test');
-		// mask_bmd.addToWorld(0, 0, 0, 0);
-		// mask_bmd.processPixelRGB(this.forEachPixel, this);
-		// game.cache.addBitmapData('new_mask', mask_bmd);
-
-		// let bmd = game.make.bitmapData(toBeMasked.width, toBeMasked.height);
-
-
-	 	// let toBeMasked = game.add.sprite(200, 200, 'test');
-	 	// let mask = game.add.graphics(200, 200);
-	 	// mask.beginFill(0xffffff);
-	 	// mask.drawCircle(0, 0, 100);
-	 	// // let mask = game.add.sprite(0, 0, game.cache.getBitmapData('new_mask'));
-	 	// toBeMasked.mask = mask;
-
-	 	// mask.x = 0;
-	 	// mask.y = 0;
-	 	// toBeMasked.x = 0;
-	 	// toBeMasked.y = -100;
-
-	 	// ***********************
-
-	 	// create our sillhouette from the original player image
-		// progBar = NewProgressBar2();
-		// progBar.setFillPercent(100);
-	}, 
-
-	testBar : function () {
-		currentState.boxProperties = new Phaser.Rectangle( 0, 0, 400, 40 );
-		var lineWidth = 5, 
-			cornerRadius = 10, 
-			shadowSize = 0, 
-			x = currentState.boxProperties.x + lineWidth, 
-			y = currentState.boxProperties.y + lineWidth, 
-			width = currentState.boxProperties.width, 
-			height = currentState.boxProperties.height, 
-			bmd = new Phaser.BitmapData( currentState.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth ) ), 
-			grd = bmd.context.createLinearGradient( x, y, x, height );
-
-		grd.addColorStop( 0, '#18CCBD' );
-		// grd.addColorStop(0.25, '#18CCBD');
-		// grd.addColorStop(0.75, '#18CCBD');
-		// grd.addColorStop(1, '#0f8278');
-		bmd.context.beginPath();
-		bmd.context.moveTo( x + cornerRadius, y );
-		bmd.context.lineTo( x + width - cornerRadius, y );
-		bmd.context.quadraticCurveTo( x + width, y, x + width, y + cornerRadius );
-		bmd.context.lineTo( x + width, y + height - cornerRadius );
-		bmd.context.quadraticCurveTo( x + width, y + height, x + width - cornerRadius, y + height );
-		bmd.context.lineTo( x + cornerRadius, y + height );
-		bmd.context.quadraticCurveTo( x, y + height, x, y + height - cornerRadius );
-		bmd.context.lineTo( x, y + cornerRadius );
-		bmd.context.quadraticCurveTo( x, y, x + cornerRadius, y );
-		bmd.context.closePath();
-		bmd.context.fillStyle = grd;
-		bmd.context.fill();
-		bmd.context.strokeStyle = '#fff';
-		bmd.context.lineWidth = lineWidth;
-		bmd.context.stroke();
-
-		var bmd2 = new Phaser.BitmapData( currentState.game, '', width + ( 2 * lineWidth ), height + ( 2 * lineWidth ) ); 
-		bmd2.context.beginPath();
-		bmd2.context.moveTo( x, y );
-		bmd2.context.lineTo( x + width, y );
-		bmd2.context.lineTo( x + width, y + height );
-		bmd2.context.lineTo( x, y + height );
-		bmd2.context.lineTo( x, y );
-		bmd2.context.fillStyle = '#444444';
-		bmd2.context.fill();
-
-		// let reflectionSprite = new Phaser.Sprite(currentState.game, 0, 0, bmd2);
-		let barSprite = new Phaser.Sprite( currentState.game, 0, 0, bmd );
-
-		return barSprite;
 	}
 
 };
-
-// https://phaser.io/examples/v2/bitmapdata/alpha-mask
-
-// https://phaser.io/docs/2.6.2/Phaser.Graphics.html
-
 
 
 
