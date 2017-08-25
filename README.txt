@@ -2,7 +2,7 @@
 MARTIAN MATCH
 =======================
 
-LAST MODIFIED - 07/28/17
+LAST MODIFIED - 08/25/17 - Keenan Barber
 
 --- README ----------------------------------------------------
 	The goal was to make a game that can be reskinned that will also work on both mobile and desktop browsers. It was created with HTML and Javascript as well as the Javascript library Phaser. 
@@ -139,10 +139,8 @@ LAST MODIFIED - 07/28/17
 	[ game_tiles ]
 			The game tiles section contains an array of the tiles. Each tile being made up of the "main_sprite_source" which is its default sprite and its "disappear_animation_frames" which is just an array of images to act as the frames of the animation. The animation is called when there is a match on the board during gameplay and the tiles disappear. 
 
-	[ dialog_box_settings ]
-			... Incomplete section ... 
-
-			The dialog boxes that appear in the game are built off of the data put in this section. There are some default settings that can be modified at the top of this section, but below those are the 7 dialog boxes that can be changed. Each one has a "max_width" and "max_height" to keep its width from getting too large if needed. 
+	[ dialog_box_settings ] 
+			The dialog boxes that appear in the game are built off of the data put in this section. There are some default settings that can be modified at the top of this section, but below those are the 7 dialog boxes that can be changed. Each one has a "width" that must be set. 
 
 			There is a "text_components" section in each dialog box. This is an array of objects that contain information about a line of text that should be put into the dialog box. To insert a new line in the dialog box, put this into the array and modify it so that it is what you want: 
 
